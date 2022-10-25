@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:skilledge/screens/AuthScreens/Login.dart';
+import 'package:skilledge/screens/AuthScreens/Register.dart';
+import 'package:skilledge/screens/AuthScreens/otp.dart';
+import 'package:skilledge/screens/Getting_started/gettingstarted.dart';
 import 'package:skilledge/screens/Splash.dart';
+import 'package:skilledge/screens/dashboard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,6 +21,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      routes: {
+        '/login': (context) => const Login(),
+        '/register': (context) => const Register(),
+        '/mainpage': (context) => const Dashboard(),
+        '/otp': ((context) => const OtpScreen())
+      },
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -39,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           if (snapshot.data != null) {
             return Container();
           }
-          return Splash();
+          return GettingStarted();
         }));
   }
 }
