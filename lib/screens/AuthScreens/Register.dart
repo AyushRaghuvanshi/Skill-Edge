@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:skilledge/models/register_model.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:skilledge/models/reg_model.dart';
 import 'package:skilledge/screens/AuthScreens/Login.dart';
 import 'package:skilledge/screens/AuthScreens/otp.dart';
 import 'package:skilledge/services/api_services.dart';
@@ -16,7 +20,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  late register_req_model req;
   String? name;
   String? username;
   String? email;
@@ -31,11 +34,13 @@ class _RegisterState extends State<Register> {
 
   bool pass_text = true;
 
+  late reg_req_model register;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    req = register_req_model();
+    register = reg_req_model();
   }
 
   bool isLoading = false;
@@ -69,14 +74,17 @@ class _RegisterState extends State<Register> {
                             fontSize: 24,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF3F4EC4)),
+                            color: Color(0xFF1D1E21)),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 24.0),
                         child: Container(
                           // height: 54,
-                          color: const Color(0xFFEEF0FD),
+                          // color: const Color(0xFFEEF0FD),
                           child: TextFormField(
+                            minLines: 1,
+                            maxLength: 100,
+                            maxLines: 1,
                             onChanged: (value) {
                               name = value;
                             },
@@ -108,8 +116,11 @@ class _RegisterState extends State<Register> {
                         padding: const EdgeInsets.only(top: 24.0),
                         child: Container(
                           // height: 54,
-                          color: const Color(0xFFEEF0FD),
+                          // color: const Color(0xFFEEF0FD),
                           child: TextFormField(
+                            minLines: 1,
+                            maxLength: 100,
+                            maxLines: 1,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
@@ -141,7 +152,7 @@ class _RegisterState extends State<Register> {
                         padding: const EdgeInsets.only(top: 24.0),
                         child: Container(
                           // height: 54,
-                          color: const Color(0xFFEEF0FD),
+                          // color: const Color(0xFFEEF0FD),
                           child: TextFormField(
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -160,6 +171,9 @@ class _RegisterState extends State<Register> {
                             onChanged: (value) {
                               email = value;
                             },
+                            minLines: 1,
+                            maxLength: 100,
+                            maxLines: 1,
                             decoration: const InputDecoration(
                               prefixIcon: Icon(
                                 Icons.email_outlined,
@@ -178,8 +192,11 @@ class _RegisterState extends State<Register> {
                         padding: const EdgeInsets.only(top: 24.0),
                         child: Container(
                           // height: 54,
-                          color: const Color(0xFFEEF0FD),
+                          // color: const Color(0xFFEEF0FD),
                           child: TextFormField(
+                            minLines: 1,
+                            maxLength: 100,
+                            maxLines: 1,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
@@ -195,7 +212,6 @@ class _RegisterState extends State<Register> {
                                 return 'Passwords dont match';
                               } else {
                                 pass1 = true;
-                                ;
                               }
                             },
                             onChanged: (value) {
@@ -238,8 +254,11 @@ class _RegisterState extends State<Register> {
                         padding: const EdgeInsets.only(top: 24.0),
                         child: Container(
                           // height: 54,
-                          color: const Color(0xFFEEF0FD),
+                          // color: const Color(0xFFEEF0FD),
                           child: TextFormField(
+                            minLines: 1,
+                            maxLength: 100,
+                            maxLines: 1,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
@@ -292,45 +311,42 @@ class _RegisterState extends State<Register> {
                         padding: const EdgeInsets.only(top: 20.0),
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF3F4EC4)),
-                            onPressed: () {
+                                backgroundColor: const Color(0xFF1D1E21)),
+                            onPressed: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
                               if (fullname && mail && user && pass1 && pass2) {
+                                register.email = email;
+                                register.name = name;
+                                register.confirmPassword = pass2check;
+                                register.password = pass;
+                                register.userName = username;
                                 API api = API();
-                                setState(() {
-                                  isLoading = true;
-                                });
-
-                                req.name = username;
-                                req.email = email;
-                                req.userName = name;
-                                req.confirmPassword = pass2check;
-                                req.password = pass;
-                                api.reg_api(req).then((value) {
+                                api.reg_api(register).then((value) {
                                   setState(() {
                                     isLoading = false;
                                   });
-
-                                  if (value.toJson()['msg'] != null) {
+                                  if (value.email != null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'This Email is already in use, Try Signing up.')));
+                                  } else if (value.userName != null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'This Username is not avaiable.')));
+                                  }
+                                  if (value.msg != null) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => OtpScreen(
-                                                email: email,
+                                            name:register.name,
+                                                email: register.email,
                                               )),
                                     );
-                                  } else {
-                                    if (value.toJson()['email'][0] != null) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  value.toJson()['email'][0])));
-                                    } else if (value.toJson()['name'][0] !=
-                                        null) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  value.toJson()['name'][0])));
-                                    }
                                   }
                                 });
                               } else {
@@ -365,7 +381,7 @@ class _RegisterState extends State<Register> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(color: Color(0xFF586AF5)),
+                                side: BorderSide(color: Color(0xFF1D1E21)),
                                 borderRadius:
                                     BorderRadius.circular(8), // <-- Radius
                               ),
@@ -381,7 +397,7 @@ class _RegisterState extends State<Register> {
                                     child: Text(
                                   'Sign in',
                                   style: TextStyle(
-                                      color: Color(0xFF586AF5),
+                                      color: Color(0xFF1D1E21),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                 )))),

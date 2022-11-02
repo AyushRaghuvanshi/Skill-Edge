@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -10,10 +9,20 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  int id = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Logged in')),
+      body: FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Center(
+                  child: Text(snapshot.data!.getInt('id').toString()));
+            }
+            return Center(child: CircularProgressIndicator());
+          },
+          future: SharedPreferences.getInstance()),
     );
   }
 }

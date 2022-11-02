@@ -51,7 +51,7 @@ class GettingStarted extends StatelessWidget {
       ),
       bottomNavigationBar: Container(
         height: 64,
-        decoration: const BoxDecoration(color: Color(0xFF293593)),
+        decoration: const BoxDecoration(color: Color(0xFF1D1E21)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

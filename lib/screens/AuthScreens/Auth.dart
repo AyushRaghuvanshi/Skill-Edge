@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skilledge/screens/AuthScreens/Login.dart';
+import 'package:skilledge/screens/AuthScreens/Register.dart';
 import 'package:skilledge/widgets/logo.dart';
 
 class Authentication extends StatefulWidget {
@@ -26,21 +27,21 @@ class _AuthenticationState extends State<Authentication> {
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF3F4EC4),
+                        backgroundColor: Color(0xFF1D1E21),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8))),
                     onPressed: () {},
                     child: Container(
                       width: 266,
                       height: 45,
-                      child: Center(child: Text('Sign In As An Educator')),
+                      child: Center(child: Text('Sign Up As An Educator')),
                     )),
                 Padding(
                   padding: const EdgeInsets.only(top: 24.0),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Color(0xFF586AF5)),
+                          side: BorderSide(color: Color(0xFF1D1E21)),
                           borderRadius: BorderRadius.circular(8), // <-- Radius
                         ),
                         backgroundColor: Colors.white,
@@ -48,7 +49,7 @@ class _AuthenticationState extends State<Authentication> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Login()),
+                          MaterialPageRoute(builder: (context) => Register()),
                         );
                       },
                       child: Container(
@@ -56,8 +57,8 @@ class _AuthenticationState extends State<Authentication> {
                         height: 45,
                         child: Center(
                             child: Text(
-                          'Sign In As An Student',
-                          style: TextStyle(color: Color(0xFF586AF5)),
+                          'Sign Up As An Student',
+                          style: TextStyle(color: Color(0xFF1D1E21)),
                         )),
                       )),
                 )

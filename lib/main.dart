@@ -3,6 +3,7 @@ import 'package:skilledge/screens/AuthScreens/Login.dart';
 import 'package:skilledge/screens/AuthScreens/Register.dart';
 import 'package:skilledge/screens/AuthScreens/otp.dart';
 import 'package:skilledge/screens/Getting_started/gettingstarted.dart';
+import 'package:skilledge/screens/OnboardingUI/onBordingQnA.dart';
 import 'package:skilledge/screens/Splash.dart';
 import 'package:skilledge/screens/dashboard.dart';
 
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
         '/mainpage': (context) => const Dashboard(),
-        '/otp': ((context) => const OtpScreen())
+        '/otp': ((context) => const OtpScreen()),
+        '/onboarding': ((context) => const OnboardingQA()),
       },
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

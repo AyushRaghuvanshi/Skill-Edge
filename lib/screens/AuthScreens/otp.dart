@@ -1,21 +1,40 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pinput/pinput.dart';
+import 'package:skilledge/models/otp_model.dart';
+import 'package:skilledge/models/resendotp.dart';
+import 'package:skilledge/screens/OnboardingUI/onBordingQnA.dart';
+import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/logo.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key, this.email});
+  const OtpScreen({super.key, this.email,this.name});
   final email;
+  final name;
   @override
   State<OtpScreen> createState() => _OtpScreenState();
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+  late OTP_req_model otp_req;
+  late resendotp_req_model resend;
   String otp = '';
+  bool isLoading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    otp_req = OTP_req_model();
+    resend = resendotp_req_model();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return ModalProgressHUD(inAsyncCall: isLoading, child: _otpbuild(context));
+  }
+
+  Widget _otpbuild(BuildContext context) {
     print(widget.email);
     return Scaffold(
       body: Padding(
@@ -24,7 +43,7 @@ class _OtpScreenState extends State<OtpScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Logo(),
+            const Logo(),
             Padding(
               padding: const EdgeInsets.only(top: 32.0, bottom: 32),
               child: Image.asset(
@@ -33,9 +52,9 @@ class _OtpScreenState extends State<OtpScreen> {
                 width: 64,
               ),
             ),
-            Text(
+            const Text(
               'ENTER OTP',
-              style: TextStyle(color: Color(0xFF2A4ECA), fontSize: 34),
+              style: TextStyle(color: Color(0xFF1D1E21), fontSize: 34),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 24.0),
@@ -47,19 +66,65 @@ class _OtpScreenState extends State<OtpScreen> {
               ),
             ),
             Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    API api = API();
+                    resend.email = widget.email;
+                    api.resendotp(resend).then((value) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      print(value.toJson());
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(value.msg.toString())));
+                    });
+                  },
+                  child: Text('Resend OTP')),
+            ),
+            Padding(
               padding: const EdgeInsets.only(top: 24.0),
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF3F4EC4)),
+                      backgroundColor: const Color(0xFF1D1E21)),
                   onPressed: () {
-                    
+                    if (otp.toString().length != 4) {
+                      return;
+                    }
+                    setState(() {
+                      isLoading = true;
+                    });
+                    otp_req.email = widget.email;
+                    otp_req.otp = otp;
+                    API api = API();
+                    api.verifyotp(otp_req).then((value) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      print(value.toJson());
+                      if (value.msg == 'otp is not valid') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Incorrect OTP')));
+                      }
+                      if (value.msg == 'OTP expired') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('OTP Expired, kindly Resend')));
+                      }
+                      if (value.msg == 'verification Successfull') {
+                        Navigator.push(context,  MaterialPageRoute(builder: (context) => OnboardingQA(fullName: widget.name ,email:widget.email)), );
+                      }
+                    });
                   },
                   child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 45,
                       child: const Center(
                           child: Text(
-                        'Send OTP',
+                        'Verify OTP',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w400),
                       )))),

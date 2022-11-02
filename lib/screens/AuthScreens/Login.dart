@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skilledge/models/login_model.dart';
+import 'package:skilledge/screens/AuthScreens/forgotpassword.dart';
 import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/logo.dart';
 
@@ -67,14 +69,17 @@ class _LoginState extends State<Login> {
                             fontSize: 24,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF3F4EC4)),
+                            color: Color(0xFF1D1E21)),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 24.0),
                         child: Container(
                           // height: 54,
-                          color: const Color(0xFFEEF0FD),
+                          // color: const Color(0xFFEEF0FD),
                           child: TextFormField(
+                            minLines: 1,
+                            maxLength: 100,
+                            maxLines: 1,
                             validator: (value) {
                               bool emailerror = RegExp(
                                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -97,10 +102,8 @@ class _LoginState extends State<Login> {
                                 Icons.email_outlined,
                                 color: Colors.black,
                               ),
-                              prefixIconColor: Colors.black,
                               hintText: 'EMAIL',
                               hintStyle: TextStyle(color: Colors.black),
-                              fillColor: Color(0xFFEEF0FD),
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -110,24 +113,26 @@ class _LoginState extends State<Login> {
                         padding: const EdgeInsets.only(top: 24.0),
                         child: Container(
                           // height: 54,
-                          color: const Color(0xFFEEF0FD),
+                          // color: const Color(0xFFEEF0FD),
                           child: TextFormField(
+                            minLines: 1,
+                            maxLength: 100,
+                            maxLines: 1,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               bool passValid = value!.length >= 4;
                               if (!passValid) {
                                 passok = false;
-                                return 'Password too weak';
+                                return 'Password need to be of more than 4 charactors';
                               } else {
                                 passok = true;
+                                return null;
                               }
                             },
                             onChanged: ((newValue) {
                               password = newValue;
                             }),
-                            minLines: 1,
-                            maxLines: 1,
                             obscureText: pass_text,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(5),
@@ -153,23 +158,28 @@ class _LoginState extends State<Login> {
                               ),
                               hintText: 'PASSWORD',
                               hintStyle: const TextStyle(color: Colors.black),
-                              fillColor: const Color(0xFFEEF0FD),
                               border: const OutlineInputBorder(),
                             ),
                           ),
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ForgotPass()),
+                          );
+                        },
                         child: const Text(
                           'Forgot Your Password',
                           style:
-                              TextStyle(fontSize: 12, color: Color(0xFF586AF5)),
+                              TextStyle(fontSize: 12, color: Color(0xFF1D1E21)),
                         ),
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF3F4EC4)),
+                              backgroundColor: const Color(0xFF1D1E21)),
                           onPressed: () {
                             if (!(passok && emailok)) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -181,24 +191,28 @@ class _LoginState extends State<Login> {
                                 isLoading = true;
                               });
 
-                              login.email = username;
-                              login.password = password;
+                              login.email = username!.trim().toLowerCase();
+                              login.password = password!.trim();
                               API api = API();
                               // print(login.toJson());
-                              api.login_api(login).then((value) {
+                              api.login_api(login).then((value) async {
                                 setState(() {
                                   isLoading = false;
                                 });
-                                if (value.toJson()['detail'] == null) {
-                                  if (value.toJson()['access'] != null) {
-                                    Navigator.popAndPushNamed(
-                                        context, '/mainpage');
-                                  }
+
+                                if (value.toJson()['token'] != null) {
+                                  final prefs =
+                                      await SharedPreferences.getInstance();
+                                  await prefs.setInt(
+                                      'id', value.toJson()['id']);
+                                  Navigator.popAndPushNamed(
+                                      context, '/onboarding');
                                 } else {
+                                  print(value.toString());
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content:
-                                              Text(value.toJson()['detail'])));
+                                              Text(value.toJson()['msg'])));
                                 }
                               });
                             }
@@ -226,7 +240,7 @@ class _LoginState extends State<Login> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(color: Color(0xFF586AF5)),
+                                side: BorderSide(color: Color(0xFF1D1E21)),
                                 borderRadius:
                                     BorderRadius.circular(8), // <-- Radius
                               ),
@@ -242,7 +256,7 @@ class _LoginState extends State<Login> {
                                     child: Text(
                                   'Create an Account',
                                   style: TextStyle(
-                                      color: Color(0xFF586AF5),
+                                      color: Color(0xFF1D1E21),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                 )))),
@@ -256,9 +270,5 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
-  }
-
-  validate() {
-    return true;
   }
 }
