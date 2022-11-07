@@ -35,20 +35,23 @@ class reg_res_model {
   List<String>? userName;
   List<String>? email;
   String? msg;
+  var token;
 
-  reg_res_model({this.userName, this.email, this.msg});
+  reg_res_model({this.userName, this.email, this.msg, this.token});
 
   reg_res_model.fromJson(Map<String, dynamic> json) {
     if (json['user_name'] != null) userName = json['user_name'].cast<String>();
     if (json['email'] != null) email = json['email'].cast<String>();
     if (json['msg'] != null) msg = json['msg'];
+    if (json['token'] != null) token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['user_name'] = userName;
     data['email'] = email;
     data['msg'] = msg;
+    data['token'] = token;
     return data;
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pinput/pinput.dart';
 import 'package:skilledge/models/otp_model.dart';
@@ -9,9 +8,11 @@ import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/logo.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key, this.email,this.name});
+  const OtpScreen({super.key, this.email, this.name, this.username, this.edu});
   final email;
+  final edu;
   final name;
+  final username;
   @override
   State<OtpScreen> createState() => _OtpScreenState();
 }
@@ -115,7 +116,16 @@ class _OtpScreenState extends State<OtpScreen> {
                                 content: Text('OTP Expired, kindly Resend')));
                       }
                       if (value.msg == 'verification Successfull') {
-                        Navigator.push(context,  MaterialPageRoute(builder: (context) => OnboardingQA(fullName: widget.name ,email:widget.email)), );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OnboardingQA(
+                                    edu: widget.edu,
+                                    fullName: widget.name,
+                                    email: widget.email,
+                                    userName: widget.username,
+                                  )),
+                        );
                       }
                     });
                   },

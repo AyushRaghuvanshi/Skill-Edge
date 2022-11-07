@@ -1,25 +1,47 @@
 import 'dart:io';
 
 import 'package:country_phone_code_picker/core/country_phone_code_picker_widget.dart';
+import 'package:country_phone_code_picker/country_phone_code_picker.dart';
 import 'package:country_phone_code_picker/models/country.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_plus/dropdown_plus.dart';
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skilledge/screens/OnboardingUI/onBoardingInterest.dart';
+import 'package:skilledge/widgets/logo.dart';
 
 class OnboardingQA extends StatefulWidget {
-  const OnboardingQA({super.key, this.fullName, this.email});
+  const OnboardingQA({super.key, this.fullName, this.email, this.userName,this.edu});
+  final edu;
   final fullName;
   final email;
+  final userName;
   @override
   State<OnboardingQA> createState() => _OnboardingQAState();
 }
 
 class _OnboardingQAState extends State<OnboardingQA> {
+  final countryPicker = const FlCountryCodePicker();
+
   int? id;
   var file;
+  String? dob;
+
+  String? phone;
+
+  var gender;
+
+  CountryCode? countrycode;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +57,7 @@ class _OnboardingQAState extends State<OnboardingQA> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Logo(),
                           Stack(
                               alignment: Alignment.bottomRight,
                               clipBehavior: Clip.none,
@@ -60,6 +83,7 @@ class _OnboardingQAState extends State<OnboardingQA> {
                                       icon: Icon(Icons.edit),
                                       onPressed: () async {
                                         file = await pickImage();
+                                        print(file);
                                         setState(() {});
                                       },
                                     ),
@@ -75,31 +99,28 @@ class _OnboardingQAState extends State<OnboardingQA> {
                               maxLines: 1,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
-                              onChanged: ((newValue) {}),
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(5),
                                 hintText: '${widget.fullName}',
                                 hintStyle: const TextStyle(color: Colors.black),
-                                border: const OutlineInputBorder(),
                               ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 16.0),
                             child: DateTimePicker(
-                              initialValue: '',
-                              decoration: InputDecoration(
-                                border: const OutlineInputBorder(),
-                              ),
+                              // validator: (value) {
+                              //   if (value!.length == 0) {
+                              //     return "Dont leave this empty";
+                              //   }
+                              // },
+                              initialDate: DateTime(2003),
                               firstDate: DateTime(1900),
                               lastDate: DateTime.now(),
                               dateLabelText: 'Date of Birth',
-                              onChanged: (val) => print(val),
-                              validator: (val) {
-                                print(val);
-                                return null;
+                              onChanged: (value) {
+                                dob = value;
                               },
-                              onSaved: (val) => print(val),
                             ),
                           ),
                           Padding(
@@ -116,7 +137,6 @@ class _OnboardingQAState extends State<OnboardingQA> {
                                 contentPadding: const EdgeInsets.all(5),
                                 hintText: '${widget.email}',
                                 hintStyle: const TextStyle(color: Colors.black),
-                                border: const OutlineInputBorder(),
                               ),
                             ),
                           ),
@@ -126,36 +146,62 @@ class _OnboardingQAState extends State<OnboardingQA> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 4.0),
-                                  child: CountryPhoneCodePicker
-                                      .withDefaultSelectedCountry(
-                                    defaultCountryCode: Country(
-                                        name: 'India',
-                                        countryCode: 'IN',
-                                        phoneCode: '+91'),
-                                    borderRadius: 5,
-                                    borderWidth: 1,
-                                    borderColor: Colors.grey,
-                                    style: const TextStyle(fontSize: 16),
-                                    searchBarHintText: 'Search by name',
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 4.0),
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        final code = await countryPicker
+                                            .showPicker(context: context);
+                                        if (code != null)
+                                          setState(() {
+                                            countrycode = code;
+                                          });
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 4.0),
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5.0))),
+                                        child: Text(
+                                            (countrycode != null)
+                                                ? countrycode!.dialCode
+                                                : '+91',
+                                            style: const TextStyle(
+                                                color: Colors.black)),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                Expanded(
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(top: 18),
+                                    padding: const EdgeInsets.only(top: 21),
                                     child: TextFormField(
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      validator: ((value) {
+                                        if (value!.length != 10) {
+                                          return 'Enter Valid Phone Number';
+                                        }
+                                      }),
                                       minLines: 1,
                                       keyboardType: TextInputType.number,
                                       maxLength: 10,
                                       maxLines: 1,
-                                      onChanged: ((newValue) {}),
+                                      onChanged: ((newValue) {
+                                        phone = newValue;
+                                      }),
                                       decoration: InputDecoration(
                                         contentPadding: const EdgeInsets.all(5),
                                         hintText: "Phone Number",
                                         hintStyle: const TextStyle(
                                             color: Colors.black),
-                                        border: const OutlineInputBorder(),
                                       ),
                                     ),
                                   ),
@@ -163,24 +209,61 @@ class _OnboardingQAState extends State<OnboardingQA> {
                               ],
                             ),
                           ),
-                          Padding(
+                          Container(
+                            width: double.infinity,
                             padding: const EdgeInsets.only(bottom: 20.0),
-                            child: TextDropdownFormField(
-                              options: ["Male", "Female", "Other"],
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  suffixIcon: Icon(Icons.arrow_drop_down),
-                                  labelText: "Gender"),
-                              dropdownHeight: 80,
+                            child: DropDown(
+                              items: ["Male", "Female", "Other"],
+                              hint: Text("Male"),
+                              icon: Icon(
+                                Icons.expand_more,
+                                color: Colors.blue,
+                              ),
+                              onChanged: (p0) {
+                                gender = p0;
+                              },
                             ),
                           ),
                           Padding(
                               padding: const EdgeInsets.only(bottom: 20.0),
-                              child: ElevatedButton(
-                                onPressed: (() {
-                                
-                                }),
-                                child: Text('Continue'),
+                              child: Container(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF1D1E21)),
+                                  onPressed: (() {
+                                    print(widget.email);
+                                    print(gender);
+                                    print(phone);
+                                    print(dob);
+                                    print(widget.fullName);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              OnBoardinginterest(
+                                                  pfc: file,
+                                                  edu:widget.edu,
+                                                  email: widget.email,
+                                                  gender: gender,
+                                                  phone: (countrycode != null)
+                                                      ? countrycode!.dialCode +
+                                                          phone!
+                                                      : '+91' + phone!,
+                                                  dob: dob,
+                                                  fullName: widget.fullName,
+                                                  userName: widget.userName)),
+                                    );
+                                  }),
+                                  child: Container(
+                                      height: 45,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Center(
+                                        child: Text(
+                                          'Continue',
+                                        ),
+                                      )),
+                                ),
                               )),
                         ]),
                   ),
@@ -198,8 +281,7 @@ class _OnboardingQAState extends State<OnboardingQA> {
     XFile? image;
     image = await _imagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      var file = File(image.path);
-      return file;
+      return File(image.path);
     }
   }
 }

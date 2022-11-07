@@ -1,0 +1,106 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+
+class CourseCard extends StatefulWidget {
+  const CourseCard(
+      {super.key,
+      this.topic,
+      this.edu_name,
+      this.catog,
+      this.desc,
+      this.id,
+      this.price,
+      this.thumbnail,
+      this.rating,
+      this.edu});
+
+  final rating;
+  final topic;
+  final edu_name;
+  final catog;
+  final desc;
+  final id;
+  final price;
+  final thumbnail;
+  final edu;
+  @override
+  State<CourseCard> createState() => _CourseCardState();
+}
+
+class _CourseCardState extends State<CourseCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: 242,
+        decoration: BoxDecoration(
+            color: Color(0xFFF6FAFA),
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        height: 212,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(widget.thumbnail),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                widget.topic,
+                style: TextStyle(fontSize: 16),
+                overflow: TextOverflow.fade,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                // '*Something*',
+                widget.edu_name,
+                style: TextStyle(fontSize: 10, color: Color(0xFF979898)),
+                overflow: TextOverflow.fade,
+              ),
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.star_rate,
+                  color: Color(0xFFF48C06),
+                ),
+                Text(
+                  // '4.0',
+                  widget.rating.toString(),
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                  overflow: TextOverflow.fade,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                    onPressed: () {},
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFF01C5A6)),
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      padding: EdgeInsets.all(4),
+                      child: Text(
+                        'Preview',
+                        style: TextStyle(color: Color(0xFF01C5A6)),
+                      ),
+                    )),
+                Text(
+                  '\$' + widget.price.toString(),
+                  style: TextStyle(fontSize: 24),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

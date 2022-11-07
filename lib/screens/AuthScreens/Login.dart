@@ -5,6 +5,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skilledge/models/login_model.dart';
 import 'package:skilledge/screens/AuthScreens/forgotpassword.dart';
+import 'package:skilledge/screens/dashboard.dart';
 import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/logo.dart';
 
@@ -201,12 +202,10 @@ class _LoginState extends State<Login> {
                                 });
 
                                 if (value.toJson()['token'] != null) {
-                                  final prefs =
-                                      await SharedPreferences.getInstance();
-                                  await prefs.setInt(
-                                      'id', value.toJson()['id']);
-                                  Navigator.popAndPushNamed(
-                                      context, '/onboarding');
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) => Dashboard())));
                                 } else {
                                   print(value.toString());
                                   ScaffoldMessenger.of(context).showSnackBar(

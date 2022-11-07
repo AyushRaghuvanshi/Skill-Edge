@@ -30,7 +30,12 @@ class _AuthenticationState extends State<Authentication> {
                         backgroundColor: Color(0xFF1D1E21),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Register(edu:true)),
+                        );
+                    },
                     child: Container(
                       width: 266,
                       height: 45,
@@ -49,7 +54,7 @@ class _AuthenticationState extends State<Authentication> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Register()),
+                          MaterialPageRoute(builder: (context) => Register(edu:false)),
                         );
                       },
                       child: Container(

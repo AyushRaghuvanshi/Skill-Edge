@@ -13,7 +13,8 @@ import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/logo.dart';
 
 class Register extends StatefulWidget {
-  const Register({super.key});
+  const Register({super.key,this.edu});
+  final edu;
 
   @override
   State<Register> createState() => _RegisterState();
@@ -343,8 +344,10 @@ class _RegisterState extends State<Register> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => OtpScreen(
+                                            edu:widget.edu,
                                             name:register.name,
                                                 email: register.email,
+                                                username: register.userName,
                                               )),
                                     );
                                   }
