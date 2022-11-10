@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:skilledge/screens/Screens/CoursePreview.dart';
+import 'package:skilledge/services/api_services.dart';
 
 class CourseCard extends StatefulWidget {
   const CourseCard(
@@ -69,7 +71,9 @@ class _CourseCardState extends State<CourseCard> {
                 ),
                 Text(
                   // '4.0',
-                  widget.rating.toString(),
+                  (widget.rating.toString().length > 4)
+                      ? widget.rating.toString().substring(0, 3)
+                      : widget.rating.toString(),
                   style: TextStyle(
                     fontSize: 16,
                   ),
@@ -81,7 +85,27 @@ class _CourseCardState extends State<CourseCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      API api = API();
+                      api.getLessons(widget.id).then((value1) {
+                        api.getReviews(widget.id).then((value) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CoursePreview(
+                                    id: widget.id,
+                                    topic: widget.topic,
+                                    thumbnail: widget.thumbnail,
+                                    desc: widget.desc,
+                                    price: widget.price,
+                                    rating: widget.rating,
+                                    educator: widget.edu_name,
+                                    lessons: value1,
+                                    reviews: value),
+                              ));
+                        });
+                      });
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                           border: Border.all(color: Color(0xFF01C5A6)),

@@ -36,7 +36,7 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   Widget _otpbuild(BuildContext context) {
-    print(widget.email);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16),
@@ -79,7 +79,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       setState(() {
                         isLoading = false;
                       });
-                      print(value.toJson());
+                     
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(value.msg.toString())));
                     });
@@ -105,7 +105,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       setState(() {
                         isLoading = false;
                       });
-                      print(value.toJson());
+                      
                       if (value.msg == 'otp is not valid') {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Incorrect OTP')));

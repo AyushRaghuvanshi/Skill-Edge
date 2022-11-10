@@ -423,10 +423,10 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                                 default:
                                   g = "O";
                               }
-
                               req.gender = g;
                               req.isEducator = widget.edu;
-                              req.mobile = widget.phone.toString().substring(1);
+                              req.mobile = int.parse(
+                                  widget.phone.toString().substring(1));
                               req.picture = widget.pfc;
                               req.userName = widget.userName;
                               print(req.toJson());

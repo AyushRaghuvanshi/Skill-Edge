@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skilledge/screens/AuthScreens/Screens/editProfile.dart';
+import 'package:skilledge/screens/Screens/editProfile.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -29,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   String? username;
 
-  bool? gender;
+  String? gender;
 
   Future<void> getdata() async {
     var snapshot = await SharedPreferences.getInstance();
@@ -39,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
     dob = await snapshot.getString("dateOfBirth");
     phone = await snapshot.getInt("mobile");
     isedu = await snapshot.getBool("is_educator");
-    gender = await snapshot.getBool("gender");
+    gender = await snapshot.getString("gender");
   }
 
   @override
@@ -107,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   gender: gender,
                                                   is_educator: isedu)));
                                       // file = await pickImage();
-                                      // print(file);
+                                      
                                       // setState(() {});
                                     },
                                   ),

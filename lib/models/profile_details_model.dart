@@ -6,7 +6,7 @@ class Profile_details_req {
   File? picture;
   String? gender;
   String? dateOfBirth;
-  String? mobile;
+  int? mobile;
   bool? isEducator;
 
   Profile_details_req(

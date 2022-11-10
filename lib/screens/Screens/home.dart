@@ -29,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
     await api.getprofile();
     await getdata();
     setState(() {});
-
     _refreshController.refreshCompleted();
   }
 
@@ -42,8 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String? dob;
 
   int? mobile;
-
-  Future<List<String>?> getdata() async {
+  bool firsttime = true;
+  Future<dynamic> getdata() async {
     var snapshot = await SharedPreferences.getInstance();
     name = await snapshot.getString("Name");
     username = await snapshot.getString("Username");
@@ -52,7 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
     mobile = await snapshot.getInt("mobile");
     isedu = await snapshot.getBool("is_educator");
     courses = await snapshot.getStringList("Courses");
-    return courses;
+    if (firsttime) {
+      setState(() {});
+      firsttime = false;
+    }
   }
 
   bool? isedu;
@@ -63,12 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (courses != null) {
             courses_map.clear();
             for (int i = 0; i < courses!.length; i++) {
               courses_map.add(json.decode(courses![i]));
             }
-
             return Center(
                 child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -194,7 +195,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               scrollDirection: Axis.horizontal,
                               itemCount: courses_map.length,
                               itemBuilder: ((context, index) {
-                                print(courses_map[index]);
                                 int id = courses_map[index]['id'];
                                 int catog = courses_map[index]['category'];
                                 String topic = courses_map[index]['topic'];
@@ -227,8 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ));
           }
-
-          return Center(child: CircularProgressIndicator());
+          return CircularProgressIndicator();
         },
         future: getdata());
   }

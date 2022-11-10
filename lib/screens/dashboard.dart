@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:skilledge/screens/AuthScreens/Screens/Search.dart';
-import 'package:skilledge/screens/AuthScreens/Screens/cart.dart';
-import 'package:skilledge/screens/AuthScreens/Screens/courses.dart';
-import 'package:skilledge/screens/AuthScreens/Screens/home.dart';
-import 'package:skilledge/screens/AuthScreens/Screens/profile.dart';
+import 'package:skilledge/screens/Screens/Search.dart';
+import 'package:skilledge/screens/Screens/cart.dart';
+import 'package:skilledge/screens/Screens/courses.dart';
+import 'package:skilledge/screens/Screens/home.dart';
+import 'package:skilledge/screens/Screens/profile.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

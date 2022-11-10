@@ -52,6 +52,10 @@ dependencies:
   flutter_dropdown: ^1.0.1+hotfix.1
   http_parser: ^4.0.2
   pull_to_refresh: ^2.0.0
+  video_player: ^2.4.7
+  video_controls: ^0.1.0
+  eventify: ^1.0.1
+  razorpay_flutter: ^1.1.1
 
 dev_dependencies:
   flutter_test:

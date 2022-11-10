@@ -25,7 +25,7 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
-    print(res.toString());
+    (res.toString());
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -35,7 +35,7 @@ class API {
         await prefs.setString('token', token!);
         await getprofile();
       }
-      print(token);
+      (token);
       return login_response_model.fromJson((res.data));
     } else {
       throw Exception('Failed to load data');
@@ -56,7 +56,7 @@ class API {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token!);
       }
-      print(token);
+      (token);
       return reg_res_model.fromJson(((res.data)));
     } else {
       throw Exception('Error occured while loading data');
@@ -151,18 +151,87 @@ class API {
         "is_educator": req.isEducator,
       });
     }
-    print(data.toString());
     final res = await dio.put((url), data: data, options: Options(
       validateStatus: (status) {
         return status == 200 || status == 400;
       },
     ));
-    print(res.data);
-    print(res.toString());
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
+      (res.data);
       return Profile_details_res.fromJson((res.data));
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<dynamic> addReview(int cid, String comment, int rating) async {
+    String url = "https://skilledge.herokuapp.com/courses/rate_course/";
+    dio.options.headers["Authorization"] = "Bearer ${token}";
+    FormData data;
+
+    data = FormData.fromMap({
+      "course": cid.toString(),
+      "latest_review": rating.toString(),
+      "comment": comment
+    });
+
+    final res = await dio.post((url), data: data, options: Options(
+      validateStatus: (status) {
+        return status == 200 || status == 400;
+      },
+    ));
+    (res.data);
+    if (res.statusCode == 200 ||
+        res.statusCode == 400 ||
+        res.statusCode == 401) {
+      (res.data);
+      return res.data['msg'];
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<List<dynamic>> getLessons(int topiId) async {
+    String url =
+        "https://skilledge.herokuapp.com/courses/view_specific_lesson/";
+    dio.options.headers["Authorization"] = "Bearer ${token}";
+    FormData data = FormData.fromMap({
+      "topic": topiId,
+    });
+    final res = await dio.post((url), data: data, options: Options(
+      validateStatus: (status) {
+        return status == 200 || status == 400 || status == 405;
+      },
+    ));
+    (topiId);
+    (res.toString());
+    if (res.statusCode == 200 ||
+        res.statusCode == 400 ||
+        res.statusCode == 401) {
+      return res.data;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<List<dynamic>> getReviews(int cid) async {
+    String url =
+        "https://skilledge.herokuapp.com/courses/course_feedback/${cid}/";
+    dio.options.headers["Authorization"] = "Bearer ${token}";
+
+    final res = await dio.get(url, options: Options(
+      validateStatus: (status) {
+        return status == 200 || status == 400 || status == 405;
+      },
+    ));
+    (res.data);
+    (res.toString());
+    if (res.statusCode == 200 ||
+        res.statusCode == 400 ||
+        res.statusCode == 401) {
+      return res.data;
     } else {
       throw Exception('Failed to load data');
     }
@@ -178,8 +247,8 @@ class API {
       },
     ));
 
-    print(res.data);
-    print(res.toString());
+    (res.data);
+    (res.toString());
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -194,6 +263,28 @@ class API {
         await value.setBool("is_educator", res.data['is_educator']);
         await getcourses();
       });
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<List<dynamic>> getCart() async {
+    String url = "https://skilledge.herokuapp.com/cart/viewcart/";
+    dio.options.headers["Authorization"] = "Bearer ${token}";
+
+    final res = await dio.get((url), options: Options(
+      validateStatus: (status) {
+        return status == 200 || status == 400 || status == 401;
+      },
+    ));
+    if (res.statusCode == 400) {
+      return [res.data['msg']];
+    }
+
+    if (res.statusCode == 200 ||
+        res.statusCode == 400 ||
+        res.statusCode == 401) {
+      return res.data;
     } else {
       throw Exception('Failed to load data');
     }
@@ -230,21 +321,48 @@ class API {
     }
   }
 
-  Future<List<dynamic>> getSearchresults(String search) async {
-    String url =
-        "https://skilledge.herokuapp.com/courses/search_course/?search=" +
-            search.trim();
+  Future<List<dynamic>> getSearchresults(String search, int filter) async {
+    String url = "";
+    (filter);
+    if (filter == -1) {
+      url =
+          "https://skilledge.herokuapp.com/courses/search_course/?search-area=$search" +
+              search.trim();
+    } else {
+      url =
+          "https://skilledge.herokuapp.com/courses/search_course/?search-area=$search&category=$filter";
+    }
+    (url);
     dio.options.headers["Authorization"] = "Bearer ${token}";
     final res = await dio.get((url), options: Options(
       validateStatus: (status) {
         return status == 200 || status == 400 || status == 401;
       },
     ));
-
+    (res.statusCode);
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
-      return res.data['results'];
+      return res.data;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<List<dynamic>> getpurchasedcourses() async {
+    String url = "https://skilledge.herokuapp.com/courses/purchased_courses/";
+    dio.options.headers["Authorization"] = "Bearer ${token}";
+    final res = await dio.get((url), options: Options(
+      validateStatus: (status) {
+        return status == 200 || status == 400 || status == 401;
+      },
+    ));
+    (token);
+    (res.data);
+    if (res.statusCode == 200 ||
+        res.statusCode == 400 ||
+        res.statusCode == 401) {
+      return res.data;
     } else {
       throw Exception('Failed to load data');
     }
@@ -259,13 +377,53 @@ class API {
         return status == 200 || status == 400;
       },
     ));
-    print(res.data);
-    print(res.toString());
+    ('It is=>');
+    (res.data);
+
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
       await getprofile();
       return Interest_res.fromJson((res.data));
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<String> removefromCart(int cid) async {
+    String url = "https://skilledge.herokuapp.com/cart/remove_from_cart/" +
+        cid.toString() +
+        '/';
+    dio.options.headers["Authorization"] = "Bearer ${token}";
+
+    final res = await dio.delete((url), options: Options(
+      validateStatus: (status) {
+        return true;
+      },
+    ));
+    (res.data);
+    if (res.statusCode == 200 ||
+        res.statusCode == 400 ||
+        res.statusCode == 401) {
+      return res.data["msg"];
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<String> addtoCart(int cid) async {
+    String url = "https://skilledge.herokuapp.com/cart/add_to_cart/";
+    dio.options.headers["Authorization"] = "Bearer ${token}";
+
+    final res = await dio.put((url), data: {"course": cid}, options: Options(
+      validateStatus: (status) {
+        return status == 200 || status == 400 || status == 401;
+      },
+    ));
+    if (res.statusCode == 200 ||
+        res.statusCode == 400 ||
+        res.statusCode == 401) {
+      return res.data["msg"];
     } else {
       throw Exception('Failed to load data');
     }

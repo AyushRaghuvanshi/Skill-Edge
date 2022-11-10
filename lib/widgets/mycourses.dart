@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:skilledge/screens/Screens/BoughtCourse.dart';
 import 'package:skilledge/screens/Screens/CoursePreview.dart';
 import 'package:skilledge/services/api_services.dart';
 
-class SearchCourse extends StatefulWidget {
-  const SearchCourse(
+class MyCourse extends StatefulWidget {
+  const MyCourse(
       {super.key,
       this.rating,
       this.desc,
@@ -25,10 +26,10 @@ class SearchCourse extends StatefulWidget {
   final thumbnail;
   final price;
   @override
-  State<SearchCourse> createState() => _SearchCourseState();
+  State<MyCourse> createState() => _MyCourseState();
 }
 
-class _SearchCourseState extends State<SearchCourse> {
+class _MyCourseState extends State<MyCourse> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -95,7 +96,7 @@ class _SearchCourseState extends State<SearchCourse> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => CoursePreview(
+                                    builder: (context) => BoughtCourse(
                                         id: widget.id,
                                         topic: widget.topic,
                                         thumbnail: widget.thumbnail,
@@ -116,17 +117,10 @@ class _SearchCourseState extends State<SearchCourse> {
                                   BorderRadius.all(Radius.circular(5))),
                           padding: EdgeInsets.all(4),
                           child: Text(
-                            'Preview',
+                            'Continue',
                             style: TextStyle(color: Color(0xFF01C5A6)),
                           ),
                         )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24.0),
-                      child: Text(
-                        '\$' + widget.price.toString(),
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    )
                   ],
                 )
               ],

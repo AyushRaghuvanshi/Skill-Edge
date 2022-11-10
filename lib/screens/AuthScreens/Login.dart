@@ -195,7 +195,7 @@ class _LoginState extends State<Login> {
                               login.email = username!.trim().toLowerCase();
                               login.password = password!.trim();
                               API api = API();
-                              // print(login.toJson());
+                           
                               api.login_api(login).then((value) async {
                                 setState(() {
                                   isLoading = false;
@@ -207,7 +207,7 @@ class _LoginState extends State<Login> {
                                       MaterialPageRoute(
                                           builder: ((context) => Dashboard())));
                                 } else {
-                                  print(value.toString());
+                                  
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content:

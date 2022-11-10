@@ -36,7 +36,7 @@ class login_response_model {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    print(data);
+   
     data['id'] = id;
     data['msg'] = msg;
     data['token'] = token;

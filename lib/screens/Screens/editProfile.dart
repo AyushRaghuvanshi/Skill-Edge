@@ -9,7 +9,7 @@ import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skilledge/models/profile_details_model.dart';
 
-import '../../../services/api_services.dart';
+import '../../services/api_services.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile(
@@ -104,9 +104,9 @@ class _EditProfileState extends State<EditProfile> {
                                 color: Colors.black,
                                 icon: Icon(Icons.edit),
                                 onPressed: () async {
-                                  print('he');
+                                
                                   file = await pickImage();
-                                  print(file);
+                                 
                                   setState(() {});
                                 },
                               ),
@@ -246,30 +246,25 @@ class _EditProfileState extends State<EditProfile> {
                               API api = API();
                               req.name = _name.text;
                               req.dateOfBirth = widget.dob;
-
-                              req.mobile = _phone.text;
+                              req.mobile = int.parse(_phone.text);
                               req.picture = file;
-                                  
                               req.gender = widget.gender;
                               req.isEducator = widget.is_educator;
                               req.userName = widget.user_name;
-                              print(req.toJson());
+                              
                               api.profile(req).then((value) {
                                 if (value.message != null) {
                                   setState(() {
                                     loading = false;
                                   });
+                                  
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(value.message!)));
                                 }
                               });
                             })
 
-                            // print(widget.email);
-                            // print(gender);
-                            // print(phone);
-                            // print(dob);
-                            // print(widget.fullName);
+                            
                             // Navigator.push(
                             //   context,
                             //   MaterialPageRoute(

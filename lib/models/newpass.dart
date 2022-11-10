@@ -15,7 +15,7 @@ class newpass_req_model {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['email'] = email;
     data['otp'] = otp;
     data['passwordd'] = passwordd;
@@ -34,7 +34,7 @@ class newpass_res_model {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['msg'] = msg;
     return data;
   }

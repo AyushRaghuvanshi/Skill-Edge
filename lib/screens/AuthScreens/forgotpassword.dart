@@ -111,7 +111,7 @@ class _ForgotPassState extends State<ForgotPass> {
                         setState(() {
                           isloading = false;
                         });
-                        print(value.toJson());
+                     
                         if (value.msg == 'user does not exist') {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('Email is not registered')));

@@ -2,16 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:skilledge/screens/Screens/CoursePreview.dart';
 import 'package:skilledge/services/api_services.dart';
 
-class SearchCourse extends StatefulWidget {
-  const SearchCourse(
+class CartCourses extends StatefulWidget {
+  const CartCourses(
       {super.key,
       this.rating,
-      this.desc,
-      this.edu_name,
       this.id,
+      this.edu_name,
       this.topic,
       this.short_description,
       this.thumbnail,
@@ -20,15 +18,14 @@ class SearchCourse extends StatefulWidget {
   final rating;
   final edu_name;
   final id;
-  final desc;
   final short_description;
   final thumbnail;
   final price;
   @override
-  State<SearchCourse> createState() => _SearchCourseState();
+  State<CartCourses> createState() => _CartCoursesState();
 }
 
-class _SearchCourseState extends State<SearchCourse> {
+class _CartCoursesState extends State<CartCourses> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -84,50 +81,43 @@ class _SearchCourseState extends State<SearchCourse> {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                        onPressed: () {
-                          API api = API();
-                          api.getLessons(widget.id).then((value1) {
-                            api.getReviews(widget.id).then((value) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CoursePreview(
-                                        id: widget.id,
-                                        topic: widget.topic,
-                                        thumbnail: widget.thumbnail,
-                                        desc: widget.desc,
-                                        price: widget.price,
-                                        rating: widget.rating,
-                                        educator: widget.edu_name,
-                                        lessons: value1,
-                                        reviews: value),
-                                  ));
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                          onPressed: () {},
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: 16, right: 16, top: 4, bottom: 4),
+                            decoration: BoxDecoration(
+                                // border: Border.all(color: ),
+                                color: Color(0xFF01C5A6),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
+                            // padding: EdgeInsets.all(4),
+                            child: Text(
+                              'Buy Now',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )),
+                      TextButton(
+                          onPressed: () {
+                            API api = API();
+                            api.removefromCart(widget.id).then((value) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(content: Text(value)));
                             });
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xFF01C5A6)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          padding: EdgeInsets.all(4),
-                          child: Text(
-                            'Preview',
-                            style: TextStyle(color: Color(0xFF01C5A6)),
-                          ),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24.0),
-                      child: Text(
-                        '\$' + widget.price.toString(),
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    )
-                  ],
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(4),
+                            child: Text(
+                              'Remove',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          )),
+                    ],
+                  ),
                 )
               ],
             ),
