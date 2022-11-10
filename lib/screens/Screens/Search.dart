@@ -54,15 +54,13 @@ class _SearchPageState extends State<SearchPage> {
               TextFormField(
                 controller: _search,
                 onEditingComplete: () {
-                
                   API api = new API();
                   setState(() {
                     loading = true;
                   });
                   api.getSearchresults(_search.text, filter).then((value) {
-                   
                     search_result = value;
-                    
+
                     setState(() {
                       loading = false;
                     });
@@ -603,7 +601,9 @@ class _SearchPageState extends State<SearchPage> {
                 child: ListView.builder(
                     itemCount: search_result.length,
                     itemBuilder: ((context, index) {
-                    
+                      if (search_result[index] == 'Nothing Found Here') {
+                        return Container(child: Text(search_result[index]));
+                      }
                       topic = search_result[index]['topic'];
                       id = search_result[index]['id'];
                       short_description =

@@ -323,22 +323,25 @@ class API {
 
   Future<List<dynamic>> getSearchresults(String search, int filter) async {
     String url = "";
+    print(search);
     (filter);
     if (filter == -1) {
       url =
-          "https://skilledge.herokuapp.com/courses/search_course/?search-area=$search" +
-              search.trim();
+          "https://skilledge.herokuapp.com/courses/search_course/?search-area=${search}";
     } else {
       url =
           "https://skilledge.herokuapp.com/courses/search_course/?search-area=$search&category=$filter";
     }
-    (url);
+    print(url);
     dio.options.headers["Authorization"] = "Bearer ${token}";
     final res = await dio.get((url), options: Options(
       validateStatus: (status) {
         return status == 200 || status == 400 || status == 401;
       },
     ));
+    if (res.statusCode == 400) {
+      return ['Nothing Found Here'];
+    }
     (res.statusCode);
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||

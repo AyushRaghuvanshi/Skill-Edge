@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:eventify/eventify.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class Razorpay {
   // Response codes from platform
@@ -43,6 +46,12 @@ class Razorpay {
       });
       return;
     }
+
+    if (Platform.isAndroid) {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      _channel.invokeMethod('setPackageName', packageInfo.packageName);
+    }
+
     try {
       var response =
           await MethodChannel('razorpay_flutter').invokeMethod('open', options);

@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     mobile = await snapshot.getInt("mobile");
     isedu = await snapshot.getBool("is_educator");
     courses = await snapshot.getStringList("Courses");
+    print('here');
     if (firsttime) {
       setState(() {});
       firsttime = false;

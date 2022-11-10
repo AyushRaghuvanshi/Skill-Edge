@@ -312,15 +312,15 @@ class _CoursePreviewState extends State<CoursePreview> {
           children: [
             TextButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
+                  print('here');
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => CheckRazor(
                             amount: widget.price,
                             email: 'ayushraghuwanshi03@gmail.com',
                             phone: '919305773947'),
-                      ),
-                      (route) => false);
+                      ));
                 },
                 child: Container(
                     decoration: BoxDecoration(
