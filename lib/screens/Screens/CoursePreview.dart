@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:skilledge/screens/PaymentScreens/check.dart';
-import 'package:skilledge/services/api_services.dart';
+import 'package:skilledge/services/api_services.dart'; 
 
 class CoursePreview extends StatefulWidget {
   const CoursePreview(
@@ -40,9 +40,12 @@ class _CoursePreviewState extends State<CoursePreview> {
       body: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Image.network(
-            widget.thumbnail,
-            fit: BoxFit.fill,
+          Container(
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: Image.network(
+              widget.thumbnail,
+              fit: BoxFit.fill,
+            ),
           ),
           Container(
             padding: EdgeInsets.only(left: 16, top: 12),
@@ -313,14 +316,13 @@ class _CoursePreviewState extends State<CoursePreview> {
             TextButton(
                 onPressed: () {
                   print('here');
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CheckRazor(
-                            amount: widget.price,
-                            email: 'ayushraghuwanshi03@gmail.com',
-                            phone: '919305773947'),
-                      ));
+                  API api = API();
+                  api.buyacourse(widget.id).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(value)));
+                  });
+                  
                 },
                 child: Container(
                     decoration: BoxDecoration(

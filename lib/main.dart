@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skilledge/screens/AuthScreens/Login.dart';
 import 'package:skilledge/screens/AuthScreens/Register.dart';
@@ -12,7 +13,7 @@ import 'package:skilledge/screens/dashboard.dart';
 import 'package:skilledge/services/api_services.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -54,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
         future: SharedPreferences.getInstance(),
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
-            Timer(Duration(seconds: 5), ()  {
+            Timer(Duration(seconds: 5), () {
               if (snapshot.data!.getString("token") != null) {
                 token = snapshot.data!.getString("token");
                 API api = API();

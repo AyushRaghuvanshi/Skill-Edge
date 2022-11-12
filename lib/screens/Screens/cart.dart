@@ -18,9 +18,11 @@ class _CartPageState extends State<CartPage> {
   Future<void> getcart() async {
     API api = API();
     api.getCart().then((value) {
-      setState(() {
-        cartitems = value;
-      });
+      if (this.mounted) {
+        setState(() {
+          cartitems = value;
+        });
+      }
     });
   }
 

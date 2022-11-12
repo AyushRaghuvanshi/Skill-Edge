@@ -45,7 +45,14 @@ class _CourseCardState extends State<CourseCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(widget.thumbnail),
+            Container(
+                height: 128,
+                child: Center(
+                  child: Image.network(
+                    widget.thumbnail,
+                    fit: BoxFit.fill,
+                  ),
+                )),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(

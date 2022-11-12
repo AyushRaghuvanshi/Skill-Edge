@@ -6,19 +6,21 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skilledge/EducatorScreens/course.dart';
 import 'package:skilledge/services/api_services.dart';
 
 import 'package:skilledge/screens/dashboard.dart';
 import 'package:skilledge/widgets/courseCard.dart';
+import 'package:skilledge/widgets/searchCourse.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreenEdu extends StatefulWidget {
+  const HomeScreenEdu({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenEdu> createState() => _HomeScreenEduState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenEduState extends State<HomeScreenEdu> {
   int id = 0;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -50,12 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
     dob = await snapshot.getString("dateOfBirth");
     mobile = await snapshot.getInt("mobile");
     isedu = await snapshot.getBool("is_educator");
-    courses = await snapshot.getStringList("Courses");
+
+    courses = await snapshot.getStringList("hostedCourses");
     // print('here');
-    if (this.mounted) {
+    Future.delayed(const Duration(milliseconds: 10000), () {
       setState(() {});
-      firsttime = false;
-    }
+    });
   }
 
   bool? isedu;
@@ -66,11 +68,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         builder: (context, snapshot) {
-          if (courses != null) {
+          if (true) {
             courses_map.clear();
-            for (int i = 0; i < courses!.length; i++) {
-              courses_map.add(json.decode(courses![i]));
-            }
+            if (courses != null)
+              for (int i = 0; i < courses!.length; i++) {
+                courses_map.add(json.decode(courses![i]));
+              }
             return Center(
                 child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -103,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Row(
                                     children: [
                                       Text(
-                                        "Let's, Find Your",
+                                        "Let's, Publish Your",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                             fontSize: 14,
@@ -140,86 +143,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 24.0),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  color: Color.fromARGB(255, 221, 249, 249)),
-                              width: double.infinity,
-                              height: 56,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Icon(
-                                    Icons.search,
-                                    color: Colors.grey,
-                                  ),
-                                  Text(
-                                    'Search Course or Mentor',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  Icon(
-                                    Icons.menu_outlined,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 32.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xFF03D976),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            width: double.infinity,
-                            height: 128,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 32.0),
-                          child: Text(
-                            'Most Popular Course',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: courses_map.length,
-                              itemBuilder: ((context, index) {
-                                int id = courses_map[index]['id'];
-                                int catog = courses_map[index]['category'];
-                                String topic = courses_map[index]['topic'];
-                                int edu_mail =
-                                    courses_map[index]['educator_mail'];
-                                String desc =
-                                    courses_map[index]['short_description'];
-                                String thumbnail =
-                                    courses_map[index]['thumbnail'];
-                                int price = courses_map[index]['price'];
-                                double rating = courses_map[index]["rating"];
-                                String edu_name =
-                                    courses_map[index]["educator_name"];
-                                return CourseCard(
-                                    id: id,
-                                    rating: rating,
-                                    edu_name: edu_name,
-                                    catog: catog,
-                                    edu: edu_mail,
-                                    topic: topic,
-                                    desc: desc,
-                                    thumbnail: thumbnail,
-                                    price: price);
-                              })),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: (courses != null)
+                              ? ListView.builder(
+                                  itemCount: courses!.length,
+                                  itemBuilder: ((context, index) {
+                                    var temp = courses![index];
+                                    var temp2 = json.decode(temp);
+                                    print(temp);
+                                    return EduCourses(
+                                      rating: temp2['rating'],
+                                      short_description:
+                                          temp2['short_description'],
+                                      edu_name: temp2['educator_name'],
+                                      id: temp2['id'],
+                                      price: temp2['price'],
+                                      thumbnail: temp2['thumbnail'],
+                                      topic: temp2['topic'],
+                                    );
+                                  }))
+                              : Text('Host A course to see something here'),
                         )
                       ],
                     ),
@@ -228,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ));
           }
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         },
         future: getdata());
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skilledge/screens/PaymentScreens/failed.dart';
 import 'package:skilledge/screens/PaymentScreens/success.dart';
+import 'package:skilledge/services/api_services.dart';
 
 import 'package:skilledge/services/razorpay.dart';
 
@@ -16,6 +17,8 @@ class CheckRazor extends StatefulWidget {
 class _CheckRazorState extends State<CheckRazor> {
   Razorpay _razorpay = Razorpay();
   var options;
+
+  bool first = true;
   Future payData() async {
     try {
       _razorpay.open(options);
@@ -30,30 +33,32 @@ class _CheckRazorState extends State<CheckRazor> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     print("payment has succedded");
-    Navigator.pushAndRemoveUntil(
+    API api = API();
+    await api.addbalancewallet(widget.amount, response.paymentId!);
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => SuccessPage(
           response: response,
         ),
       ),
-      (Route<dynamic> route) => false,
     );
+
     _razorpay.clear();
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     print("payment has error00000000000000000000000000000000000000");
 
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => FailedPage(
-          response: response,
-        ),
-      ),
-      (Route<dynamic> route) => false,
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (BuildContext context) => FailedPage(
+    //       response: response,
+    //     ),
+    //   ),
+    // );
+
     _razorpay.clear();
   }
 
@@ -75,7 +80,7 @@ class _CheckRazorState extends State<CheckRazor> {
       'amount': widget.amount, //in the smallest currency sub-unit.
       'name': 'SkillEdge',
       'currency': "INR",
-      'theme.color': "#F37254",
+      'theme.color': "#01C5A6",
       'buttontext': "Pay with Razorpay",
       'description': 'Buy your Course',
       'prefill': {
@@ -92,6 +97,7 @@ class _CheckRazorState extends State<CheckRazor> {
       body: FutureBuilder(
           future: payData(),
           builder: (context, snapshot) {
+            first = false;
             return Container(
               child: Center(
                 child: Text(

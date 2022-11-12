@@ -20,9 +20,11 @@ class _CoursesPageState extends State<CoursesPage> {
   Future<void> getMyCourses() async {
     API api = API();
     await api.getpurchasedcourses().then((value) {
-      setState(() {
-        mycourses = value;
-      });
+      if (this.mounted) {
+        setState(() {
+          mycourses = value;
+        });
+      }
     });
   }
 

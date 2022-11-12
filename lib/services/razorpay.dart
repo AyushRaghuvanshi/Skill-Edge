@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:eventify/eventify.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:skilledge/services/api_services.dart';
 
 class Razorpay {
   // Response codes from platform
@@ -57,21 +58,27 @@ class Razorpay {
           await MethodChannel('razorpay_flutter').invokeMethod('open', options);
       print(
           "print the response of payment success-full-----------\n ${response}");
+      if (response['type'] == 0) {
+        print('success');
+      }
       _handleResult(response);
     } catch (e) {
       print(e);
-    } // _channel.invokeMethod('open', options).then((response) {
+    }
+    // _channel.invokeMethod('open', options).then((response) {
     //   // print('here');
     //   print(
     //       "print the response of payment success-full-----------\n ${response}");
     //   _handleResult(response);
     // });
-    print('here');
+    // print('here');
   }
 
   /// Handles checkout response from platform
   void _handleResult(Map<dynamic, dynamic> response) {
-    String eventName;
+    String? eventName;
+    // print(object)
+    print(response);
     Map<dynamic, dynamic> data = response["data"];
 
     dynamic payload;
@@ -80,6 +87,8 @@ class Razorpay {
       case _CODE_PAYMENT_SUCCESS:
         eventName = EVENT_PAYMENT_SUCCESS;
         payload = PaymentSuccessResponse.fromMap(data);
+        print(eventName);
+        print(payload);
         break;
 
       case _CODE_PAYMENT_ERROR:
@@ -137,16 +146,16 @@ class Razorpay {
 }
 
 class PaymentSuccessResponse {
-  String paymentId;
-  String orderId;
-  String signature;
+  String? paymentId;
+  String? orderId;
+  String? signature;
 
   PaymentSuccessResponse(this.paymentId, this.orderId, this.signature);
 
   static PaymentSuccessResponse fromMap(Map<dynamic, dynamic> map) {
-    String paymentId = map["razorpay_payment_id"];
-    String signature = map["razorpay_signature"];
-    String orderId = map["razorpay_order_id"];
+    String? paymentId = map["razorpay_payment_id"];
+    String? signature = map["razorpay_signature"];
+    String? orderId = map["razorpay_order_id"];
 
     return new PaymentSuccessResponse(paymentId, orderId, signature);
   }

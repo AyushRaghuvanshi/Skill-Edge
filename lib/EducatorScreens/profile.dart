@@ -4,20 +4,20 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skilledge/EducatorScreens/Dashboard.dart';
+import 'package:skilledge/EducatorScreens/wallet.dart';
 import 'package:skilledge/screens/Getting_started/gettingstarted.dart';
 import 'package:skilledge/screens/Screens/editProfile.dart';
 import 'package:skilledge/screens/Screens/wallet.dart';
-import 'package:skilledge/services/api_services.dart';
+import 'package:skilledge/screens/dashboard.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfilePageEdu extends StatefulWidget {
+  const ProfilePageEdu({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePageEdu> createState() => _ProfilePageEduState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageEduState extends State<ProfilePageEdu> {
   String? name;
 
   String? pic;
@@ -131,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Switch to Educator',
+                            'Switch to Student',
                             style: TextStyle(fontSize: 20),
                           ),
                           Switch(
@@ -142,24 +142,21 @@ class _ProfilePageState extends State<ProfilePage> {
                               inactiveTrackColor: Colors.grey.shade400,
                               splashRadius: 50.0,
                               // boolean variable value
-                              value: educator,
+                              value: !educator,
                               // changes the state of the switch
                               onChanged: (value) {
-                                API api = API();
-                                api.makeEdu().then((value) {
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: ((context) =>
-                                              DashBoardEdu())),
-                                      (route) => false);
-                                });
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Dashboard(),
+                                    ),
+                                    (route) => false);
                               })
                         ],
                       ),
                       Expanded(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
@@ -173,14 +170,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                       IconButton(
                                         icon: Icon(Icons.wallet),
                                         onPressed: () {
-                                          API api = API();
-                                          api.getwalletmoney().then((value) {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: ((context) =>
-                                                        Wallet(amount:value))));
-                                          });
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: ((context) =>
+                                                      WalletEdu())));
                                         },
                                       ),
                                       Text('Wallet')
@@ -206,48 +200,29 @@ class _ProfilePageState extends State<ProfilePage> {
                               padding: EdgeInsets.only(
                                   left: 31.0, right: 10, top: 32),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    children: [
-                                      Icon(Icons.warning),
-                                      Text('Help')
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Icon(Icons.bookmark_border),
-                                      Text('About us')
-                                    ],
-                                  ),
                                   Column(
                                     children: [
                                       Icon(Icons.thumb_up),
                                       Text('Contact us')
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 32.0, left: 24),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        icon: Icon(Icons.logout),
-                                        onPressed: () => _showpopup(context),
-                                      ),
-                                      Text('Log out')
-                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 54.0),
+                                    child: Column(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.logout),
+                                          onPressed: () => _showpopup(context),
+                                        ),
+                                        Text('Log out')
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),

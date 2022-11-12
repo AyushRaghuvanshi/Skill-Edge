@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skilledge/services/razorpay.dart';
 
-
-
 class SuccessPage extends StatelessWidget {
   final PaymentSuccessResponse response;
   SuccessPage({
@@ -17,7 +15,7 @@ class SuccessPage extends StatelessWidget {
       body: Center(
         child: Container(
           child: Text(
-            "Your payment is successful and the response is\n OrderId: ${response.orderId}\nPaymentId: ${response.paymentId}\nSignature: ${response.signature}",
+            "Your payment is successful",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 22,
