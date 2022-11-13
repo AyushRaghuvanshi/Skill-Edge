@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:skilledge/EducatorScreens/home.dart';
 import 'package:skilledge/services/api_services.dart';
 
 class AddSection extends StatefulWidget {
@@ -30,8 +32,16 @@ class _AddSectionState extends State<AddSection> {
 
   String lessonname = "";
 
-  @override
+  bool loading = false;
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: ModalProgressHUD(
+          child: _pagebuild(context), inAsyncCall: loading, blur: 0.5),
+    );
+  }
+
+  @override
+  Widget _pagebuild(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -60,7 +70,7 @@ class _AddSectionState extends State<AddSection> {
               },
               validator: (value) {
                 if (value!.length == 0) {
-                  return 'Enter a topic';
+                  return 'Enter Lesson Name';
                 }
               },
               decoration: InputDecoration(
@@ -78,20 +88,30 @@ class _AddSectionState extends State<AddSection> {
       ),
       bottomNavigationBar: TextButton(
         onPressed: () {
-          API api = API();
-          api
-              .hostCourse(
-            widget.thumbnail,
-            widget.desc,
-            widget.price,
-            widget.topic,
-            lessonname,
-            file!,
-            widget.catog,
-          )
-              .then((value) {
-            print('hosted');
-          });
+          if (file == null || lessonname.length <= 0) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Please Vaidate All Entered Fields')));
+          } else {
+            setState(() {
+              loading = true;
+            });
+            API api = API();
+            api
+                .hostCourse(
+              widget.thumbnail,
+              widget.desc,
+              widget.price,
+              widget.topic,
+              lessonname,
+              file!,
+              widget.catog,
+            )
+                .then((value) {
+              setState(() {
+                loading = false;
+              });
+            });
+          }
         },
         child: Padding(
           padding: const EdgeInsets.all(24.0),

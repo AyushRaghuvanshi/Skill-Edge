@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/EducatorScreens/Addsection.dart';
 import 'package:skilledge/EducatorScreens/editnewLesson.dart';
 import 'package:skilledge/screens/Screens/CoursePreview.dart';
@@ -29,8 +30,14 @@ class EduCourses extends StatefulWidget {
 }
 
 class _EduCoursesState extends State<EduCourses> {
-  @override
+  bool loading = false;
   Widget build(BuildContext context) {
+    return ModalProgressHUD(
+        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+  }
+
+  @override
+  Widget _pagebuild(BuildContext context) {
     return Container(
       height: 150,
       width: double.infinity,
@@ -90,11 +97,17 @@ class _EduCoursesState extends State<EduCourses> {
                     children: [
                       TextButton(
                           onPressed: () {
+                            setState(() {
+                              loading = true;
+                            });
                             API api = API();
                             api.getLessons(widget.id).then((value1) {
                               print('below');
                               print(value1);
                               api.getReviews(widget.id).then((value) {
+                                setState(() {
+                                  loading = false;
+                                });
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

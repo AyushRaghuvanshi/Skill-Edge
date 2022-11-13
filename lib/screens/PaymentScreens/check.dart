@@ -97,6 +97,9 @@ class _CheckRazorState extends State<CheckRazor> {
       body: FutureBuilder(
           future: payData(),
           builder: (context, snapshot) {
+            if (first) {
+              Navigator.pop(context);
+            }
             first = false;
             return Container(
               child: Center(

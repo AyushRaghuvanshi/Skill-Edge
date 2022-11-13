@@ -9,6 +9,7 @@ import 'package:skilledge/screens/Getting_started/gettingstarted.dart';
 import 'package:skilledge/screens/Screens/editProfile.dart';
 import 'package:skilledge/screens/Screens/wallet.dart';
 import 'package:skilledge/screens/dashboard.dart';
+import 'package:skilledge/services/api_services.dart';
 
 class ProfilePageEdu extends StatefulWidget {
   const ProfilePageEdu({super.key});
@@ -170,11 +171,15 @@ class _ProfilePageEduState extends State<ProfilePageEdu> {
                                       IconButton(
                                         icon: Icon(Icons.wallet),
                                         onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      WalletEdu())));
+                                          API api = API();
+                                          api.getwalletmoney().then((value) {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        WalletEdu(
+                                                            amount: value))));
+                                          });
                                         },
                                       ),
                                       Text('Wallet')

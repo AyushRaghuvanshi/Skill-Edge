@@ -39,109 +39,111 @@ class _ForgotPassState extends State<ForgotPass> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Logo(),
-            Padding(
-              padding: const EdgeInsets.only(top: 32.0, bottom: 32),
-              child: Image.asset(
-                'assets/otp.png',
-                height: 64,
-                width: 64,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Logo(),
+              Padding(
+                padding: const EdgeInsets.only(top: 32.0, bottom: 32),
+                child: Image.asset(
+                  'assets/otp.png',
+                  height: 64,
+                  width: 64,
+                ),
               ),
-            ),
-            const Text(
-              'FORGOT PASSWORD',
-              style: TextStyle(color: Color(0xFF1D1E21), fontSize: 34),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 24.0),
-              child: Container(
-                // height: 54,
-                // color: const Color(0xFFEEF0FD),
-                child: TextFormField(
-                  minLines: 1,
-                  maxLength: 100,
-                  maxLines: 1,
-                  validator: (value) {
-                    bool emailerror = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(value!);
+              const Text(
+                'FORGOT PASSWORD',
+                style: TextStyle(color: Color(0xFF1D1E21), fontSize: 34),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 24.0),
+                child: Container(
+                  // height: 54,
+                  // color: const Color(0xFFEEF0FD),
+                  child: TextFormField(
+                    minLines: 1,
+                    maxLength: 100,
+                    maxLines: 1,
+                    validator: (value) {
+                      bool emailerror = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value!);
 
-                    if (!emailerror) {
-                      emailok = false;
-                      return 'Invalid Email';
-                    } else {
-                      emailok = true;
-                    }
-                  },
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  onChanged: (newValue) {
-                    email = newValue;
-                  },
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.email_outlined,
-                      color: Colors.black,
+                      if (!emailerror) {
+                        emailok = false;
+                        return 'Invalid Email';
+                      } else {
+                        emailok = true;
+                      }
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onChanged: (newValue) {
+                      email = newValue;
+                    },
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.email_outlined,
+                        color: Colors.black,
+                      ),
+                      prefixIconColor: Colors.black,
+                      hintText: 'EMAIL',
+                      hintStyle: TextStyle(color: Colors.black),
+                      fillColor: Color(0xFFEEF0FD),
+                      border: OutlineInputBorder(),
                     ),
-                    prefixIconColor: Colors.black,
-                    hintText: 'EMAIL',
-                    hintStyle: TextStyle(color: Colors.black),
-                    fillColor: Color(0xFFEEF0FD),
-                    border: OutlineInputBorder(),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 24.0),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1D1E21)),
-                  onPressed: () {
-                    setState(() {
-                      isloading = true;
-                    });
-                    if (emailok) {
-                      API api = API();
-                      forgot.email = email.trim();
-                      api.forgot(forgot).then((value) {
+              Padding(
+                padding: const EdgeInsets.only(top: 24.0),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF01C5A6)),
+                    onPressed: () {
+                      if (emailok) {
                         setState(() {
-                          isloading = false;
+                          isloading = true;
                         });
-                     
-                        if (value.msg == 'user does not exist') {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Email is not registered')));
-                        }
-                        if (value.msg == 'check mail for otp') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgotOTP(
-                                      email: email.trim(),
-                                    )),
-                          );
-                        }
-                      });
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Fix Present Errors')));
-                    }
-                  },
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 45,
-                      child: const Center(
-                          child: Text(
-                        'Send OTP',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w400),
-                      )))),
-            ),
-          ],
+                        API api = API();
+                        forgot.email = email.trim();
+                        api.forgot(forgot).then((value) {
+                          setState(() {
+                            isloading = false;
+                          });
+
+                          if (value.msg == 'user does not exist') {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Email is not registered')));
+                          }
+                          if (value.msg == 'check mail for otp') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ForgotOTP(
+                                        email: email.trim(),
+                                      )),
+                            );
+                          }
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Email cannot be empty')));
+                      }
+                    },
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 45,
+                        child: const Center(
+                            child: Text(
+                          'Send OTP',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w400),
+                        )))),
+              ),
+            ],
+          ),
         ),
       ),
     );

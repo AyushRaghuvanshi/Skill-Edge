@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/models/profile_details_model.dart';
 
 import '../../services/api_services.dart';
@@ -58,9 +59,17 @@ class _EditProfileEduState extends State<EditProfileEdu> {
     super.initState();
     req = Profile_details_req();
   }
+  
+ 
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ModalProgressHUD(
+          child: _pagebuild(context), inAsyncCall: loading, blur: 0.5),
+    );
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget _pagebuild(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,

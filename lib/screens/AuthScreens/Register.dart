@@ -13,7 +13,7 @@ import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/logo.dart';
 
 class Register extends StatefulWidget {
-  const Register({super.key,this.edu});
+  const Register({super.key, this.edu});
   final edu;
 
   @override
@@ -70,7 +70,7 @@ class _RegisterState extends State<Register> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Create you Account',
+                        'Create your Account',
                         style: TextStyle(
                             fontSize: 24,
                             fontFamily: 'Roboto',
@@ -201,16 +201,12 @@ class _RegisterState extends State<Register> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
-                              bool passValid = value!.length >= 4;
+                              bool passValid = RegExp(
+                                      r"^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$")
+                                  .hasMatch(value!);
                               if (!passValid) {
                                 pass1 = false;
-                                return 'Password too weak';
-                              } else {
-                                pass1 = true;
-                              }
-                              if (pass != pass2check) {
-                                pass1 = false;
-                                return 'Passwords dont match';
+                                return 'Password needs to be more than 8 characters, \ncontains at least 1 uppercase , 1 lowercase, 1 number and \n1 special character';
                               } else {
                                 pass1 = true;
                               }
@@ -312,7 +308,7 @@ class _RegisterState extends State<Register> {
                         padding: const EdgeInsets.only(top: 20.0),
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1D1E21)),
+                                backgroundColor: const Color(0xFF01C5A6)),
                             onPressed: () async {
                               setState(() {
                                 isLoading = true;
@@ -344,8 +340,8 @@ class _RegisterState extends State<Register> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => OtpScreen(
-                                            edu:widget.edu,
-                                            name:register.name,
+                                                edu: widget.edu,
+                                                name: register.name,
                                                 email: register.email,
                                                 username: register.userName,
                                               )),
@@ -355,7 +351,8 @@ class _RegisterState extends State<Register> {
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                        content: Text('Fix Present Errors')));
+                                        content: Text(
+                                            'Please Vaidate All Entered Fields')));
                                 return;
                               }
                             },
@@ -384,7 +381,7 @@ class _RegisterState extends State<Register> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(color: Color(0xFF1D1E21)),
+                                side: BorderSide(color: Color(0xFF01C5A6)),
                                 borderRadius:
                                     BorderRadius.circular(8), // <-- Radius
                               ),
@@ -400,7 +397,7 @@ class _RegisterState extends State<Register> {
                                     child: Text(
                                   'Sign in',
                                   style: TextStyle(
-                                      color: Color(0xFF1D1E21),
+                                      color: Color(0xFF01C5A6),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                 )))),

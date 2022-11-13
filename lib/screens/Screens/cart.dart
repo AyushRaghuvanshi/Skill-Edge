@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/cartCourse.dart';
 import 'package:skilledge/widgets/courseCard.dart';
@@ -20,14 +21,24 @@ class _CartPageState extends State<CartPage> {
     api.getCart().then((value) {
       if (this.mounted) {
         setState(() {
+          loading = false;
+        });
+        setState(() {
           cartitems = value;
         });
       }
     });
   }
 
-  @override
+  bool loading = true;
   Widget build(BuildContext context) {
+    return 
+     ModalProgressHUD(
+          child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+  
+  }
+
+  Widget _pagebuild(BuildContext context) {
     return FutureBuilder(
       future: getcart(),
       builder: ((context, snapshot) {
@@ -62,7 +73,21 @@ class _CartPageState extends State<CartPage> {
                           topic: cartitems[index]['topic'],
                         );
                         // return Container();
-                      })))
+                      }))),
+              TextButton(
+                  onPressed: () {
+                    if (cartitems[0] == 'no courses in cart') {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Add Something in cart first')));
+                    } else {
+                      API api = API();
+                      api.buyallcourse().then((value) => {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Courses Purchased')))
+                          });
+                    }
+                  },
+                  child: Text('Checkout'))
             ],
           ),
         );

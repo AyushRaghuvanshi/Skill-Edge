@@ -18,13 +18,19 @@ class _WalletState extends State<Wallet> {
   double amount = -1.0;
 
   void getmoney() {
+    setState(() {
+      loading = true;
+    });
     API api = API();
     api.getwalletmoney().then((value) {
       amount = value;
-      setState(() {});
+      setState(() {
+        loading = false;
+      });
     });
   }
 
+  var loading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -78,8 +84,8 @@ class _WalletState extends State<Wallet> {
                                   padding: const EdgeInsets.only(top: 4.0),
                                   child: Text(
                                     (amount == -1.0)
-                                        ? '\$${widget.amount}'
-                                        : "\$${amount}",
+                                        ? '\$${(widget.amount).round()}'
+                                        : "\$${(amount).round()}",
                                     style: TextStyle(
                                         fontSize: 24, color: Color(0xFF01C5A6)),
                                   ),
@@ -121,7 +127,13 @@ class _WalletState extends State<Wallet> {
         title: "Add Balance",
         content: Column(
           children: <Widget>[
-            TextField(
+            TextFormField(
+              validator: (value) {
+                if (value!.length <= 0) {
+                  return "Balance must not be empty";
+                }
+              },
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               keyboardType: TextInputType.number,
               onChanged: (value) {
                 addamount = int.parse(value);
@@ -138,14 +150,18 @@ class _WalletState extends State<Wallet> {
             color: Color(0xFF01C5A6),
             splashColor: Color(0xFF01C5A6),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CheckRazor(
-                        amount: (addamount * 100),
-                        email: 'ayushraghuvanshi03@gmail.com',
-                        phone: '9305773947'),
-                  ));
+              if (addamount == 0) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('Add Some Ammount')));
+              } else
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CheckRazor(
+                          amount: (addamount * 100),
+                          email: 'ayushraghuvanshi03@gmail.com',
+                          phone: '9305773947'),
+                    ));
             },
             child: Text(
               "Add Balance",

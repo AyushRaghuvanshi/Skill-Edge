@@ -28,6 +28,8 @@ class _LoginState extends State<Login> {
   bool passerror = false;
 
   bool emailerror = false;
+  var rightpass =
+      " /^(?=.[a-z])(?=.[A-Z])(?=.\\d)(?=.[@\$!%?&#])[A-Za-z\d@\$!%?&#]{8,}\$/";
 
   bool emailok = false;
   bool passok = false;
@@ -122,10 +124,13 @@ class _LoginState extends State<Login> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
-                              bool passValid = value!.length >= 4;
+                              bool passValid = RegExp(
+                                      r"^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$")
+                                  .hasMatch(value!);
+
                               if (!passValid) {
                                 passok = false;
-                                return 'Password need to be of more than 4 charactors';
+                                return 'Password needs to be more than 8 characters, \ncontains at least 1 uppercase , 1 lowercase, 1 number and \n1 special character';
                               } else {
                                 passok = true;
                                 return null;
@@ -180,12 +185,12 @@ class _LoginState extends State<Login> {
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1D1E21)),
+                              backgroundColor: const Color(0xFF01C5A6)),
                           onPressed: () {
                             if (!(passok && emailok)) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text('Fix Present Errors')));
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                      'Please validate All Entered Fields')));
                               return;
                             } else {
                               setState(() {
@@ -195,7 +200,7 @@ class _LoginState extends State<Login> {
                               login.email = username!.trim().toLowerCase();
                               login.password = password!.trim();
                               API api = API();
-                           
+
                               api.login_api(login).then((value) async {
                                 setState(() {
                                   isLoading = false;
@@ -207,7 +212,6 @@ class _LoginState extends State<Login> {
                                       MaterialPageRoute(
                                           builder: ((context) => Dashboard())));
                                 } else {
-                                  
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content:
@@ -239,7 +243,7 @@ class _LoginState extends State<Login> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(color: Color(0xFF1D1E21)),
+                                side: BorderSide(color: Color(0xFF01C5A6)),
                                 borderRadius:
                                     BorderRadius.circular(8), // <-- Radius
                               ),
@@ -253,9 +257,9 @@ class _LoginState extends State<Login> {
                                 height: 45,
                                 child: const Center(
                                     child: Text(
-                                  'Create an Account',
+                                  'Sign Up',
                                   style: TextStyle(
-                                      color: Color(0xFF1D1E21),
+                                      color: Color(0xFF01C5A6),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                 )))),

@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/models/profile_details_model.dart';
 
 import '../../services/api_services.dart';
@@ -59,8 +60,15 @@ class _EditProfileState extends State<EditProfile> {
     req = Profile_details_req();
   }
 
-  @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: ModalProgressHUD(
+          child: _pagebuild(context), inAsyncCall: loading, blur: 0.5),
+    );
+  }
+
+  @override
+  Widget _pagebuild(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -104,9 +112,8 @@ class _EditProfileState extends State<EditProfile> {
                                 color: Colors.black,
                                 icon: Icon(Icons.edit),
                                 onPressed: () async {
-                                
                                   file = await pickImage();
-                                 
+
                                   setState(() {});
                                 },
                               ),
@@ -251,20 +258,18 @@ class _EditProfileState extends State<EditProfile> {
                               req.gender = widget.gender;
                               req.isEducator = widget.is_educator;
                               req.userName = widget.user_name;
-                              
+
                               api.profile(req).then((value) {
+                                setState(() {
+                                  loading = false;
+                                });
                                 if (value.message != null) {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(value.message!)));
                                 }
                               });
                             })
 
-                            
                             // Navigator.push(
                             //   context,
                             //   MaterialPageRoute(

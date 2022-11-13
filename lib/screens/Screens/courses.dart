@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/courseCard.dart';
 import 'package:skilledge/widgets/mycourses.dart';
@@ -22,14 +23,24 @@ class _CoursesPageState extends State<CoursesPage> {
     await api.getpurchasedcourses().then((value) {
       if (this.mounted) {
         setState(() {
+          loading = false;
+        });
+        setState(() {
           mycourses = value;
         });
       }
     });
   }
 
-  @override
+  bool loading = true;
   Widget build(BuildContext context) {
+    return 
+       ModalProgressHUD(
+          child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+  }
+
+  @override
+  Widget _pagebuild(BuildContext context) {
     return FutureBuilder(
       future: getMyCourses(),
       builder: ((context, snapshot) {

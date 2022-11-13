@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/screens/Screens/BoughtCourse.dart';
 import 'package:skilledge/screens/Screens/CoursePreview.dart';
 import 'package:skilledge/services/api_services.dart';
@@ -30,8 +31,14 @@ class MyCourse extends StatefulWidget {
 }
 
 class _MyCourseState extends State<MyCourse> {
-  @override
+  bool loading = false;
   Widget build(BuildContext context) {
+    return ModalProgressHUD(
+        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+  }
+
+  @override
+  Widget _pagebuild(BuildContext context) {
     return Container(
       height: 150,
       width: double.infinity,
@@ -90,9 +97,15 @@ class _MyCourseState extends State<MyCourse> {
                   children: [
                     TextButton(
                         onPressed: () {
+                          setState(() {
+                            loading = false;
+                          });
                           API api = API();
                           api.getLessons(widget.id).then((value1) {
                             api.getReviews(widget.id).then((value) {
+                              setState(() {
+                                loading = true;
+                              });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/screens/PaymentScreens/check.dart';
-import 'package:skilledge/services/api_services.dart'; 
+import 'package:skilledge/services/api_services.dart';
 
 class CoursePreview extends StatefulWidget {
   const CoursePreview(
@@ -33,9 +34,13 @@ class _CoursePreviewState extends State<CoursePreview> {
   bool info = true;
   int tab_index = 0;
   List<Widget> tabs = [];
-
-  @override
+  bool loading = false;
   Widget build(BuildContext context) {
+    return  ModalProgressHUD(
+          child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+  }
+
+  Widget _pagebuild(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
@@ -266,9 +271,10 @@ class _CoursePreviewState extends State<CoursePreview> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(widget.lessons[index]["lessonName"]),
-                                      Text('Duration: ' +
-                                          widget.lessons[index]["length"] +
-                                          ' Hrs')
+                                      TextButton(
+                                        onPressed: null,
+                                        child: Text('Watch'),
+                                      )
                                     ],
                                   ),
                                 );
@@ -316,13 +322,17 @@ class _CoursePreviewState extends State<CoursePreview> {
             TextButton(
                 onPressed: () {
                   print('here');
+                  setState(() {
+                    loading = true;
+                  });
                   API api = API();
                   api.buyacourse(widget.id).then((value) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(value)));
+                    setState(() {
+                      loading = false;
+                    });
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(value)));
                   });
-                  
                 },
                 child: Container(
                     decoration: BoxDecoration(
@@ -336,8 +346,14 @@ class _CoursePreviewState extends State<CoursePreview> {
                     ))),
             TextButton(
                 onPressed: () {
+                  setState(() {
+                    loading = true;
+                  });
                   API api = API();
                   api.addtoCart(widget.id).then((value) {
+                    setState(() {
+                      loading = false;
+                    });
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(value)));
                   });

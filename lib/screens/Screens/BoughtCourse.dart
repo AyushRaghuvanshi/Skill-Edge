@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/screens/Screens/Video.dart';
 import 'package:skilledge/services/api_services.dart';
 
@@ -38,8 +39,13 @@ class _BoughtCourseState extends State<BoughtCourse> {
 
   String comment = "";
 
-  @override
+  bool loading = false;
   Widget build(BuildContext context) {
+    return ModalProgressHUD(
+        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+  }
+
+  Widget _pagebuild(BuildContext context) {
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -350,6 +356,9 @@ class _BoughtCourseState extends State<BoughtCourse> {
                                                     ),
                                                     TextButton(
                                                         onPressed: () {
+                                                          setState(() {
+                                                            loading = true;
+                                                          });
                                                           API api = API();
                                                           api
                                                               .addReview(
@@ -357,6 +366,9 @@ class _BoughtCourseState extends State<BoughtCourse> {
                                                                   comment,
                                                                   star)
                                                               .then((value) {
+                                                            setState(() {
+                                                              loading = false;
+                                                            });
                                                             ScaffoldMessenger
                                                                     .of(context)
                                                                 .showSnackBar(
@@ -388,44 +400,6 @@ class _BoughtCourseState extends State<BoughtCourse> {
               ),
             ),
           ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 24.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            TextButton(
-                onPressed: () {},
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: Color(0xFF01C5A6),
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    padding: EdgeInsets.only(
-                        top: 12, bottom: 12, left: 46, right: 46),
-                    child: Text(
-                      'Buy Now',
-                      style: TextStyle(color: Colors.white),
-                    ))),
-            TextButton(
-                onPressed: () {
-                  API api = API();
-                  api.addtoCart(widget.id).then((value) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(value)));
-                  });
-                },
-                child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFF01C5A6)),
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    padding: EdgeInsets.only(
-                        top: 12, bottom: 12, left: 46, right: 46),
-                    child: Text(
-                      'Add to Cart',
-                      style: TextStyle(color: Color(0xFF01C5A6)),
-                    )))
-          ],
         ),
       ),
     );

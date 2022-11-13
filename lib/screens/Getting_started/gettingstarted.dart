@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:skilledge/screens/AuthScreens/Auth.dart';
+import 'package:skilledge/screens/AuthScreens/Login.dart';
+import 'package:skilledge/screens/BrowsePage/Dashboard.dart';
 
 class GettingStarted extends StatelessWidget {
   const GettingStarted({super.key});
@@ -8,45 +10,55 @@ class GettingStarted extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: CarouselSlider(
-                options: CarouselOptions(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: CarouselSlider(
+                  options: CarouselOptions(
                     autoPlay: true,
-                    height: MediaQuery.of(context).size.height * 0.8),
-                items: [
-                  ['go.png', 'Take Video Courses'],
-                  ['learn.png', 'Learn From The Best'],
-                  ['take.png', "Let's get started"],
-                ].map((i) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/${i[0]}'),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 16.0,
+                    // height: MediaQuery.of(context).size.height * 0.8
+                  ),
+                  items: [
+                    ['go.png', 'Take Video Courses'],
+                    ['learn.png', 'Learn From The Best'],
+                    ['take.png', "Let's get started"],
+                  ].map((i) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return SingleChildScrollView(
+                          child: Container(
+                            // height: 5000,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Image.asset('assets/${i[0]}'),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 16.0,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      i[1].toUpperCase(),
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                            child: Center(
-                              child: Text(
-                                i[1].toUpperCase(),
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                  );
-                }).toList(),
+                          ),
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(
@@ -59,7 +71,13 @@ class GettingStarted extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2,
               height: 64,
               child: TextButton(
-                  onPressed: (() {}),
+                  onPressed: (() {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BrowseDash(),
+                        ));
+                  }),
                   child: const Text(
                     'Browse',
                     style: TextStyle(
@@ -75,7 +93,7 @@ class GettingStarted extends StatelessWidget {
                   onPressed: (() {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Authentication()),
+                      MaterialPageRoute(builder: (context) => Login()),
                     );
                   }),
                   child: const Text(

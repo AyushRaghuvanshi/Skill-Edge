@@ -6,8 +6,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/screens/Screens/CoursePreview.dart';
 import 'package:skilledge/services/api_services.dart';
 
-class SearchCourse extends StatefulWidget {
-  const SearchCourse(
+class SearchCourseBrowse extends StatefulWidget {
+  const SearchCourseBrowse(
       {super.key,
       this.rating,
       this.desc,
@@ -26,10 +26,10 @@ class SearchCourse extends StatefulWidget {
   final thumbnail;
   final price;
   @override
-  State<SearchCourse> createState() => _SearchCourseState();
+  State<SearchCourseBrowse> createState() => _SearchCourseBrowseState();
 }
 
-class _SearchCourseState extends State<SearchCourse> {
+class _SearchCourseBrowseState extends State<SearchCourseBrowse> {
   bool loading = false;
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -94,45 +94,6 @@ class _SearchCourseState extends State<SearchCourse> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            loading = false;
-                          });
-                          API api = API();
-                          api.getLessons(widget.id).then((value1) {
-                            api.getReviews(widget.id).then((value) {
-                              setState(() {
-                                loading = true;
-                              });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CoursePreview(
-                                        id: widget.id,
-                                        topic: widget.topic,
-                                        thumbnail: widget.thumbnail,
-                                        desc: widget.desc,
-                                        price: widget.price,
-                                        rating: widget.rating,
-                                        educator: widget.edu_name,
-                                        lessons: value1,
-                                        reviews: value),
-                                  ));
-                            });
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xFF01C5A6)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          padding: EdgeInsets.all(4),
-                          child: Text(
-                            'Preview',
-                            style: TextStyle(color: Color(0xFF01C5A6)),
-                          ),
-                        )),
                     Padding(
                       padding: const EdgeInsets.only(left: 24.0),
                       child: Text(

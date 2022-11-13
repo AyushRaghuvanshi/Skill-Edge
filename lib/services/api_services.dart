@@ -26,7 +26,7 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
-    (res.toString());
+    print(res.toString());
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -157,6 +157,7 @@ class API {
         return status == 200 || status == 400;
       },
     ));
+    print(res.data);
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -386,8 +387,10 @@ class API {
   }
 
   Future<String> buyacourse(int cid) async {
-    String url = "https://skilledge.herokuapp.com/wallet/buy_allcourses/"+cid.toString()+'/';
-   
+    String url = "https://skilledge.herokuapp.com/wallet/buy_course/" +
+        cid.toString() +
+        '/';
+
     print(url);
     dio.options.headers["Authorization"] = "Bearer ${token}";
     final res = await dio.put((url), options: Options(
@@ -395,13 +398,13 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
-  if(res.statusCode == 400){
-    return res.data['msg'];
-  }
-    
-    if (res.statusCode == 200 
-        ) {
-      return 'Course Purchased\n Money in Wallet Left: '+res.data['wallet'];
+    if (res.statusCode == 400) {
+      return res.data['msg'];
+    }
+
+    if (res.statusCode == 200) {
+      return 'Course Purchased\n Money in Wallet Left: ' +
+          res.data['wallet'].toString();
     } else {
       throw Exception('Failed to load data');
     }
@@ -426,8 +429,27 @@ class API {
     }
   }
 
+  Future<List<dynamic>> buyallcourse() async {
+    String url = "https://skilledge.herokuapp.com/wallet/buy_allcourses/";
+    dio.options.headers["Authorization"] = "Bearer ${token}";
+    final res = await dio.put((url), options: Options(
+      validateStatus: (status) {
+        return status == 200 || status == 400 || status == 401;
+      },
+    ));
+    (token);
+    print(res.data);
+    if (res.statusCode == 200 ||
+        res.statusCode == 400 ||
+        res.statusCode == 401) {
+      return res.data;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   Future<Interest_res> interest(Interest_req req) async {
-    String url = "https://skilledge.herokuapp.com/courses/add_category/";
+    String url = "https://skilledge.herokuapp.com/courses/category/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
 
     final res = await dio.put((url), data: req.toJson(), options: Options(
@@ -471,7 +493,7 @@ class API {
   Future<dynamic> addbalancewallet(int amount, String paymentid) async {
     String url = "https://skilledge.herokuapp.com/payment/flutter_razorpay/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
-
+    amount = amount * 100;
     final res = await dio.post((url), data: {
       "order_amount": (amount / 100).floor(),
       "order_payment_id": paymentid
@@ -480,13 +502,14 @@ class API {
         return true;
       },
     ));
-    print((amount / 100).floor());
-    print('here12345');
-    print(res.data);
+
+    if (res.statusCode == 400) {
+      return 'Not Enough Balance in your Wallet';
+    }
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
-      return res.data;
+      return 'Redeeming Successful, Check Your Account';
     } else {
       throw Exception('Failed to load data');
     }
@@ -543,12 +566,13 @@ class API {
         contentType: new MediaType("image", "jpg"),
       ),
     });
-    final res = await dio.put((url), data: data, options: Options(
+    final res = await dio.post((url), data: data, options: Options(
       validateStatus: (status) {
         return true;
       },
     ));
-    print(res.data['id']);
+    print(res.data);
+    print(res.statusCode);
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {

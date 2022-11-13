@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/services/api_services.dart';
 
 class CartCourses extends StatefulWidget {
@@ -26,8 +27,14 @@ class CartCourses extends StatefulWidget {
 }
 
 class _CartCoursesState extends State<CartCourses> {
-  @override
+  bool loading = false;
   Widget build(BuildContext context) {
+    return ModalProgressHUD(
+        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+  }
+
+  @override
+  Widget _pagebuild(BuildContext context) {
     return Container(
       height: 150,
       width: double.infinity,
@@ -86,7 +93,19 @@ class _CartCoursesState extends State<CartCourses> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              loading = true;
+                            });
+                            API api = API();
+                            api.buyacourse(widget.id).then((value) {
+                              setState(() {
+                                loading = false;
+                              });
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(content: Text(value)));
+                            });
+                          },
                           child: Container(
                             padding: EdgeInsets.only(
                                 left: 16, right: 16, top: 4, bottom: 4),
@@ -103,8 +122,14 @@ class _CartCoursesState extends State<CartCourses> {
                           )),
                       TextButton(
                           onPressed: () {
+                            setState(() {
+                              loading = false;
+                            });
                             API api = API();
                             api.removefromCart(widget.id).then((value) {
+                              setState(() {
+                                loading = true;
+                              });
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(content: Text(value)));
                             });

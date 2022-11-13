@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -54,10 +55,14 @@ class _MyHomePageState extends State<MyHomePage> {
     return FutureBuilder(
         future: SharedPreferences.getInstance(),
         builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            Timer(Duration(seconds: 5), () {
-              if (snapshot.data!.getString("token") != null) {
-                token = snapshot.data!.getString("token");
+          print('here');
+          if (snapshot.connectionState == ConnectionState.done) {
+            print('here');
+            Timer(Duration(seconds: 3), () async {
+              var k = await snapshot.data!.getString("token");
+              print(k);
+              if (k != null) if (k != "") {
+                token = k;
                 API api = API();
                 api.getprofile();
                 print(token);
@@ -69,6 +74,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(
                         builder: ((context) => GettingStarted())));
                 ;
+              }
+              else {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => GettingStarted())));
               }
             });
           }

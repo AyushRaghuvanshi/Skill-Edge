@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:skilledge/services/api_services.dart';
 
 class WalletEdu extends StatefulWidget {
-  const WalletEdu({super.key});
+  const WalletEdu({super.key, this.amount});
+  final amount;
 
   @override
   State<WalletEdu> createState() => _WalletEduState();
@@ -61,7 +63,7 @@ class _WalletEduState extends State<WalletEdu> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 4.0),
                                   child: Text(
-                                    '\$$amount',
+                                    '\$${widget.amount}',
                                     style: TextStyle(
                                         fontSize: 24, color: Color(0xFF01C5A6)),
                                   ),
@@ -119,7 +121,21 @@ class _WalletEduState extends State<WalletEdu> {
           DialogButton(
             color: Color(0xFF01C5A6),
             splashColor: Color(0xFF01C5A6),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              if (addamount == 0) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('Add Some Ammount')));
+              } else {
+                API api = API();
+                print(((-(addamount * 100)) / 100).floor());
+                api
+                    .addbalancewallet(-(addamount * 100), 'Redeeming')
+                    .then((value) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(value)));
+                });
+              }
+            },
             child: Text(
               "Redeem Balance",
               style: TextStyle(color: Colors.white, fontSize: 20),

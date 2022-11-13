@@ -1,3 +1,5 @@
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:circular_countdown_timer/countdown_text_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -79,23 +81,32 @@ class _ForgotOTPState extends State<ForgotOTP> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        API api = API();
-                        resend.email = widget.email;
-                        api.forgot(resend).then((value) {
-                          setState(() {
-                            isLoading = false;
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(value.msg.toString())));
-                        });
-                      },
-                      child: Text('Resend OTP')),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              API api = API();
+                              resend.email = widget.email;
+                              api.forgot(resend).then((value) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(value.msg.toString())));
+                              });
+                            },
+                            child: Text('Resend OTP')),
+                      ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 24.0),
@@ -108,16 +119,12 @@ class _ForgotOTPState extends State<ForgotOTP> {
                       maxLines: 1,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
-                        bool passValid = value!.length >= 4;
+                        bool passValid = RegExp(
+                                r"^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$")
+                            .hasMatch(value!);
                         if (!passValid) {
                           pass1 = false;
-                          return 'Password too weak';
-                        } else {
-                          pass1 = true;
-                        }
-                        if (pass != pass2check) {
-                          pass1 = false;
-                          return 'Passwords dont match';
+                          return 'Password needs to be more than 8 characters, \ncontains at least 1 uppercase , 1 lowercase, 1 number and \n1 special character';
                         } else {
                           pass1 = true;
                         }
@@ -216,9 +223,9 @@ class _ForgotOTPState extends State<ForgotOTP> {
                   padding: const EdgeInsets.only(top: 24.0),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1D1E21)),
+                          backgroundColor: const Color(0xFF01C5A6)),
                       onPressed: () {
-                        if (pass1 && pass2) {
+                        if (pass1 && pass2 && otp.toString().length > 0) {
                           setState(() {
                             isLoading = true;
                           });
@@ -245,7 +252,7 @@ class _ForgotOTPState extends State<ForgotOTP> {
                           });
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Fix Present Errors')));
+                              SnackBar(content: Text('Please Validate All Entered Fields')));
                         }
                       },
                       child: SizedBox(

@@ -56,7 +56,7 @@ class _HomeScreenEduState extends State<HomeScreenEdu> {
     courses = await snapshot.getStringList("hostedCourses");
     // print('here');
     Future.delayed(const Duration(milliseconds: 10000), () {
-      setState(() {});
+      if (this.mounted) setState(() {});
     });
   }
 
@@ -146,24 +146,33 @@ class _HomeScreenEduState extends State<HomeScreenEdu> {
                         Container(
                           height: MediaQuery.of(context).size.height * 0.7,
                           child: (courses != null)
-                              ? ListView.builder(
-                                  itemCount: courses!.length,
-                                  itemBuilder: ((context, index) {
-                                    var temp = courses![index];
-                                    var temp2 = json.decode(temp);
-                                    print(temp);
-                                    return EduCourses(
-                                      rating: temp2['rating'],
-                                      short_description:
-                                          temp2['short_description'],
-                                      edu_name: temp2['educator_name'],
-                                      id: temp2['id'],
-                                      price: temp2['price'],
-                                      thumbnail: temp2['thumbnail'],
-                                      topic: temp2['topic'],
-                                    );
-                                  }))
-                              : Text('Host A course to see something here'),
+                              ? (courses!.length != 0)
+                                  ? Expanded(
+                                      child: ListView.builder(
+                                          itemCount: courses!.length,
+                                          itemBuilder: ((context, index) {
+                                            print(courses);
+                                            var temp = courses![index];
+                                            var temp2 = json.decode(temp);
+                                            print(temp);
+                                            return EduCourses(
+                                              rating: temp2['rating'],
+                                              short_description:
+                                                  temp2['short_description'],
+                                              edu_name: temp2['educator_name'],
+                                              id: temp2['id'],
+                                              price: temp2['price'],
+                                              thumbnail: temp2['thumbnail'],
+                                              topic: temp2['topic'],
+                                            );
+                                          })),
+                                    )
+                                  : Center(
+                                      child: Text(
+                                          'Host A course to see something here'))
+                              : Center(
+                                  child: Text(
+                                      'Host A course to see something here')),
                         )
                       ],
                     ),

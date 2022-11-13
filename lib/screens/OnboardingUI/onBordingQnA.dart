@@ -16,7 +16,8 @@ import 'package:skilledge/screens/OnboardingUI/onBoardingInterest.dart';
 import 'package:skilledge/widgets/logo.dart';
 
 class OnboardingQA extends StatefulWidget {
-  const OnboardingQA({super.key, this.fullName, this.email, this.userName,this.edu});
+  const OnboardingQA(
+      {super.key, this.fullName, this.email, this.userName, this.edu});
   final edu;
   final fullName;
   final email;
@@ -109,11 +110,11 @@ class _OnboardingQAState extends State<OnboardingQA> {
                           Padding(
                             padding: const EdgeInsets.only(top: 16.0),
                             child: DateTimePicker(
-                              // validator: (value) {
-                              //   if (value!.length == 0) {
-                              //     return "Dont leave this empty";
-                              //   }
-                              // },
+                              validator: (value) {
+                                if (value!.length == 0) {
+                                  return "Dont leave this empty";
+                                }
+                              },
                               initialDate: DateTime(2003),
                               firstDate: DateTime(1900),
                               lastDate: DateTime.now(),
@@ -230,30 +231,40 @@ class _OnboardingQAState extends State<OnboardingQA> {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF1D1E21)),
+                                      backgroundColor: const Color(0xFF01C5A6)),
                                   onPressed: (() {
-                                    print(widget.email);
-                                    print(gender);
-                                    print(phone);
-                                    print(dob);
-                                    print(widget.fullName);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              OnBoardinginterest(
-                                                  pfc: file,
-                                                  edu:widget.edu,
-                                                  email: widget.email,
-                                                  gender: gender,
-                                                  phone: (countrycode != null)
-                                                      ? countrycode!.dialCode +
-                                                          phone!
-                                                      : '+91' + phone!,
-                                                  dob: dob,
-                                                  fullName: widget.fullName,
-                                                  userName: widget.userName)),
-                                    );
+                                    if (dob!.length > 0 &&
+                                        phone!.length > 9 &&
+                                        gender != null) {
+                                      print(widget.email);
+                                      print(gender);
+                                      print(phone);
+                                      print(dob);
+                                      print(widget.fullName);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                OnBoardinginterest(
+                                                    pfc: file,
+                                                    edu: widget.edu,
+                                                    email: widget.email,
+                                                    gender: gender,
+                                                    phone: (countrycode != null)
+                                                        ? countrycode!
+                                                                .dialCode +
+                                                            phone!
+                                                        : '+91' + phone!,
+                                                    dob: dob,
+                                                    fullName: widget.fullName,
+                                                    userName: widget.userName)),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Please Enter All Fields')));
+                                    }
                                   }),
                                   child: Container(
                                       height: 45,

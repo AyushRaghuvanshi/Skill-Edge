@@ -30,6 +30,7 @@ class OnBoardinginterest extends StatefulWidget {
   final edu;
   final userName;
   final email;
+
   final fullName;
   final dob;
   final phone;
@@ -52,7 +53,7 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
   bool b9 = true;
   bool b10 = true;
   bool b11 = true;
-
+  int chosen_design = 0;
   bool loading = false;
 
   Interest_req int_req = Interest_req();
@@ -107,23 +108,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b1 = !b1;
+                                if (b1) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b1) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b1) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Music",
                                   style: TextStyle(
-                                      color:
-                                          (!b1) ? Colors.white : Colors.black),
+                                      color: (!b1)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -132,23 +140,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b2 = !b2;
+                                if (b2) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b2) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b2) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Buisness",
                                   style: TextStyle(
-                                      color:
-                                          (!b2) ? Colors.white : Colors.black),
+                                      color: (!b2)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -157,23 +172,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b3 = !b3;
+                                if (b3) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b3) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b3) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Design",
                                   style: TextStyle(
-                                      color:
-                                          (!b3) ? Colors.white : Colors.black),
+                                      color: (!b3)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -187,23 +209,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b4 = !b4;
+                                if (b4) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b4) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b4) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Technical &  Academics",
                                   style: TextStyle(
-                                      color:
-                                          (!b4) ? Colors.white : Colors.black),
+                                      color: (!b4)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -212,23 +241,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b5 = !b5;
+                                if (b5) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b5) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b5) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "IT & Software",
                                   style: TextStyle(
-                                      color:
-                                          (!b5) ? Colors.white : Colors.black),
+                                      color: (!b5)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -242,23 +278,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b6 = !b6;
+                                if (b6) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b6) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b6) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Office & Productivity",
                                   style: TextStyle(
-                                      color:
-                                          (!b6) ? Colors.white : Colors.black),
+                                      color: (!b6)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -267,23 +310,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b7 = !b7;
+                                if (b7) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b7) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b7) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Healthness and Fitness",
                                   style: TextStyle(
-                                      color:
-                                          (!b7) ? Colors.white : Colors.black),
+                                      color: (!b7)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -297,23 +347,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b8 = !b8;
+                                if (b8) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b8) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b8) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Finance",
                                   style: TextStyle(
-                                      color:
-                                          (!b8) ? Colors.white : Colors.black),
+                                      color: (!b8)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -322,23 +379,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b9 = !b9;
+                                if (b9) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b9) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b9) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Marketing",
                                   style: TextStyle(
-                                      color:
-                                          (!b9) ? Colors.white : Colors.black),
+                                      color: (!b9)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -347,23 +411,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b10 = !b10;
+                                if (b10) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b10) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b10) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Development",
                                   style: TextStyle(
-                                      color:
-                                          (!b10) ? Colors.white : Colors.black),
+                                      color: (!b10)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -377,23 +448,30 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                             onPressed: () {
                               setState(() {
                                 b11 = !b11;
+                                if (b11) {
+                                  chosen_design++;
+                                } else {
+                                  chosen_design--;
+                                }
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: (!b11) ? Colors.black : Colors.white,
+                                  color:
+                                      (!b11) ? Color(0xFF01C5A6) : Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Color(0xFF01C5A6),
                                   )),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Personal & Development",
                                   style: TextStyle(
-                                      color:
-                                          (!b11) ? Colors.white : Colors.black),
+                                      color: (!b11)
+                                          ? Colors.white
+                                          : Color(0xFF01C5A6)),
                                 ),
                               ),
                             ),
@@ -404,66 +482,74 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                         padding: const EdgeInsets.only(top: 16.0),
                         child: TextButton(
                             style: TextButton.styleFrom(
-                                backgroundColor: const Color(0xFF1D1E21)),
+                                backgroundColor: const Color(0xFF01C5A6)),
                             onPressed: () {
-                              setState(() {
-                                loading = true;
-                              });
-                              API api = API();
-                              req.name = widget.fullName;
-                              req.dateOfBirth = widget.dob;
-                              String g = "";
-                              switch (widget.gender) {
-                                case "Male":
-                                  g = "M";
-                                  break;
-                                case "Female":
-                                  g = "F";
-                                  break;
-                                default:
-                                  g = "O";
-                              }
-                              req.gender = g;
-                              req.isEducator = widget.edu;
-                              req.mobile = int.parse(
-                                  widget.phone.toString().substring(1));
-                              req.picture = widget.pfc;
-                              req.userName = widget.userName;
-                              print(req.toJson());
-                              api.profile(req).then((value) {
-                                if (value.message != null) {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(value.message!)));
-                                } else {
-                                  print("step1");
-                                  int_req.interest1 = (!b10).toString();
-                                  int_req.interest2 = (!b2).toString();
-                                  int_req.interest3 = (!b8).toString();
-                                  int_req.interest4 = (!b5).toString();
-                                  int_req.interest5 = (!b6).toString();
-                                  int_req.interest6 = (!b11).toString();
-                                  int_req.interest7 = (!b3).toString();
-                                  int_req.interest8 = (!b9).toString();
-                                  int_req.interest9 = (!b7).toString();
-                                  int_req.interest10 = (!b1).toString();
-                                  int_req.interest11 = (!b4).toString();
-                                  print(int_req.toJson());
-                                  api.interest(int_req).then((value) {
+                              if (chosen_design == 0) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            'Please Select Atleast 1 Interest')));
+                              } else {
+                                setState(() {
+                                  loading = true;
+                                });
+                                API api = API();
+                                req.name = widget.fullName;
+                                req.dateOfBirth = widget.dob;
+                                String g = "";
+                                switch (widget.gender) {
+                                  case "Male":
+                                    g = "M";
+                                    break;
+                                  case "Female":
+                                    g = "F";
+                                    break;
+                                  default:
+                                    g = "O";
+                                }
+                                req.gender = g;
+                                req.isEducator = widget.edu;
+                                req.mobile = int.parse(
+                                    widget.phone.toString().substring(1));
+                                req.picture = widget.pfc;
+                                req.userName = widget.userName;
+                                print(req.toJson());
+                                api.profile(req).then((value) {
+                                  if (value.message != null) {
                                     setState(() {
                                       loading = false;
                                     });
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: ((context) =>
-                                                Dashboard())));
-                                    print(value.toJson());
-                                  });
-                                }
-                              });
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(value.message!)));
+                                  } else {
+                                    print("step1");
+                                    int_req.interest1 = (!b10).toString();
+                                    int_req.interest2 = (!b2).toString();
+                                    int_req.interest3 = (!b8).toString();
+                                    int_req.interest4 = (!b5).toString();
+                                    int_req.interest5 = (!b6).toString();
+                                    int_req.interest6 = (!b11).toString();
+                                    int_req.interest7 = (!b3).toString();
+                                    int_req.interest8 = (!b9).toString();
+                                    int_req.interest9 = (!b7).toString();
+                                    int_req.interest10 = (!b1).toString();
+                                    int_req.interest11 = (!b4).toString();
+                                    print(int_req.toJson());
+                                    api.interest(int_req).then((value) {
+                                      setState(() {
+                                        loading = false;
+                                      });
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: ((context) =>
+                                                  Dashboard())));
+                                      print(value.toJson());
+                                    });
+                                  }
+                                });
+                              }
                             },
                             child: Container(
                                 height: 38,
@@ -478,7 +564,8 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                       Padding(
                         padding: const EdgeInsets.only(top: 16.0),
                         child: TextButton(
-                            style: TextButton.styleFrom(side: BorderSide()),
+                            style: TextButton.styleFrom(
+                                side: BorderSide(color: Color(0xFF01C5A6))),
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -488,7 +575,7 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                                 child: Center(
                                   child: Text(
                                     'Back',
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(color: Color(0xFF01C5A6)),
                                   ),
                                 ))),
                       )
