@@ -64,10 +64,10 @@ class API {
       "password": req.password
     });
     final res = await dio.post(url, data: {
-      "email": "shreyansh2110144@akgec.ac.in",
-      "name": "shrey",
-      "user_name": "shrey",
-      "password": "tesT@1"
+      "email": req.email,
+      "name": req.name,
+      "user_name": req.userName,
+      "password": req.password
     }, options: Options(
       validateStatus: (status) {
         return true;
