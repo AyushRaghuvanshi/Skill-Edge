@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:eventify/eventify.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:skilledge/services/api_services.dart';
+
 
 class Razorpay {
   // Response codes from platform

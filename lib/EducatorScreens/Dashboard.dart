@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:skilledge/EducatorScreens/home.dart';
 import 'package:skilledge/EducatorScreens/host.dart';
 import 'package:skilledge/EducatorScreens/profile.dart';
-import 'package:skilledge/screens/Screens/Search.dart';
-import 'package:skilledge/screens/Screens/cart.dart';
-import 'package:skilledge/screens/Screens/courses.dart';
-import 'package:skilledge/screens/Screens/home.dart';
-import 'package:skilledge/screens/Screens/profile.dart';
 
 class DashBoardEdu extends StatefulWidget {
   const DashBoardEdu({super.key});
@@ -14,6 +9,8 @@ class DashBoardEdu extends StatefulWidget {
   @override
   State<DashBoardEdu> createState() => _DashBoardEduState();
 }
+
+bool? iscertified;
 
 class _DashBoardEduState extends State<DashBoardEdu> {
   int screen_index = 0;

@@ -24,7 +24,6 @@ class _OtpScreenState extends State<OtpScreen> {
   bool isLoading = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     otp_req = OTP_req_model();
     resend = resendotp_req_model();
@@ -140,7 +139,9 @@ class _OtpScreenState extends State<OtpScreen> {
                                 child: Text(
                               'Verify OTP',
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w400),
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w400),
                             )))),
                   ),
                 ],

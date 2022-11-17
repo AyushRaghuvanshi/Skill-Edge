@@ -1,8 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:skilledge/screens/dashboard.dart';
 import 'package:skilledge/services/api_services.dart';
 
 class WalletEdu extends StatefulWidget {
@@ -63,7 +62,7 @@ class _WalletEduState extends State<WalletEdu> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 4.0),
                                   child: Text(
-                                    '\$${widget.amount}',
+                                    '₹${widget.amount}',
                                     style: TextStyle(
                                         fontSize: 24, color: Color(0xFF01C5A6)),
                                   ),
@@ -112,7 +111,7 @@ class _WalletEduState extends State<WalletEdu> {
               },
               decoration: InputDecoration(
                 icon: Icon(Icons.money),
-                labelText: '\$1000',
+                labelText: '₹1000',
               ),
             ),
           ],
@@ -122,12 +121,18 @@ class _WalletEduState extends State<WalletEdu> {
             color: Color(0xFF01C5A6),
             splashColor: Color(0xFF01C5A6),
             onPressed: () {
+              if(screentouch==true){
+                return;
+              }
+              screentouch = true;
               if (addamount == 0) {
+                screentouch = false;
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text('Add Some Ammount')));
               } else {
+                screentouch = false;
                 API api = API();
-                print(((-(addamount * 100)) / 100).floor());
+
                 api
                     .addbalancewallet(-(addamount * 100), 'Redeeming')
                     .then((value) {

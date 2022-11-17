@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+import 'package:flutter_mobx/flutter_mobx.dart';
+
+import 'package:skilledge/Stores/courses.dart';
 import 'package:skilledge/screens/Screens/BoughtCourse.dart';
-import 'package:skilledge/screens/Screens/CoursePreview.dart';
+
+import 'package:skilledge/screens/dashboard.dart';
 import 'package:skilledge/services/api_services.dart';
 
 class MyCourse extends StatefulWidget {
@@ -32,14 +33,14 @@ class MyCourse extends StatefulWidget {
 
 class _MyCourseState extends State<MyCourse> {
   bool loading = false;
-  Widget build(BuildContext context) {
-    return ModalProgressHUD(
-        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
-  }
-
+  var courses = Courses();
   @override
-  Widget _pagebuild(BuildContext context) {
+  Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+          color: Color(0xFFF6FAFA),
+          borderRadius: BorderRadius.all(Radius.circular(10))),
+      margin: EdgeInsets.only(top: 16),
       height: 150,
       width: double.infinity,
       child: Row(
@@ -95,45 +96,55 @@ class _MyCourseState extends State<MyCourse> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            loading = false;
-                          });
-                          API api = API();
-                          api.getLessons(widget.id).then((value1) {
-                            api.getReviews(widget.id).then((value) {
-                              setState(() {
-                                loading = true;
-                              });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BoughtCourse(
-                                        id: widget.id,
-                                        topic: widget.topic,
-                                        thumbnail: widget.thumbnail,
-                                        desc: widget.desc,
-                                        price: widget.price,
-                                        rating: widget.rating,
-                                        educator: widget.edu_name,
-                                        lessons: value1,
-                                        reviews: value),
-                                  ));
-                            });
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xFF01C5A6)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          padding: EdgeInsets.all(4),
-                          child: Text(
-                            'Continue',
-                            style: TextStyle(color: Color(0xFF01C5A6)),
-                          ),
-                        )),
+                    Observer(builder: (_) {
+                      if (courses.loading) {
+                        return Center(child: CircularProgressIndicator());
+                      } else
+                        return IgnorePointer(
+                          ignoring: screentouch,
+                          child: TextButton(
+                              onPressed: () {
+                                if (screentouch == true) {
+                                  return;
+                                }
+                                screentouch = true;
+                                courses.setLoading();
+                                API api = API();
+                                api.getLessons(widget.id).then((value1) {
+                                  api.getReviews(widget.id).then((value) {
+                                    courses.setLoading();
+                                    screentouch = false;
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => BoughtCourse(
+                                              id: widget.id,
+                                              topic: widget.topic,
+                                              thumbnail: widget.thumbnail,
+                                              desc: widget.desc,
+                                              price: widget.price,
+                                              rating: widget.rating,
+                                              educator: widget.edu_name,
+                                              lessons: value1,
+                                              reviews: value),
+                                        ));
+                                  });
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Color(0xFF01C5A6)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5))),
+                                padding: EdgeInsets.all(4),
+                                child: Text(
+                                  'Continue',
+                                  style: TextStyle(color: Color(0xFF01C5A6)),
+                                ),
+                              )),
+                        );
+                    }),
                   ],
                 )
               ],

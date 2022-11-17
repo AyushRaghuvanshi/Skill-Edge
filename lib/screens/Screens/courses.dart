@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/services/api_services.dart';
-import 'package:skilledge/widgets/courseCard.dart';
+
 import 'package:skilledge/widgets/mycourses.dart';
-import 'package:skilledge/widgets/searchCourse.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -34,19 +32,17 @@ class _CoursesPageState extends State<CoursesPage> {
 
   bool loading = true;
   Widget build(BuildContext context) {
-    return 
-       ModalProgressHUD(
-          child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+    return ModalProgressHUD(
+        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
   }
 
-  @override
   Widget _pagebuild(BuildContext context) {
     return FutureBuilder(
       future: getMyCourses(),
       builder: ((context, snapshot) {
         // if (mycourses.length > 0) {
         return Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 64),
+          padding: const EdgeInsets.only(left: 16.0, top: 64, right: 16),
           child: Column(
             children: [
               Text(

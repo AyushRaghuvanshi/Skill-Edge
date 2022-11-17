@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:skilledge/models/reg_model.dart';
-import 'package:skilledge/screens/AuthScreens/Login.dart';
+
 import 'package:skilledge/screens/AuthScreens/otp.dart';
 import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/logo.dart';
@@ -39,7 +35,6 @@ class _RegisterState extends State<Register> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     register = reg_req_model();
   }
@@ -98,6 +93,7 @@ class _RegisterState extends State<Register> {
                               } else {
                                 fullname = true;
                               }
+                              return null;
                             },
                             decoration: const InputDecoration(
                               prefixIcon: Icon(
@@ -131,6 +127,7 @@ class _RegisterState extends State<Register> {
                               } else {
                                 user = true;
                               }
+                              return null;
                             },
                             onChanged: ((value) {
                               username = value;
@@ -168,6 +165,7 @@ class _RegisterState extends State<Register> {
                               } else {
                                 mail = true;
                               }
+                              return null;
                             },
                             onChanged: (value) {
                               email = value;
@@ -210,6 +208,7 @@ class _RegisterState extends State<Register> {
                               } else {
                                 pass1 = true;
                               }
+                              return null;
                             },
                             onChanged: (value) {
                               setState(() {
@@ -259,14 +258,13 @@ class _RegisterState extends State<Register> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
-                              bool passValid = value!.length >= 4;
-
                               if (pass != pass2check) {
                                 pass2 = false;
                                 return 'Passwords dont match';
                               } else {
                                 pass2 = true;
                               }
+                              return null;
                             },
                             onChanged: (value) {
                               setState(() {
@@ -363,6 +361,7 @@ class _RegisterState extends State<Register> {
                                     child: Text(
                                   'Sign up',
                                   style: TextStyle(
+                                      color: Colors.white,
                                       fontSize: 20,
                                       fontWeight: FontWeight.w400),
                                 )))),

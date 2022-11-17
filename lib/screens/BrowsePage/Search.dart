@@ -1,10 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:skilledge/screens/Screens/CoursePreview.dart';
-import 'package:skilledge/services/api_services.dart';
 
 class SearchCourseBrowse extends StatefulWidget {
   const SearchCourseBrowse(
@@ -36,7 +31,7 @@ class _SearchCourseBrowseState extends State<SearchCourseBrowse> {
         child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
   }
 
-  @override
+
   Widget _pagebuild(BuildContext context) {
     return Container(
       height: 150,
@@ -97,7 +92,7 @@ class _SearchCourseBrowseState extends State<SearchCourseBrowse> {
                     Padding(
                       padding: const EdgeInsets.only(left: 24.0),
                       child: Text(
-                        '\$' + widget.price.toString(),
+                        '₹' + widget.price.toString(),
                         style: TextStyle(fontSize: 24),
                       ),
                     )

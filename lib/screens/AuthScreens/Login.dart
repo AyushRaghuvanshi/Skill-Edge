@@ -1,8 +1,7 @@
-import 'dart:developer';
+
 
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skilledge/models/login_model.dart';
 import 'package:skilledge/screens/AuthScreens/forgotpassword.dart';
 import 'package:skilledge/screens/dashboard.dart';
@@ -35,7 +34,7 @@ class _LoginState extends State<Login> {
   bool passok = false;
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     login = login_model();
   }
@@ -94,6 +93,7 @@ class _LoginState extends State<Login> {
                               } else {
                                 emailok = true;
                               }
+                              return null;
                             },
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -207,10 +207,11 @@ class _LoginState extends State<Login> {
                                 });
 
                                 if (value.toJson()['token'] != null) {
-                                  Navigator.push(
+                                  Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
-                                          builder: ((context) => Dashboard())));
+                                          builder: ((context) => Dashboard())),
+                                      (route) => false);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -227,6 +228,7 @@ class _LoginState extends State<Login> {
                                   child: Text(
                                 'Sign in',
                                 style: TextStyle(
+                                  color: Colors.white,
                                     fontSize: 20, fontWeight: FontWeight.w400),
                               )))),
                       const Padding(

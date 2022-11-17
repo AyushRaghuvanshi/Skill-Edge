@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/screens/BrowsePage/Search.dart';
 import 'package:skilledge/services/api_services.dart';
-import 'package:skilledge/widgets/searchCourse.dart';
+
 
 class SearchPageBrowse extends StatefulWidget {
   const SearchPageBrowse({super.key});
@@ -51,7 +51,7 @@ class _SearchPageBrowseState extends State<SearchPageBrowse> {
         child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
   }
 
-  @override
+
   Widget _pagebuild(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(16.0),

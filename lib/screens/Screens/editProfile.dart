@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_dropdown/flutter_dropdown.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/models/profile_details_model.dart';
@@ -55,7 +53,6 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     req = Profile_details_req();
   }
@@ -67,7 +64,6 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  @override
   Widget _pagebuild(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -201,6 +197,7 @@ class _EditProfileState extends State<EditProfile> {
                                   if (value!.length != 10) {
                                     return 'Enter Valid Phone Number';
                                   }
+                                  return null;
                                 }),
                                 minLines: 1,
                                 // controller: _phone,
@@ -244,8 +241,6 @@ class _EditProfileState extends State<EditProfile> {
                         child: Container(
                           width: double.infinity,
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1D1E21)),
                             onPressed: (() {
                               setState(() {
                                 loading = true;
@@ -258,7 +253,6 @@ class _EditProfileState extends State<EditProfile> {
                               req.gender = widget.gender;
                               req.isEducator = widget.is_educator;
                               req.userName = widget.user_name;
-
                               api.profile(req).then((value) {
                                 setState(() {
                                   loading = false;
@@ -292,6 +286,7 @@ class _EditProfileState extends State<EditProfile> {
                                 child: Center(
                                   child: Text(
                                     'Save',
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 )),
                           ),
@@ -309,5 +304,6 @@ class _EditProfileState extends State<EditProfile> {
     if (image != null) {
       return File(image.path);
     }
+    return null;
   }
 }

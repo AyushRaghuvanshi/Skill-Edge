@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_dropdown/flutter_dropdown.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/models/profile_details_model.dart';
@@ -49,18 +47,17 @@ class _EditProfileEduState extends State<EditProfileEdu> {
   late TextEditingController _dob = TextEditingController(text: widget.dob);
 
   late TextEditingController _phone =
-      TextEditingController(text: widget.phone.toString());
+      TextEditingController(text: widget.phone.toString().substring(2));
 
   bool loading = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     req = Profile_details_req();
+    // phone = widget.phone.toString();
   }
-  
- 
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: ModalProgressHUD(
@@ -68,7 +65,6 @@ class _EditProfileEduState extends State<EditProfileEdu> {
     );
   }
 
-  @override
   Widget _pagebuild(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -113,9 +109,8 @@ class _EditProfileEduState extends State<EditProfileEdu> {
                                 color: Colors.black,
                                 icon: Icon(Icons.edit),
                                 onPressed: () async {
-                                
                                   file = await pickImage();
-                                 
+
                                   setState(() {});
                                 },
                               ),
@@ -203,11 +198,12 @@ class _EditProfileEduState extends State<EditProfileEdu> {
                                   if (value!.length != 10) {
                                     return 'Enter Valid Phone Number';
                                   }
+                                  return null;
                                 }),
                                 minLines: 1,
-                                // controller: _phone,
-                                initialValue:
-                                    widget.phone.toString().substring(2),
+                                controller: _phone,
+                                // initialValue:
+                                //     widget.phone.toString().substring(2),
                                 keyboardType: TextInputType.number,
                                 maxLength: 10,
                                 maxLines: 1,
@@ -246,8 +242,6 @@ class _EditProfileEduState extends State<EditProfileEdu> {
                         child: Container(
                           width: double.infinity,
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1D1E21)),
                             onPressed: (() {
                               setState(() {
                                 loading = true;
@@ -260,20 +254,19 @@ class _EditProfileEduState extends State<EditProfileEdu> {
                               req.gender = widget.gender;
                               req.isEducator = widget.is_educator;
                               req.userName = widget.user_name;
-                              
+
                               api.profile(req).then((value) {
                                 if (value.message != null) {
                                   setState(() {
                                     loading = false;
                                   });
-                                  
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(value.message!)));
                                 }
                               });
                             })
 
-                            
                             // Navigator.push(
                             //   context,
                             //   MaterialPageRoute(
@@ -296,6 +289,7 @@ class _EditProfileEduState extends State<EditProfileEdu> {
                                 child: Center(
                                   child: Text(
                                     'Save',
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 )),
                           ),
@@ -313,5 +307,6 @@ class _EditProfileEduState extends State<EditProfileEdu> {
     if (image != null) {
       return File(image.path);
     }
+    return null;
   }
 }

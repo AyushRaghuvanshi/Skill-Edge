@@ -1,8 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:skilledge/EducatorScreens/HostCoursePage.dart';
 
 class HostCourse extends StatefulWidget {

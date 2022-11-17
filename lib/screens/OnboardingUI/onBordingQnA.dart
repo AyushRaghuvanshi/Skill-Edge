@@ -1,16 +1,13 @@
 import 'dart:io';
 
-import 'package:country_phone_code_picker/core/country_phone_code_picker_widget.dart';
-import 'package:country_phone_code_picker/country_phone_code_picker.dart';
-import 'package:country_phone_code_picker/models/country.dart';
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:dropdown_plus/dropdown_plus.dart';
+
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skilledge/screens/OnboardingUI/onBoardingInterest.dart';
 import 'package:skilledge/widgets/logo.dart';
@@ -114,6 +111,7 @@ class _OnboardingQAState extends State<OnboardingQA> {
                                 if (value!.length == 0) {
                                   return "Dont leave this empty";
                                 }
+                                return null;
                               },
                               initialDate: DateTime(2003),
                               firstDate: DateTime(1900),
@@ -190,6 +188,7 @@ class _OnboardingQAState extends State<OnboardingQA> {
                                         if (value!.length != 10) {
                                           return 'Enter Valid Phone Number';
                                         }
+                                        return null;
                                       }),
                                       minLines: 1,
                                       keyboardType: TextInputType.number,
@@ -272,6 +271,7 @@ class _OnboardingQAState extends State<OnboardingQA> {
                                       child: Center(
                                         child: Text(
                                           'Continue',
+                                          style: TextStyle(color: Colors.white),
                                         ),
                                       )),
                                 ),
@@ -294,5 +294,6 @@ class _OnboardingQAState extends State<OnboardingQA> {
     if (image != null) {
       return File(image.path);
     }
+    return null;
   }
 }

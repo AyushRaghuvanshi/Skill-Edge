@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:skilledge/EducatorScreens/home.dart';
+import 'package:skilledge/EducatorScreens/hostedCourse.dart';
+
 import 'package:skilledge/services/api_services.dart';
 
 class AddSection extends StatefulWidget {
@@ -40,7 +40,6 @@ class _AddSectionState extends State<AddSection> {
     );
   }
 
-  @override
   Widget _pagebuild(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -72,6 +71,7 @@ class _AddSectionState extends State<AddSection> {
                 if (value!.length == 0) {
                   return 'Enter Lesson Name';
                 }
+                return null;
               },
               decoration: InputDecoration(
                   label: Text('Lesson Name'), border: OutlineInputBorder()),
@@ -110,6 +110,11 @@ class _AddSectionState extends State<AddSection> {
               setState(() {
                 loading = false;
               });
+              print(value.toString());
+              if (value.toString() == "{msg: lesson added}") {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: ((context) => HostedCourse())));
+              }
             });
           }
         },
@@ -136,5 +141,6 @@ class _AddSectionState extends State<AddSection> {
     if (video != null) {
       return File(video.path);
     }
+    return null;
   }
 }

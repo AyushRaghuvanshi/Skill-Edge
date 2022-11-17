@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skilledge/EducatorScreens/Addsection.dart';
+import 'package:skilledge/EducatorScreens/Dashboard.dart';
+import 'package:skilledge/EducatorScreens/home.dart';
 
 class HostCoursePage extends StatefulWidget {
   const HostCoursePage({super.key});
@@ -22,7 +23,7 @@ class _HostCoursePageState extends State<HostCoursePage> {
 
   int? catog;
 
-  String price = "";
+  String price = "0";
 
   String desc = "";
 
@@ -76,6 +77,7 @@ class _HostCoursePageState extends State<HostCoursePage> {
                   if (value!.length == 0) {
                     return 'Enter a topic';
                   }
+                  return null;
                 },
                 decoration: InputDecoration(
                     label: Text('Topic'), border: OutlineInputBorder()),
@@ -92,6 +94,7 @@ class _HostCoursePageState extends State<HostCoursePage> {
                   if (value!.length == 0) {
                     return 'Enter a Description';
                   }
+                  return null;
                 },
                 decoration: InputDecoration(
                     label: Text('Description'), border: OutlineInputBorder()),
@@ -159,18 +162,15 @@ class _HostCoursePageState extends State<HostCoursePage> {
             Padding(
               padding: const EdgeInsets.only(top: 24.0),
               child: TextFormField(
+                enabled: iscertified,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: ((value) {
-                  if (value!.length <= 0) {
-                    return 'Enter the price';
-                  }
-                }),
                 onChanged: (value) {
                   price = value;
                 },
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                    label: Text('Price'), border: OutlineInputBorder()),
+                    label: Text((iscertified!) ? 'Price' : "Free"),
+                    border: OutlineInputBorder()),
               ),
             ),
           ]),
@@ -219,5 +219,6 @@ class _HostCoursePageState extends State<HostCoursePage> {
     if (image != null) {
       return File(image.path);
     }
+    return null;
   }
 }

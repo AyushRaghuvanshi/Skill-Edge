@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:pinput/pinput.dart';
+
 import 'package:skilledge/models/forgot_pass.dart';
 import 'package:skilledge/screens/AuthScreens/otpforgot.dart';
 import 'package:skilledge/services/api_services.dart';
@@ -22,7 +22,7 @@ class _ForgotPassState extends State<ForgotPass> {
   String email = "";
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     forgot = forgot_req_model();
   }
@@ -34,7 +34,7 @@ class _ForgotPassState extends State<ForgotPass> {
     );
   }
 
-  @override
+
   Widget _pagebuild(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -77,6 +77,7 @@ class _ForgotPassState extends State<ForgotPass> {
                       } else {
                         emailok = true;
                       }
+                      return null;
                     },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     onChanged: (newValue) {
@@ -139,6 +140,7 @@ class _ForgotPassState extends State<ForgotPass> {
                             child: Text(
                           'Send OTP',
                           style: TextStyle(
+                            color: Colors.white,
                               fontSize: 20, fontWeight: FontWeight.w400),
                         )))),
               ),

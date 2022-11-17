@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:skilledge/screens/AuthScreens/Login.dart';
+
 import 'package:skilledge/screens/AuthScreens/Register.dart';
 import 'package:skilledge/widgets/logo.dart';
 

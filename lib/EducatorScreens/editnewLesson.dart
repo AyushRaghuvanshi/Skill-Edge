@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/services/api_services.dart';
@@ -39,7 +38,7 @@ class _EditAddSectionState extends State<EditAddSection> {
     );
   }
 
-  @override
+
   Widget _pagebuild(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -71,6 +70,7 @@ class _EditAddSectionState extends State<EditAddSection> {
                 if (value!.length == 0) {
                   return 'Enter a topic';
                 }
+                return null;
               },
               decoration: InputDecoration(
                   label: Text('Lesson Name'), border: OutlineInputBorder()),
@@ -123,5 +123,6 @@ class _EditAddSectionState extends State<EditAddSection> {
     if (video != null) {
       return File(video.path);
     }
+    return null;
   }
 }

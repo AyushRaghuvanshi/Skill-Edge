@@ -1,37 +1,24 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skilledge/services/api_services.dart';
 
-import 'package:skilledge/screens/dashboard.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:skilledge/widgets/courseCard.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.gotosearch});
+  const HomeScreen(
+      {super.key, required this.gotosearch, required this.gotoprofile});
   final void Function() gotosearch;
+  final void Function() gotoprofile;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   int id = 0;
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
-  void _onRefresh() async {
-    // monitor network fetch
-    print(courses);
-    API api = new API();
-    await api.getprofile();
-    await getdata();
-    setState(() {});
-    _refreshController.refreshCompleted();
-  }
 
   String? name;
 
@@ -62,9 +49,20 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isedu;
   List<String>? courses;
   List<dynamic> courses_map = [];
-
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
+    return ModalProgressHUD(
+        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+  }
+
+  void setloading() {
+    setState(() {
+      loading = !loading;
+    });
+  }
+
+  Widget _pagebuild(BuildContext context) {
     return FutureBuilder(
         builder: (context, snapshot) {
           if (courses != null) {
@@ -75,17 +73,15 @@ class _HomeScreenState extends State<HomeScreen> {
             return Center(
                 child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: SmartRefresher(
-                controller: _refreshController,
-                onRefresh: _onRefresh,
-                child: SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    width: MediaQuery.of(context).size.width,
-                    child: SingleChildScrollView(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.9,
-                        width: MediaQuery.of(context).size.width,
+              child: SingleChildScrollView(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.9,
+                  width: MediaQuery.of(context).size.width,
+                  child: SingleChildScrollView(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.9,
+                      width: MediaQuery.of(context).size.width,
+                      child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -104,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Hi, $name',
+                                            'Hi, ${name.toString().split(' ')[0]}',
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
                                                 fontSize: 24,
@@ -142,12 +138,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                             color: Color(0xFF01C5A6),
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(100))),
-                                        child: CircleAvatar(
-                                          foregroundImage: NetworkImage((pic !=
-                                                  null)
-                                              ? pic!
-                                              : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'),
-                                          radius: 24,
+                                        child: GestureDetector(
+                                          onTap: widget.gotoprofile,
+                                          child: CircleAvatar(
+                                            foregroundImage: NetworkImage((pic !=
+                                                    null)
+                                                ? pic!
+                                                : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'),
+                                            radius: 24,
+                                          ),
                                         ),
                                       ),
                                     )
@@ -194,67 +193,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 32.0),
                               child: SingleChildScrollView(
-                                child: Stack(children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                            colors: [
-                                              Color(0xFF03D976),
-                                              Color(0xFF00B6CE)
-                                            ]),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    width: double.infinity,
-                                    height: 128,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, right: 24),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(24.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                '40% off',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 4.0, bottom: 2),
-                                                child: Text('Today Special',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 24)),
-                                              ),
-                                              Text(
-                                                  'Get Discout For Every Course',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 10))
-                                            ],
-                                          ),
-                                        ),
-                                        Text('40%',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 48)),
-                                      ],
-                                    ),
-                                  )
-                                ]),
-                              ),
+                                  child: Center(
+                                      child:
+                                          Image.asset('assets/welcome.png'))),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 32.0),
@@ -264,11 +205,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
-                            Expanded(
+                            Container(
+                              height: 260,
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: courses_map.length,
                                   itemBuilder: ((context, index) {
+                                    // print(courses_map[index]);/
                                     int id = courses_map[index]['id'];
                                     int catog = courses_map[index]['category'];
                                     String topic = courses_map[index]['topic'];
@@ -284,6 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     String edu_name =
                                         courses_map[index]["educator_name"];
                                     return CourseCard(
+                                        loading: setloading,
                                         id: id,
                                         rating: rating,
                                         edu_name: edu_name,
@@ -304,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ));
           }
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         },
         future: getdata());
   }

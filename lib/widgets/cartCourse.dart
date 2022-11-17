@@ -1,9 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+import 'package:flutter_mobx/flutter_mobx.dart';
+
+import 'package:skilledge/Stores/cart.dart';
+import 'package:skilledge/screens/Screens/course_bought.dart';
 import 'package:skilledge/services/api_services.dart';
+
+import '../screens/dashboard.dart';
 
 class CartCourses extends StatefulWidget {
   const CartCourses(
@@ -27,15 +30,15 @@ class CartCourses extends StatefulWidget {
 }
 
 class _CartCoursesState extends State<CartCourses> {
-  bool loading = false;
-  Widget build(BuildContext context) {
-    return ModalProgressHUD(
-        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
-  }
+  var cart = Cart();
 
   @override
-  Widget _pagebuild(BuildContext context) {
+  Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+          color: Color(0xFFF6FAFA),
+          borderRadius: BorderRadius.all(Radius.circular(10))),
+      margin: EdgeInsets.only(top: 16),
       height: 150,
       width: double.infinity,
       child: Row(
@@ -92,55 +95,69 @@ class _CartCoursesState extends State<CartCourses> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              loading = true;
-                            });
-                            API api = API();
-                            api.buyacourse(widget.id).then((value) {
-                              setState(() {
-                                loading = false;
-                              });
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text(value)));
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                left: 16, right: 16, top: 4, bottom: 4),
-                            decoration: BoxDecoration(
-                                // border: Border.all(color: ),
-                                color: Color(0xFF01C5A6),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            // padding: EdgeInsets.all(4),
-                            child: Text(
-                              'Buy Now',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )),
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              loading = false;
-                            });
-                            API api = API();
-                            api.removefromCart(widget.id).then((value) {
-                              setState(() {
-                                loading = true;
-                              });
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text(value)));
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(4),
-                            child: Text(
-                              'Remove',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          )),
+                      Observer(builder: (context) {
+                        if (cart.bloading) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else
+                          return TextButton(
+                              onPressed: () {
+                                print(screentouch);
+                                if (screentouch == true) {
+                                  return;
+                                }
+
+                                screentouch = true;
+                                API api = API();
+                                api.buyacourse(widget.id).then((value) {
+                                  screentouch = false;
+                               
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    left: 16, right: 16, top: 4, bottom: 4),
+                                decoration: BoxDecoration(
+                                    // border: Border.all(color: ),
+                                    color: Color(0xFF01C5A6),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5))),
+                                // padding: EdgeInsets.all(4),
+                                child: Text(
+                                  'Buy Now',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ));
+                      }),
+                      Observer(builder: (_) {
+                        if (cart.loading) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else
+                          return TextButton(
+                              onPressed: () {
+                                print(screentouch);
+                                if (screentouch) {
+                                  return;
+                                }
+                                cart.setLoading();
+                                API api = API();
+                                api.removefromCart(widget.id).then((value) {
+                                  cart.setLoading();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(value)));
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(4),
+                                child: Text(
+                                  'Remove',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ));
+                      }),
                     ],
                   ),
                 )

@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skilledge/EducatorScreens/edit.dart';
 import 'package:skilledge/EducatorScreens/wallet.dart';
 import 'package:skilledge/screens/Getting_started/gettingstarted.dart';
 import 'package:skilledge/screens/Screens/editProfile.dart';
-import 'package:skilledge/screens/Screens/wallet.dart';
+
 import 'package:skilledge/screens/dashboard.dart';
 import 'package:skilledge/services/api_services.dart';
 
@@ -37,6 +36,12 @@ class _ProfilePageEduState extends State<ProfilePageEdu> {
 
   String? gender;
 
+  bool? iscertified;
+
+  double? israting;
+
+  bool loading = false;
+
   Future<void> getdata() async {
     var snapshot = await SharedPreferences.getInstance();
     name = await snapshot.getString("Name");
@@ -46,6 +51,8 @@ class _ProfilePageEduState extends State<ProfilePageEdu> {
     phone = await snapshot.getInt("mobile");
     isedu = await snapshot.getBool("is_educator");
     gender = await snapshot.getString("gender");
+    iscertified = await snapshot.getBool("is_certified_educator");
+    israting = await snapshot.getDouble("educator_rating");
   }
 
   @override
@@ -104,14 +111,15 @@ class _ProfilePageEduState extends State<ProfilePageEdu> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => EditProfile(
-                                                  pic: pic,
-                                                  name: name,
-                                                  dob: dob,
-                                                  phone: phone,
-                                                  user_name: username,
-                                                  gender: gender,
-                                                  is_educator: isedu)));
+                                              builder: (context) =>
+                                                  EditProfileEdu(
+                                                      pic: pic,
+                                                      name: name,
+                                                      dob: dob,
+                                                      phone: phone,
+                                                      user_name: username,
+                                                      gender: gender,
+                                                      is_educator: isedu)));
                                       // file = await pickImage();
 
                                       // setState(() {});
@@ -155,80 +163,121 @@ class _ProfilePageEduState extends State<ProfilePageEdu> {
                               })
                         ],
                       ),
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFeed202),
+                            border: Border.all(color: Colors.amber, width: 10),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: Center(
+                          child: Text(
+                            (iscertified == null)
+                                ? ""
+                                : (iscertified!)
+                                    ? ""
+                                    : "You are not a Certified Educator.\n Your Rating is ${(israting.toString().length > 3) ? israting.toString().substring(0, 4) : israting.toString()}\n You Need to be above 2.5 to be able to Host Paid Courses",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                        ),
+                      ),
                       Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 31.0, right: 32, top: 62),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        icon: Icon(Icons.wallet),
-                                        onPressed: () {
-                                          API api = API();
-                                          api.getwalletmoney().then((value) {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: ((context) =>
-                                                        WalletEdu(
-                                                            amount: value))));
-                                          });
-                                        },
-                                      ),
-                                      Text('Wallet')
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Icon(Icons.people),
-                                      Text('Invite')
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Icon(Icons.lock),
-                                      Text('Privacy')
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              // padding: const EdgeInsets.all(8.0),
-                              padding: EdgeInsets.only(
-                                  left: 31.0, right: 10, top: 32),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Icon(Icons.thumb_up),
-                                      Text('Contact us')
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 54.0),
-                                    child: Column(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 31.0, right: 32, top: 62),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
                                       children: [
-                                        IconButton(
-                                          icon: Icon(Icons.logout),
-                                          onPressed: () => _showpopup(context),
+                                        Container(
+                                          child: (loading)
+                                              ? Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                )
+                                              : IconButton(
+                                                  icon: Icon(Icons.wallet),
+                                                  onPressed: () {
+                                                    screentouch = true;
+                                                    setState(() {
+                                                      loading = true;
+                                                    });
+                                                    API api = API();
+                                                    api
+                                                        .getwalletmoney()
+                                                        .then((value) {
+                                                      setState(() {
+                                                        loading = false;
+                                                      });
+                                                      screentouch = false;
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: ((context) =>
+                                                                  WalletEdu(
+                                                                      amount:
+                                                                          value))));
+                                                    });
+                                                  },
+                                                ),
                                         ),
-                                        Text('Log out')
+                                        Text('Wallet')
                                       ],
                                     ),
-                                  ),
-                                ],
+                                    Column(
+                                      children: [
+                                        Icon(Icons.people),
+                                        Text('Invite')
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Icon(Icons.lock),
+                                        Text('Privacy')
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                // padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.only(
+                                    left: 31.0, right: 10, top: 32),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Icon(Icons.thumb_up),
+                                        Text('Contact us')
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 54.0),
+                                      child: Column(
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.logout),
+                                            onPressed: () =>
+                                                _showpopup(context),
+                                          ),
+                                          Text('Log out')
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ]),

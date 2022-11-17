@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:skilledge/screens/PaymentScreens/check.dart';
+import 'package:skilledge/screens/Screens/course_bought.dart';
+
 import 'package:skilledge/services/api_services.dart';
 
 class CoursePreview extends StatefulWidget {
@@ -36,8 +36,8 @@ class _CoursePreviewState extends State<CoursePreview> {
   List<Widget> tabs = [];
   bool loading = false;
   Widget build(BuildContext context) {
-    return  ModalProgressHUD(
-          child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+    return ModalProgressHUD(
+        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
   }
 
   Widget _pagebuild(BuildContext context) {
@@ -330,8 +330,16 @@ class _CoursePreviewState extends State<CoursePreview> {
                     setState(() {
                       loading = false;
                     });
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(value)));
+                    if (value == "Your IN! Order Confirmation") {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => CourseBought())),
+                          (route) => false);
+                    } else {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(value)));
+                    }
                   });
                 },
                 child: Container(
@@ -354,6 +362,7 @@ class _CoursePreviewState extends State<CoursePreview> {
                     setState(() {
                       loading = false;
                     });
+
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(value)));
                   });

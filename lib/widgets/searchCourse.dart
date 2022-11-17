@@ -1,9 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+import 'package:flutter_mobx/flutter_mobx.dart';
+
+import 'package:skilledge/Stores/search.dart';
 import 'package:skilledge/screens/Screens/CoursePreview.dart';
+import 'package:skilledge/screens/dashboard.dart';
 import 'package:skilledge/services/api_services.dart';
 
 class SearchCourse extends StatefulWidget {
@@ -31,15 +32,15 @@ class SearchCourse extends StatefulWidget {
 
 class _SearchCourseState extends State<SearchCourse> {
   bool loading = false;
-  Widget build(BuildContext context) {
-    return ModalProgressHUD(
-        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
-  }
-
+  var search = Search();
   @override
-  Widget _pagebuild(BuildContext context) {
+  Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+          color: Color(0xFFF6FAFA),
+          borderRadius: BorderRadius.all(Radius.circular(10))),
       height: 150,
+      margin: EdgeInsets.only(top: 8),
       width: double.infinity,
       child: Row(
         children: [
@@ -94,49 +95,59 @@ class _SearchCourseState extends State<SearchCourse> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            loading = false;
-                          });
-                          API api = API();
-                          api.getLessons(widget.id).then((value1) {
-                            api.getReviews(widget.id).then((value) {
-                              setState(() {
-                                loading = true;
+                    Observer(builder: (_) {
+                      if (search.loading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else
+                        return TextButton(
+                            onPressed: () {
+                              if (screentouch == true) {
+                                return;
+                              }
+                              search.setLoading();
+                              // screentouch = true;
+                              API api = API();
+                              api.getLessons(widget.id).then((value1) {
+                                api.getReviews(widget.id).then((value) {
+                                  search.setLoading();
+                                  // screentouch = false;
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CoursePreview(
+                                            id: widget.id,
+                                            topic: widget.topic,
+                                            thumbnail: widget.thumbnail,
+                                            desc: widget.desc,
+                                            price: widget.price,
+                                            rating: widget.rating,
+                                            educator: widget.edu_name,
+                                            lessons: value1,
+                                            reviews: value),
+                                      ));
+                                });
                               });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CoursePreview(
-                                        id: widget.id,
-                                        topic: widget.topic,
-                                        thumbnail: widget.thumbnail,
-                                        desc: widget.desc,
-                                        price: widget.price,
-                                        rating: widget.rating,
-                                        educator: widget.edu_name,
-                                        lessons: value1,
-                                        reviews: value),
-                                  ));
-                            });
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xFF01C5A6)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          padding: EdgeInsets.all(4),
-                          child: Text(
-                            'Preview',
-                            style: TextStyle(color: Color(0xFF01C5A6)),
-                          ),
-                        )),
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Color(0xFF01C5A6)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              padding: EdgeInsets.all(4),
+                              child: Text(
+                                'Preview',
+                                style: TextStyle(color: Color(0xFF01C5A6)),
+                              ),
+                            ));
+                    }),
                     Padding(
                       padding: const EdgeInsets.only(left: 24.0),
                       child: Text(
-                        '\$' + widget.price.toString(),
+                        (widget.price == 0)
+                            ? "Free"
+                            : '₹' + widget.price.toString(),
                         style: TextStyle(fontSize: 24),
                       ),
                     )

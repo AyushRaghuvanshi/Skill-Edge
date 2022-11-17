@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skilledge/screens/PaymentScreens/check.dart';
 import 'package:skilledge/services/api_services.dart';
@@ -33,7 +32,6 @@ class _WalletState extends State<Wallet> {
   var loading = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getmoney();
   }
@@ -84,8 +82,8 @@ class _WalletState extends State<Wallet> {
                                   padding: const EdgeInsets.only(top: 4.0),
                                   child: Text(
                                     (amount == -1.0)
-                                        ? '\$${(widget.amount).round()}'
-                                        : "\$${(amount).round()}",
+                                        ? '₹${(widget.amount).round()}'
+                                        : "₹${(amount).round()}",
                                     style: TextStyle(
                                         fontSize: 24, color: Color(0xFF01C5A6)),
                                   ),
@@ -105,7 +103,7 @@ class _WalletState extends State<Wallet> {
                   ),
                 ]),
             Padding(
-              padding: const EdgeInsets.only(top: 64.0),
+              padding: const EdgeInsets.only(top: 84.0),
               child: TextButton(
                   style:
                       TextButton.styleFrom(backgroundColor: Color(0xFF01C5A6)),
@@ -132,6 +130,7 @@ class _WalletState extends State<Wallet> {
                 if (value!.length <= 0) {
                   return "Balance must not be empty";
                 }
+                return null;
               },
               autovalidateMode: AutovalidateMode.onUserInteraction,
               keyboardType: TextInputType.number,
@@ -140,7 +139,7 @@ class _WalletState extends State<Wallet> {
               },
               decoration: InputDecoration(
                 icon: Icon(Icons.money),
-                labelText: '\$1000',
+                labelText: '₹1000',
               ),
             ),
           ],

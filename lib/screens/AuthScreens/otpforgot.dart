@@ -1,15 +1,11 @@
-import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:circular_countdown_timer/countdown_text_format.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pinput/pinput.dart';
 import 'package:skilledge/models/forgot_pass.dart';
 import 'package:skilledge/models/newpass.dart';
-import 'package:skilledge/models/otp_model.dart';
-import 'package:skilledge/models/resendotp.dart';
+
 import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/logo.dart';
 
@@ -37,7 +33,7 @@ class _ForgotOTPState extends State<ForgotOTP> {
   bool pass2 = false;
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     otp_req = newpass_req_model();
     resend = forgot_req_model();
@@ -128,6 +124,7 @@ class _ForgotOTPState extends State<ForgotOTP> {
                         } else {
                           pass1 = true;
                         }
+                        return null;
                       },
                       onChanged: (value) {
                         setState(() {
@@ -182,6 +179,7 @@ class _ForgotOTPState extends State<ForgotOTP> {
                         } else {
                           pass2 = true;
                         }
+                        return null;
                       },
                       onChanged: (value) {
                         setState(() {
@@ -262,6 +260,7 @@ class _ForgotOTPState extends State<ForgotOTP> {
                               child: Text(
                             'Verify OTP',
                             style: TextStyle(
+                              color: Colors.white,
                                 fontSize: 20, fontWeight: FontWeight.w400),
                           )))),
                 ),

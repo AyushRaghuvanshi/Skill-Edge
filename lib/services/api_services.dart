@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skilledge/Stores/home.dart';
 import 'package:skilledge/models/forgot_pass.dart';
 import 'package:skilledge/models/interest_model.dart';
 import 'package:skilledge/models/login_model.dart';
@@ -12,25 +13,35 @@ import 'package:skilledge/models/otp_model.dart';
 import 'package:skilledge/models/profile_details_model.dart';
 import 'package:skilledge/models/reg_model.dart';
 import 'package:skilledge/models/resendotp.dart';
+import 'package:skilledge/screens/dashboard.dart';
 
 String? token;
 
 class API {
   Dio dio = new Dio();
+  var home = Home();
+
+  bool? ayush;
 
   // dio.options.headers["Authorization"] = "Bearer ${token}";
   Future<login_response_model> login_api(login_model req) async {
     String url = "https://skilledge.herokuapp.com/api/login/";
+    ayush = true;
     final res = await dio.post((url), data: req.toJson(), options: Options(
       validateStatus: (status) {
         return status == 200 || status == 400 || status == 401;
       },
     ));
     print(res.toString());
+    ayush = false;
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
-      if (login_response_model.fromJson((res.data)).token["access"] != null) {
+      if (login_response_model.fromJson((res.data)).token !=
+          null) if (login_response_model
+              .fromJson((res.data))
+              .token["access"] !=
+          null) {
         token = login_response_model.fromJson((res.data)).token["access"];
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token!);
@@ -45,19 +56,27 @@ class API {
 
   Future<reg_res_model> reg_api(reg_req_model req) async {
     String url = "https://skilledge.herokuapp.com/api/new_user_registration/";
-    final res = await dio.post(url, data: req.toJson(), options: Options(
+    ayush = true;
+    FormData data = FormData.fromMap({
+      "name": req.name,
+      "user_name": req.userName,
+      "email": req.email,
+      "password": req.password
+    });
+    final res = await dio.post(url, data: {
+      "email": "shreyansh2110144@akgec.ac.in",
+      "name": "shrey",
+      "user_name": "shrey",
+      "password": "tesT@1"
+    }, options: Options(
       validateStatus: (status) {
-        return status == 200 || status == 400;
+        return true;
       },
     ));
-
+    ayush = false;
+    print((data).toString());
+    print(res.data);
     if (res.statusCode == 200 || res.statusCode == 400) {
-      if (reg_res_model.fromJson(((res.data))).token != null) {
-        token = reg_res_model.fromJson(((res.data))).token["access"];
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', token!);
-      }
-      (token);
       return reg_res_model.fromJson(((res.data)));
     } else {
       throw Exception('Error occured while loading data');
@@ -65,14 +84,21 @@ class API {
   }
 
   Future<otp_res_model> verifyotp(OTP_req_model req) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/api/otp_verify/";
     final res = await dio.post(url, data: req.toJson(), options: Options(
       validateStatus: (status) {
         return status == 200 || status == 400;
       },
     ));
+    ayush = false;
 
     if (res.statusCode == 200 || res.statusCode == 400) {
+      if (res.data['token'] != null) {
+        token = res.data['token']["access"];
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token!);
+      }
       return otp_res_model.fromJson((res.data));
     } else {
       throw Exception('Failed to load data');
@@ -81,11 +107,13 @@ class API {
 
   Future<newpass_res_model> newpass(newpass_req_model req) async {
     String url = "https://skilledge.herokuapp.com/api/enter_new_password/";
+    ayush = true;
     final res = await dio.post(url, data: req.toJson(), options: Options(
       validateStatus: (status) {
         return status == 200 || status == 400;
       },
     ));
+    ayush = false;
 
     if (res.statusCode == 200 || res.statusCode == 400) {
       return newpass_res_model.fromJson((res.data));
@@ -95,13 +123,14 @@ class API {
   }
 
   Future<forgot_res_model> forgot(forgot_req_model req) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/api/reset_password/";
     final res = await dio.post(url, data: req.toJson(), options: Options(
       validateStatus: (status) {
         return status == 200 || status == 400;
       },
     ));
-
+    ayush = false;
     if (res.statusCode == 200 || res.statusCode == 400) {
       return forgot_res_model.fromJson((res.data));
     } else {
@@ -110,12 +139,14 @@ class API {
   }
 
   Future<resendotp_res_model> resendotp(resendotp_req_model req) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/api/resend_otp/";
     final res = await dio.post(url, data: req.toJson(), options: Options(
       validateStatus: (status) {
         return status == 200 || status == 400;
       },
     ));
+    ayush = false;
 
     if (res.statusCode == 200 || res.statusCode == 400) {
       return resendotp_res_model.fromJson((res.data));
@@ -125,6 +156,7 @@ class API {
   }
 
   Future<Profile_details_res> profile(Profile_details_req req) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/api/profile_details/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
     FormData data;
@@ -157,6 +189,7 @@ class API {
         return status == 200 || status == 400;
       },
     ));
+    ayush = false;
     print(res.data);
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
@@ -169,6 +202,7 @@ class API {
   }
 
   Future<dynamic> addReview(int cid, String comment, int rating) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/courses/rate_course/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
     FormData data;
@@ -184,6 +218,7 @@ class API {
         return status == 200 || status == 400;
       },
     ));
+    ayush = false;
     (res.data);
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
@@ -196,6 +231,7 @@ class API {
   }
 
   Future<List<dynamic>> getLessons(int topiId) async {
+    ayush = true;
     String url =
         "https://skilledge.herokuapp.com/courses/view_specific_lesson/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
@@ -210,6 +246,7 @@ class API {
     ));
     print(topiId);
     (topiId);
+    ayush = false;
     print(res.data.toString());
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
@@ -220,7 +257,32 @@ class API {
     }
   }
 
+  Future<bool> verifycheck() async {
+    String url = "https://skilledge.herokuapp.com/api/Verifycheck/";
+    ayush = true;
+    dio.options.headers["Authorization"] = "Bearer ${token}";
+    final res = await dio.get((url), options: Options(
+      validateStatus: (status) {
+        return status == 200 || status == 400 || status == 405;
+      },
+    ));
+    print(res.statusCode);
+    ayush = false;
+    if (res.statusCode == 400) {
+      return false;
+    } else if (res.statusCode == 200) {
+      return true;
+    }
+
+    if (res.statusCode == 200 || res.statusCode == 401) {
+      return false;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   Future<List<dynamic>> getReviews(int cid) async {
+    ayush = true;
     String url =
         "https://skilledge.herokuapp.com/courses/course_feedback/${cid}/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
@@ -230,8 +292,9 @@ class API {
         return status == 200 || status == 400 || status == 405;
       },
     ));
-    (res.data);
+    print(res.data);
     (res.toString());
+    ayush = false;
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -242,6 +305,7 @@ class API {
   }
 
   Future<void> getprofile() async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/api/profile_details/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
 
@@ -250,8 +314,8 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
+    ayush = false;
 
-    (res.data);
     print(res.toString());
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
@@ -263,8 +327,10 @@ class API {
         await value.setString("dateOfBirth", res.data['dateOfBirth']);
         await value.setInt("mobile", res.data['mobile']);
         await value.setString("gender", res.data['gender']);
-        // await value.setString("email", res.data['email']);
         await value.setBool("is_educator", res.data['is_educator']);
+        await value.setBool(
+            "is_certified_educator", res.data['is_certified_educator']);
+        await value.setDouble("educator_rating", res.data['educator_rating']);
         await getcourses();
         await gethostedCourses();
       });
@@ -275,6 +341,7 @@ class API {
 
   Future<void> gethostedCourses() async {
     String url = "https://skilledge.herokuapp.com/educator/become_educator/";
+    ayush = true;
     dio.options.headers["Authorization"] = "Bearer ${token}";
 
     final res = await dio.get((url), options: Options(
@@ -283,6 +350,7 @@ class API {
       },
     ));
 
+    ayush = false;
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -303,6 +371,7 @@ class API {
   }
 
   Future<List<dynamic>> getCart() async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/cart/cart/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
 
@@ -311,6 +380,7 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
+    ayush = false;
     if (res.statusCode == 400) {
       return [res.data['msg']];
     }
@@ -325,6 +395,7 @@ class API {
   }
 
   Future<void> getcourses() async {
+    ayush = true;
     String url =
         "https://skilledge.herokuapp.com/courses/view_filtered_courses/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
@@ -333,6 +404,7 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
+    ayush = false;
 
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
@@ -356,6 +428,7 @@ class API {
   }
 
   Future<List<dynamic>> getSearchresults(String search, int filter) async {
+    // ayush = true;
     String url = "";
     print(search);
     (filter);
@@ -373,10 +446,11 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
+    // ayush = false;
     if (res.statusCode == 400) {
       return ['Nothing Found Here'];
     }
-    (res.statusCode);
+    print(res.data);
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -387,6 +461,7 @@ class API {
   }
 
   Future<String> buyacourse(int cid) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/wallet/buy_course/" +
         cid.toString() +
         '/';
@@ -398,6 +473,7 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
+    ayush = false;
     if (res.statusCode == 400) {
       return res.data['msg'];
     }
@@ -411,6 +487,7 @@ class API {
   }
 
   Future<List<dynamic>> getpurchasedcourses() async {
+    // ayush = true;
     String url = "https://skilledge.herokuapp.com/courses/purchased_courses/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
     final res = await dio.get((url), options: Options(
@@ -420,6 +497,7 @@ class API {
     ));
     (token);
     (res.data);
+    // ayush = false;
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -430,6 +508,7 @@ class API {
   }
 
   Future<List<dynamic>> buyallcourse() async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/wallet/buy_allcourses/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
     final res = await dio.put((url), options: Options(
@@ -439,6 +518,7 @@ class API {
     ));
     (token);
     print(res.data);
+    ayush = false;
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -449,6 +529,7 @@ class API {
   }
 
   Future<Interest_res> interest(Interest_req req) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/courses/category/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
 
@@ -457,6 +538,7 @@ class API {
         return status == 200 || status == 400;
       },
     ));
+    ayush = false;
     ('It is=>');
     (res.data);
 
@@ -471,6 +553,7 @@ class API {
   }
 
   Future<String> removefromCart(int cid) async {
+    ayush = true;
     String url =
         "https://skilledge.herokuapp.com/cart/cart/" + cid.toString() + '/';
     dio.options.headers["Authorization"] = "Bearer ${token}";
@@ -481,6 +564,8 @@ class API {
       },
     ));
     (res.data);
+    ayush = false;
+
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -491,6 +576,7 @@ class API {
   }
 
   Future<dynamic> addbalancewallet(int amount, String paymentid) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/payment/flutter_razorpay/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
     amount = amount * 100;
@@ -502,7 +588,7 @@ class API {
         return true;
       },
     ));
-
+    ayush = false;
     if (res.statusCode == 400) {
       return 'Not Enough Balance in your Wallet';
     }
@@ -516,6 +602,7 @@ class API {
   }
 
   Future<double> getwalletmoney() async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/wallet/buy_allcourses/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
     final res = await dio.get((url), options: Options(
@@ -523,7 +610,7 @@ class API {
         return true;
       },
     ));
-
+    ayush = false;
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -534,6 +621,7 @@ class API {
   }
 
   Future<String> addtoCart(int cid) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/cart/cart/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
 
@@ -542,6 +630,7 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
+    ayush = false;
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -553,6 +642,7 @@ class API {
 
   Future<dynamic> hostCourse(File thumbnail, String desc, String price,
       String topic, String lessonName, File video, int catog) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/courses/course/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
     FormData data = FormData.fromMap({
@@ -571,19 +661,20 @@ class API {
         return true;
       },
     ));
-    print(res.data);
-    print(res.statusCode);
+    ayush = false;
+    // print(res.data);
+    // print(res.statusCode);
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
-      await addLesson((res.data['id']), lessonName, video);
-      return res.data;
+      return await addLesson((res.data['id']), lessonName, video);
     } else {
       throw Exception('Failed to load data');
     }
   }
 
   Future<dynamic> addLesson(int cid, String desc, File file) async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/courses/lesson/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
     FormData data = FormData.fromMap({
@@ -600,7 +691,8 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
-    print(res.data);
+    ayush = false;
+    // print(res.data);
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||
         res.statusCode == 401) {
@@ -611,6 +703,7 @@ class API {
   }
 
   Future<void> makeEdu() async {
+    ayush = true;
     String url = "https://skilledge.herokuapp.com/educator/become_educator/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
     // FormData data = FormData.fromMap({
@@ -627,6 +720,7 @@ class API {
         return status == 200 || status == 400 || status == 401;
       },
     ));
+    ayush = false;
 
     if (res.statusCode == 200 ||
         res.statusCode == 400 ||

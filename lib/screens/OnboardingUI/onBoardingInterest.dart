@@ -1,13 +1,8 @@
-import 'dart:io';
-import 'package:country_phone_code_picker/core/country_phone_code_picker_widget.dart';
-import 'package:country_phone_code_picker/models/country.dart';
-import 'package:date_time_picker/date_time_picker.dart';
-import 'package:dropdown_plus/dropdown_plus.dart';
+
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:skilledge/models/interest_model.dart';
 import 'package:skilledge/models/profile_details_model.dart';
 import 'package:skilledge/screens/dashboard.dart';
@@ -60,7 +55,7 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     req = Profile_details_req();
     // int_req = Interest_req();
@@ -73,7 +68,7 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
     );
   }
 
-  @override
+  
   Widget _pagebuild(BuildContext context) {
     return Scaffold(
         body: Center(

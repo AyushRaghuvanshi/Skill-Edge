@@ -22,18 +22,11 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.18.2 <3.0.0"
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  mobx: ^2.0.7+7
+  flutter_mobx: ^2.0.6+3
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.1.5
   carousel_slider: ^4.1.1
@@ -63,11 +56,13 @@ dependencies:
   circular_countdown_timer: ^0.2.3
   mailto: ^2.0.0
   url_launcher: ^6.1.6
+  flutter_offline: ^2.1.0
 
 dev_dependencies:
+  build_runner: ^2.2.1
+  mobx_codegen: ^2.0.7+2
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.10.0
 
 flutter_icons:
   android: "launcher_icon"

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skilledge/screens/BrowsePage/home.dart';
 import 'package:skilledge/screens/BrowsePage/searchCard.dart';
-import 'package:skilledge/screens/Screens/Search.dart';
-import 'package:skilledge/screens/Screens/cart.dart';
-import 'package:skilledge/screens/Screens/courses.dart';
-import 'package:skilledge/screens/Screens/home.dart';
-import 'package:skilledge/screens/Screens/profile.dart';
+
 
 class BrowseDash extends StatefulWidget {
   const BrowseDash({super.key});

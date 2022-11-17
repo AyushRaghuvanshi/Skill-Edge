@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
+
+import 'package:skilledge/screens/dashboard.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:mailto/mailto.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skilledge/EducatorScreens/Dashboard.dart';
@@ -51,13 +52,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   bool loading = false;
-  Widget build(BuildContext context) {
-    return ModalProgressHUD(
-        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
-  }
+  bool loading2 = false;
 
   @override
-  Widget _pagebuild(BuildContext context) {
+  Widget build(BuildContext context) {
     return FutureBuilder(
         future: getdata(),
         builder: ((context, snapshot) => Padding(
@@ -68,7 +66,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Container(
                   height: MediaQuery.of(context).size.height,
                   child: Container(
-                    // height: MediaQuery.of(context).size.height,
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -148,27 +145,39 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Switch to Educator',
                                 style: TextStyle(fontSize: 20),
                               ),
-                              Switch(
-                                  // thumb color (round icon)
-                                  activeColor: Colors.white,
-                                  activeTrackColor: Color(0xFF01C5A6),
-                                  inactiveThumbColor: Colors.blueGrey.shade600,
-                                  inactiveTrackColor: Colors.grey.shade400,
-                                  splashRadius: 50.0,
-                                  // boolean variable value
-                                  value: educator,
-                                  // changes the state of the switch
-                                  onChanged: (value) {
-                                    API api = API();
-                                    api.makeEdu().then((value) {
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: ((context) =>
-                                                  DashBoardEdu())),
-                                          (route) => false);
-                                    });
-                                  })
+                              Container(
+                                child: (loading)
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Switch(
+                                        // thumb color (round icon)
+                                        activeColor: Colors.white,
+                                        activeTrackColor: Color(0xFF01C5A6),
+                                        inactiveThumbColor:
+                                            Colors.blueGrey.shade600,
+                                        inactiveTrackColor:
+                                            Colors.grey.shade400,
+                                        splashRadius: 50.0,
+                                        // boolean variable value
+                                        value: educator,
+                                        // changes the state of the switch
+                                        onChanged: (value) {
+                                          setState(() {
+                                            loading = true;
+                                          });
+
+                                          API api = API();
+                                          api.makeEdu().then((value) {
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        DashBoardEdu())),
+                                                (route) => false);
+                                          });
+                                        }),
+                              )
                             ],
                           ),
                           Expanded(
@@ -184,22 +193,40 @@ class _ProfilePageState extends State<ProfilePage> {
                                     children: [
                                       Column(
                                         children: [
-                                          IconButton(
-                                            icon: Icon(Icons.wallet),
-                                            onPressed: () {
-                                              API api = API();
-                                              api
-                                                  .getwalletmoney()
-                                                  .then((value) {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: ((context) =>
-                                                            Wallet(
-                                                                amount:
-                                                                    value))));
-                                              });
-                                            },
+                                          Container(
+                                            child: (loading2)
+                                                ? Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  )
+                                                : IconButton(
+                                                    icon: Icon(Icons.wallet),
+                                                    onPressed: () {
+                                                      if (screentouch) {
+                                                        return;
+                                                      }
+                                                      setState(() {
+                                                        loading2 = true;
+                                                      });
+                                                      screentouch = true;
+                                                      API api = API();
+                                                      api
+                                                          .getwalletmoney()
+                                                          .then((value) {
+                                                        setState(() {
+                                                          loading2 = false;
+                                                        });
+                                                        screentouch = false;
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: ((context) =>
+                                                                    Wallet(
+                                                                        amount:
+                                                                            value))));
+                                                      });
+                                                    },
+                                                  ),
                                           ),
                                           Text('Wallet')
                                         ],
@@ -314,7 +341,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           onPressed: () async {
             var pref = await SharedPreferences.getInstance();
-            await pref.setString("token", "").then((value) {
+            await pref.clear().then((value) {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(

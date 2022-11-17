@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:skilledge/screens/Screens/course_bought.dart';
+import 'package:skilledge/screens/dashboard.dart';
 import 'package:skilledge/services/api_services.dart';
 import 'package:skilledge/widgets/cartCourse.dart';
-import 'package:skilledge/widgets/courseCard.dart';
-import 'package:skilledge/widgets/searchCourse.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -16,6 +15,8 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   List<dynamic> cartitems = [];
+
+  num totalprice = 0;
   Future<void> getcart() async {
     API api = API();
     api.getCart().then((value) {
@@ -32,10 +33,15 @@ class _CartPageState extends State<CartPage> {
 
   bool loading = true;
   Widget build(BuildContext context) {
-    return 
-     ModalProgressHUD(
-          child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
-  
+    return ModalProgressHUD(
+        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(screentouch);
   }
 
   Widget _pagebuild(BuildContext context) {
@@ -43,7 +49,7 @@ class _CartPageState extends State<CartPage> {
       future: getcart(),
       builder: ((context, snapshot) {
         return Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 64),
+          padding: const EdgeInsets.only(left: 16.0, top: 64, right: 16),
           child: Column(
             children: [
               Text(
@@ -55,11 +61,16 @@ class _CartPageState extends State<CartPage> {
                       itemCount: cartitems.length,
                       itemBuilder: ((context, index) {
                         if (cartitems[0] == 'no courses in cart') {
+                          totalprice = 0;
                           return Center(
                             child: Center(
                                 child: Text('NO COURSES IN THE CART YET')),
                           );
                         }
+                        if (index == 0) {
+                          totalprice = 0;
+                        }
+                        totalprice += cartitems[index]['price'];
 
                         return CartCourses(
                           // catog: cartitems[index]['category'],
@@ -74,20 +85,69 @@ class _CartPageState extends State<CartPage> {
                         );
                         // return Container();
                       }))),
-              TextButton(
-                  onPressed: () {
-                    if (cartitems[0] == 'no courses in cart') {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Add Something in cart first')));
-                    } else {
-                      API api = API();
-                      api.buyallcourse().then((value) => {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Courses Purchased')))
-                          });
-                    }
-                  },
-                  child: Text('Checkout'))
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    color: Color(0xFF01C5A6),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Total',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          Text(
+                            '₹$totalprice',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          )
+                        ],
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: (cartitems.isEmpty)
+                            ? null
+                            : (cartitems[0] == 'no courses in cart')
+                                ? null
+                                : () {
+                                    if (cartitems[0] == 'no courses in cart') {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Add Something in cart first')));
+                                    } else {
+                                      API api = API();
+                                      api.buyallcourse().then((value) => {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        CourseBought())))
+                                          });
+                                    }
+                                  },
+                        child: Container(
+                            padding: EdgeInsets.only(
+                                left: 24, right: 24, top: 16, bottom: 16),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: Center(
+                              child: Text(
+                                'Checkout',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ))),
+                  ],
+                ),
+              )
             ],
           ),
         );

@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+// import 'package:flutter/src/widgets/container.dart';
+// import 'package:flutter/src/widgets/framework.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:skilledge/EducatorScreens/Addsection.dart';
+// import 'package:skilledge/EducatorScreens/Addsection.dart';
 import 'package:skilledge/EducatorScreens/editnewLesson.dart';
 import 'package:skilledge/screens/Screens/CoursePreview.dart';
+import 'package:skilledge/screens/dashboard.dart';
 import 'package:skilledge/services/api_services.dart';
 
 class EduCourses extends StatefulWidget {
@@ -31,16 +32,16 @@ class EduCourses extends StatefulWidget {
 
 class _EduCoursesState extends State<EduCourses> {
   bool loading = false;
-  Widget build(BuildContext context) {
-    return ModalProgressHUD(
-        child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
-  }
 
   @override
-  Widget _pagebuild(BuildContext context) {
+  Widget build(BuildContext context) {
     return Container(
       height: 150,
       width: double.infinity,
+      margin: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          color: Color(0xFFF6FAFA),
+          borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Row(
         children: [
           Center(
@@ -95,50 +96,60 @@ class _EduCoursesState extends State<EduCourses> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              loading = true;
-                            });
-                            API api = API();
-                            api.getLessons(widget.id).then((value1) {
-                              print('below');
-                              print(value1);
-                              api.getReviews(widget.id).then((value) {
-                                setState(() {
-                                  loading = false;
-                                });
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CoursePreview(
-                                          id: widget.id,
-                                          topic: widget.topic,
-                                          thumbnail: widget.thumbnail,
-                                          desc: widget.short_description,
-                                          price: widget.price,
-                                          rating: widget.rating,
-                                          educator: widget.edu_name,
-                                          lessons: value1,
-                                          reviews: value),
-                                    ));
-                              });
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                left: 16, right: 16, top: 4, bottom: 4),
-                            decoration: BoxDecoration(
-                                // border: Border.all(color: ),
-                                color: Color(0xFF01C5A6),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            // padding: EdgeInsets.all(4),
-                            child: Text(
-                              'View',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )),
+                      Container(
+                        child: (loading)
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : TextButton(
+                                onPressed: () {
+                                  if (screentouch == true) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    loading = true;
+                                  });
+
+                                  API api = API();
+                                  api.getLessons(widget.id).then((value1) {
+                                    print('below');
+                                    print(value1);
+                                    api.getReviews(widget.id).then((value) {
+                                      setState(() {
+                                        loading = false;
+                                      });
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CoursePreview(
+                                                id: widget.id,
+                                                topic: widget.topic,
+                                                thumbnail: widget.thumbnail,
+                                                desc: widget.short_description,
+                                                price: widget.price,
+                                                rating: widget.rating,
+                                                educator: widget.edu_name,
+                                                lessons: value1,
+                                                reviews: value),
+                                          ));
+                                    });
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 16, right: 16, top: 4, bottom: 4),
+                                  decoration: BoxDecoration(
+                                      // border: Border.all(color: ),
+                                      color: Color(0xFF01C5A6),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                  // padding: EdgeInsets.all(4),
+                                  child: Text(
+                                    'View',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                )),
+                      ),
                       TextButton(
                           onPressed: () {
                             Navigator.push(

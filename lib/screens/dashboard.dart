@@ -12,19 +12,23 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 
+bool screentouch = false;
+
 class _DashboardState extends State<Dashboard> {
   int screen_index = 0;
 
   Widget switchPage() {
     switch (screen_index) {
       case 0:
-        return HomeScreen(
-          gotosearch: () {
-            setState(() {
-              screen_index = 1;
-            });
-          },
-        );
+        return HomeScreen(gotosearch: () {
+          setState(() {
+            screen_index = 1;
+          });
+        }, gotoprofile: () {
+          setState(() {
+            screen_index = 4;
+          });
+        });
 
       case 1:
         return SearchPage();
@@ -37,19 +41,16 @@ class _DashboardState extends State<Dashboard> {
 
       case 4:
         return ProfilePage();
-
-      default:
-        HomeScreen(
-          gotosearch: () {},
-        );
-        return HomeScreen(
-          gotosearch: () {},
-        );
     }
+    return HomeScreen(
+      gotosearch: () {},
+      gotoprofile: (() {}),
+    );
   }
 
   List<Widget> screen = [
     HomeScreen(
+      gotoprofile: () {},
       gotosearch: () {},
     ),
     SearchPage(),
