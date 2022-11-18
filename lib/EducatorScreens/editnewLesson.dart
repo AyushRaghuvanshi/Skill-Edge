@@ -38,7 +38,6 @@ class _EditAddSectionState extends State<EditAddSection> {
     );
   }
 
-
   Widget _pagebuild(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -51,45 +50,49 @@ class _EditAddSectionState extends State<EditAddSection> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Container(
-              width: double.infinity,
-              child: Center(
-                  child: Text(
-                'Create a Lesson',
-                style: TextStyle(color: Color(0xFF01C5A6), fontSize: 24),
-              ))),
-          Padding(
-            padding: const EdgeInsets.only(top: 24.0),
-            child: TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              onChanged: (value) {
-                lessonname = value;
-              },
-              validator: (value) {
-                if (value!.length == 0) {
-                  return 'Enter a topic';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                  label: Text('Lesson Name'), border: OutlineInputBorder()),
+        child: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Container(
+                width: double.infinity,
+                child: Center(
+                    child: Text(
+                  'Create a Lesson',
+                  style: TextStyle(color: Color(0xFF01C5A6), fontSize: 24),
+                ))),
+            Padding(
+              padding: const EdgeInsets.only(top: 24.0),
+              child: TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                onChanged: (value) {
+                  lessonname = value;
+                },
+                validator: (value) {
+                  if (value!.length == 0) {
+                    return 'Enter a topic';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                    label: Text('Lesson Name'), border: OutlineInputBorder()),
+              ),
             ),
-          ),
-          TextButton(
-              onPressed: () async {
-                file = await pickVideo();
-                setState(() {});
-              },
-              child: Text(
-                'Add Course',
-                style: TextStyle(color: Color(0xFF01C5A6)),
-              )),
-          Center(child: Text((file != null) ? file!.path : '')),
-        ]),
+            TextButton(
+                onPressed: () async {
+                  file = await pickVideo();
+                  setState(() {});
+                },
+                child: Text(
+                  'Add Course',
+                  style: TextStyle(color: Color(0xFF01C5A6)),
+                )),
+            Center(child: Text((file != null) ? file!.path : '')),
+          ]),
+        ),
       ),
       bottomNavigationBar: TextButton(
         onPressed: () {
+          
           setState(() {
             loading = true;
           });

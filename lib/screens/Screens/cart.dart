@@ -115,6 +115,9 @@ class _CartPageState extends State<CartPage> {
                             : (cartitems[0] == 'no courses in cart')
                                 ? null
                                 : () {
+                                    setState(() {
+                                      loading = true;
+                                    });
                                     if (cartitems[0] == 'no courses in cart') {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
@@ -122,13 +125,16 @@ class _CartPageState extends State<CartPage> {
                                                   'Add Something in cart first')));
                                     } else {
                                       API api = API();
-                                      api.buyallcourse().then((value) => {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: ((context) =>
-                                                        CourseBought())))
-                                          });
+                                      api.buyallcourse().then((value) {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    CourseBought())));
+                                      });
                                     }
                                   },
                         child: Container(

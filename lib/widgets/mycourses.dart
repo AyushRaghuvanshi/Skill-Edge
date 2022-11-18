@@ -34,6 +34,10 @@ class MyCourse extends StatefulWidget {
 class _MyCourseState extends State<MyCourse> {
   bool loading = false;
   var courses = Courses();
+
+  var ratestar;
+
+  var ratecomment;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -111,13 +115,14 @@ class _MyCourseState extends State<MyCourse> {
                                 courses.setLoading();
                                 API api = API();
                                 api.getLessons(widget.id).then((value1) {
-                                  api.getReviews(widget.id).then((value) {
+                                  api.getUserReviews(widget.id).then((value) {
                                     courses.setLoading();
                                     screentouch = false;
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => BoughtCourse(
+                                    if (value == false) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => BoughtCourse(
                                               id: widget.id,
                                               topic: widget.topic,
                                               thumbnail: widget.thumbnail,
@@ -126,8 +131,28 @@ class _MyCourseState extends State<MyCourse> {
                                               rating: widget.rating,
                                               educator: widget.edu_name,
                                               lessons: value1,
-                                              reviews: value),
-                                        ));
+                                            ),
+                                          ));
+                                    } else {
+                                      ratestar = value['latest_review'];
+                                      ratecomment = value['comment'];
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => BoughtCourse(
+                                              id: widget.id,
+                                              topic: widget.topic,
+                                              thumbnail: widget.thumbnail,
+                                              desc: widget.desc,
+                                              price: widget.price,
+                                              rating: widget.rating,
+                                              educator: widget.edu_name,
+                                              lessons: value1,
+                                              ratecomment: ratecomment,
+                                              ratestar: ratestar,
+                                            ),
+                                          ));
+                                    }
                                   });
                                 });
                               },

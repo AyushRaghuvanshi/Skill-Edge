@@ -81,103 +81,105 @@ class _HomeScreenEduState extends State<HomeScreenEdu> {
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.9,
                   width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Text('My  Courses',),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 52.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Hi, ${name.toString().split(' ')[0]}',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Let's, Publish Your",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    Text(
-                                      " Course!",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xFF01C5A6)),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 35.0),
-                              child: Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                    color: Color(0xFF01C5A6),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(100))),
-                                child: CircleAvatar(
-                                  foregroundImage: NetworkImage((pic != null)
-                                      ? pic!
-                                      : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'),
-                                  radius: 24,
-                                ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text('My  Courses',),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 52.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Hi, ${name.toString().split(' ')[0]}',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Let's, Publish Your",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      Text(
+                                        " Course!",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xFF01C5A6)),
+                                      ),
+                                    ],
+                                  )
+                                ],
                               ),
-                            )
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(right: 35.0),
+                                child: Container(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFF01C5A6),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100))),
+                                  child: CircleAvatar(
+                                    foregroundImage: NetworkImage((pic != null)
+                                        ? pic!
+                                        : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'),
+                                    radius: 24,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Text(
-                          'My Hosted Courses',
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.w500),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: Text(
+                            'My Hosted Courses',
+                            style: TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.w500),
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        child: (courses != null)
-                            ? (courses!.length != 0)
-                                ? ListView.builder(
-                                    itemCount: courses!.length,
-                                    itemBuilder: ((context, index) {
-                                      var temp = courses![index];
-                                      var temp2 = json.decode(temp);
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: (courses != null)
+                              ? (courses!.length != 0)
+                                  ? ListView.builder(
+                                      itemCount: courses!.length,
+                                      itemBuilder: ((context, index) {
+                                        var temp = courses![index];
+                                        var temp2 = json.decode(temp);
 
-                                      return EduCourses(
-                                        rating: temp2['rating'],
-                                        short_description:
-                                            temp2['short_description'],
-                                        edu_name: temp2['educator_name'],
-                                        id: temp2['id'],
-                                        price: temp2['price'],
-                                        thumbnail: temp2['thumbnail'],
-                                        topic: temp2['topic'],
-                                      );
-                                    }))
-                                : Center(
-                                    child: Text(
-                                        'Host A course to see something here'))
-                            : Center(
-                                child: Text(
-                                    'Host A course to see something here')),
-                      )
-                    ],
+                                        return EduCourses(
+                                          rating: temp2['rating'],
+                                          short_description:
+                                              temp2['short_description'],
+                                          edu_name: temp2['educator_name'],
+                                          id: temp2['id'],
+                                          price: temp2['price'],
+                                          thumbnail: temp2['thumbnail'],
+                                          topic: temp2['topic'],
+                                        );
+                                      }))
+                                  : Center(
+                                      child: Text(
+                                          'Host A course to see something here'))
+                              : Center(
+                                  child: Text(
+                                      'Host A course to see something here')),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -131,9 +131,27 @@ class _ProfilePageEduState extends State<ProfilePageEdu> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 22.5),
-                        child: Text(
-                          (name != null) ? name! : 'User',
-                          style: TextStyle(fontSize: 24),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              (name != null) ? name! : 'User',
+                              style: TextStyle(fontSize: 24),
+                            ),
+                            Container(
+                              child: (iscertified == null)
+                                  ? null
+                                  : (iscertified! != true)
+                                      ? null
+                                      : Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(
+                                            Icons.verified,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                            )
+                          ],
                         ),
                       ),
                       Row(
@@ -164,23 +182,36 @@ class _ProfilePageEduState extends State<ProfilePageEdu> {
                         ],
                       ),
                       Container(
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            color: Color(0xFFeed202),
-                            border: Border.all(color: Colors.amber, width: 10),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: Center(
-                          child: Text(
-                            (iscertified == null)
-                                ? ""
-                                : (iscertified!)
-                                    ? ""
-                                    : "You are not a Certified Educator.\n Your Rating is ${(israting.toString().length > 3) ? israting.toString().substring(0, 4) : israting.toString()}\n You Need to be above 2.5 to be able to Host Paid Courses",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ),
-                        ),
+                        child: (iscertified == null)
+                            ? null
+                            : (iscertified!)
+                                ? null
+                                : Container(
+                                    padding: EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFeed202),
+                                        border: Border.all(
+                                            color: Colors.amber, width: 10),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: (iscertified == null)
+                                        ? null
+                                        : (iscertified!)
+                                            ? null
+                                            : Center(
+                                                child: Text(
+                                                  (iscertified == null)
+                                                      ? ""
+                                                      : (iscertified!)
+                                                          ? ""
+                                                          : "You are not a Certified Educator.\n Your Rating is ${(israting.toString().length > 3) ? israting.toString().substring(0, 4) : israting.toString()}\n You Need to be above 2.5 to be able to Host Paid Courses",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black),
+                                                ),
+                                              ),
+                                  ),
                       ),
                       Expanded(
                         child: SingleChildScrollView(

@@ -281,6 +281,29 @@ class API {
     }
   }
 
+  Future<dynamic> getUserReviews(int cid) async {
+    ayush = true;
+    String url =
+        "https://skilledge.herokuapp.com/courses/user_course_feedback/$cid/";
+    dio.options.headers["Authorization"] = "Bearer ${token}";
+
+    final res = await dio.get(url, options: Options(
+      validateStatus: (status) {
+        return status == 200 || status == 400 || status == 405;
+      },
+    ));
+    print(res.data);
+    if (res.statusCode == 400) {
+      return false;
+    }
+    ayush = false;
+    if (res.statusCode == 200) {
+      return res.data[0];
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   Future<List<dynamic>> getReviews(int cid) async {
     ayush = true;
     String url =
@@ -440,7 +463,7 @@ class API {
           "https://skilledge.herokuapp.com/courses/search_course/?search-area=$search&category=$filter";
     }
     print(url);
-    dio.options.headers["Authorization"] = "Bearer ${token}";
+
     final res = await dio.get((url), options: Options(
       validateStatus: (status) {
         return status == 200 || status == 400 || status == 401;
@@ -507,7 +530,7 @@ class API {
     }
   }
 
-  Future<List<dynamic>> buyallcourse() async {
+  Future<String> buyallcourse() async {
     ayush = true;
     String url = "https://skilledge.herokuapp.com/wallet/buy_allcourses/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
@@ -579,7 +602,7 @@ class API {
     ayush = true;
     String url = "https://skilledge.herokuapp.com/payment/flutter_razorpay/";
     dio.options.headers["Authorization"] = "Bearer ${token}";
-    amount = amount * 100;
+    print(amount);
     final res = await dio.post((url), data: {
       "order_amount": (amount / 100).floor(),
       "order_payment_id": paymentid
@@ -588,15 +611,15 @@ class API {
         return true;
       },
     ));
+
     ayush = false;
     if (res.statusCode == 400) {
       return 'Not Enough Balance in your Wallet';
     }
-    if (res.statusCode == 200 ||
-        res.statusCode == 400 ||
-        res.statusCode == 401) {
+    if (res.statusCode == 200 || res.statusCode == 401) {
       return 'Redeeming Successful, Check Your Account';
     } else {
+      print(res.data);
       throw Exception('Failed to load data');
     }
   }

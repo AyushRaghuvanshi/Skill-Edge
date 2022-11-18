@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:skilledge/screens/dashboard.dart';
@@ -181,143 +180,147 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                           Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 31.0, right: 32, top: 62),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Container(
-                                            child: (loading2)
-                                                ? Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  )
-                                                : IconButton(
-                                                    icon: Icon(Icons.wallet),
-                                                    onPressed: () {
-                                                      if (screentouch) {
-                                                        return;
-                                                      }
-                                                      setState(() {
-                                                        loading2 = true;
-                                                      });
-                                                      screentouch = true;
-                                                      API api = API();
-                                                      api
-                                                          .getwalletmoney()
-                                                          .then((value) {
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 31.0, right: 32, top: 62),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Container(
+                                              child: (loading2)
+                                                  ? Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : IconButton(
+                                                      icon: Icon(Icons.wallet),
+                                                      onPressed: () {
+                                                        if (screentouch) {
+                                                          return;
+                                                        }
                                                         setState(() {
-                                                          loading2 = false;
+                                                          loading2 = true;
                                                         });
-                                                        screentouch = false;
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: ((context) =>
-                                                                    Wallet(
-                                                                        amount:
-                                                                            value))));
-                                                      });
-                                                    },
-                                                  ),
-                                          ),
-                                          Text('Wallet')
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Icon(Icons.people),
-                                          Text('Invite')
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Icon(Icons.lock),
-                                          Text('Privacy')
-                                        ],
-                                      )
-                                    ],
+                                                        screentouch = true;
+                                                        API api = API();
+                                                        api
+                                                            .getwalletmoney()
+                                                            .then((value) {
+                                                          setState(() {
+                                                            loading2 = false;
+                                                          });
+                                                          screentouch = false;
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: ((context) =>
+                                                                      Wallet(
+                                                                          amount:
+                                                                              value))));
+                                                        });
+                                                      },
+                                                    ),
+                                            ),
+                                            Text('Wallet')
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Icon(Icons.people),
+                                            Text('Invite')
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Icon(Icons.lock),
+                                            Text('Privacy')
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  // padding: const EdgeInsets.all(8.0),
-                                  padding: EdgeInsets.only(
-                                      left: 31.0, right: 10, top: 32),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Icon(Icons.warning),
-                                          Text('Help')
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Icon(Icons.bookmark_border),
-                                          Text('About us')
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          IconButton(
-                                              icon: Icon(Icons.thumb_up),
-                                              onPressed: () async {
-                                                final mailtoLink = Mailto(
-                                                  to: [
-                                                    'skilledge.contactus@gmail.com'
-                                                  ],
-                                                  cc: [
-                                                    'ayushraghuvanshi03@gmail.com',
-                                                    'suhaillahmadd0@gmail.com',
-                                                    'shreyanshagarwal.16.2022@gmail.com'
-                                                  ],
-                                                  subject:
-                                                      'Contacting SkillEdge Team',
-                                                  body:
-                                                      'Hello, My Issue is....',
-                                                );
-                                                // Convert the Mailto instance into a string.
-                                                // Use either Dart's string interpolation
-                                                // or the toString() method.
-                                                print(mailtoLink);
-                                                await launchUrl(
-                                                    Uri.parse('$mailtoLink'));
-                                              }),
-                                          Text('Contact us')
-                                        ],
-                                      )
-                                    ],
+                                  Padding(
+                                    // padding: const EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.only(
+                                        left: 31.0, right: 10, top: 32),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Icon(Icons.warning),
+                                            Text('Help')
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Icon(Icons.bookmark_border),
+                                            Text('About us')
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            IconButton(
+                                                icon: Icon(Icons.thumb_up),
+                                                onPressed: () async {
+                                                  final mailtoLink = Mailto(
+                                                    to: [
+                                                      'skilledge.contactus@gmail.com'
+                                                    ],
+                                                    cc: [
+                                                      'ayushraghuvanshi03@gmail.com',
+                                                      'suhaillahmadd0@gmail.com',
+                                                      'shreyanshagarwal.16.2022@gmail.com'
+                                                    ],
+                                                    subject:
+                                                        'Contacting SkillEdge Team',
+                                                    body:
+                                                        'Hello, My Issue is....',
+                                                  );
+                                                  // Convert the Mailto instance into a string.
+                                                  // Use either Dart's string interpolation
+                                                  // or the toString() method.
+                                                  print(mailtoLink);
+                                                  await launchUrl(
+                                                      Uri.parse('$mailtoLink'));
+                                                }),
+                                            Text('Contact us')
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 32.0, left: 24),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.logout),
-                                            onPressed: () =>
-                                                _showpopup(context),
-                                          ),
-                                          Text('Log out')
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 32.0, left: 24),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.logout),
+                                              onPressed: () =>
+                                                  _showpopup(context),
+                                            ),
+                                            Text('Log out')
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ]),

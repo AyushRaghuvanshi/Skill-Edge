@@ -322,18 +322,18 @@ class _RegisterState extends State<Register> {
                                   setState(() {
                                     isLoading = false;
                                   });
-                                  if (value.email != null) {
+                                  if (value.msg == "Email") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
                                                 'This Email is already in use, Try Signing up.')));
-                                  } else if (value.userName != null) {
+                                  } else if (value.msg == "username") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
                                                 'This Username is not avaiable.')));
                                   }
-                                  if (value.msg != null) {
+                                  if (value.msg == "success") {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(

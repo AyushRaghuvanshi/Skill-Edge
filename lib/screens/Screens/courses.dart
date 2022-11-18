@@ -26,6 +26,7 @@ class _CoursesPageState extends State<CoursesPage> {
         setState(() {
           mycourses = value;
         });
+        print(mycourses);
       }
     });
   }
@@ -63,9 +64,9 @@ class _CoursesPageState extends State<CoursesPage> {
                         return MyCourse(
                           topic: mycourses[index]['topic'],
                           id: mycourses[index]['id'],
-                          // catog: mycourses[index]['category'],
+                          
                           desc: mycourses[index]['short_description'],
-                          // edu: mycourses[index]['educator_mail'],
+
                           edu_name: mycourses[index]['educator_name'],
                           price: mycourses[index]['price'],
                           rating: mycourses[index]['rating'],

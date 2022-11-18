@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skilledge/screens/dashboard.dart';
@@ -16,83 +17,108 @@ class _WalletEduState extends State<WalletEdu> {
   int addamount = 0;
   int amount = 0;
   bool success = false;
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  double wallet_money = 0;
+
+  void _onRefresh() async {
+    // monitor network fetch
+    API api = new API();
+    wallet_money = await api.getwalletmoney();
+
+    setState(() {});
+    _refreshController.refreshCompleted();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    wallet_money = widget.amount;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-                alignment: Alignment.bottomCenter,
-                clipBehavior: Clip.none,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 200,
-                      decoration: BoxDecoration(color: Color(0xFF01C5A6)),
+      body: SmartRefresher(
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
+                  alignment: Alignment.bottomCenter,
+                  clipBehavior: Clip.none,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 200,
+                        decoration: BoxDecoration(color: Color(0xFF01C5A6)),
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: -70,
-                    child: Container(
-                        padding: EdgeInsets.all(24),
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: 160,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    'SkillEdge ',
-                                    style: TextStyle(fontSize: 24),
+                    Positioned(
+                      bottom: -70,
+                      child: Container(
+                          padding: EdgeInsets.all(24),
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          height: 160,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'SkillEdge ',
+                                      style: TextStyle(fontSize: 24),
+                                    ),
+                                    Text(
+                                      'Wallet',
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          color: Color(0xFF01C5A6)),
+                                    )
+                                  ],
+                                ),
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 4.0),
+                                    child: Text(
+                                      '₹${wallet_money}',
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          color: Color(0xFF01C5A6)),
+                                    ),
                                   ),
-                                  Text(
-                                    'Wallet',
-                                    style: TextStyle(
-                                        fontSize: 24, color: Color(0xFF01C5A6)),
-                                  )
-                                ],
-                              ),
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
+                                ),
+                                Center(
                                   child: Text(
-                                    '₹${widget.amount}',
-                                    style: TextStyle(
-                                        fontSize: 24, color: Color(0xFF01C5A6)),
+                                    'Current Balance',
+                                    style: TextStyle(color: Colors.grey),
                                   ),
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  'Current Balance',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              )
-                            ]),
-                        decoration: BoxDecoration(
-                            color: Color(0xFFF6FAFA),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12)))),
-                  ),
-                ]),
-            Padding(
-              padding: const EdgeInsets.only(top: 64.0),
-              child: TextButton(
-                  style:
-                      TextButton.styleFrom(backgroundColor: Color(0xFF01C5A6)),
-                  onPressed: () => _showpopup(context),
-                  child: Text(
-                    'Redeem Balance',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  )),
-            )
-          ],
+                                )
+                              ]),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF6FAFA),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)))),
+                    ),
+                  ]),
+              Padding(
+                padding: const EdgeInsets.only(top: 64.0),
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Color(0xFF01C5A6)),
+                    onPressed: () => _showpopup(context),
+                    child: Text(
+                      'Redeem Balance',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    )),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -121,7 +147,7 @@ class _WalletEduState extends State<WalletEdu> {
             color: Color(0xFF01C5A6),
             splashColor: Color(0xFF01C5A6),
             onPressed: () {
-              if(screentouch==true){
+              if (screentouch == true) {
                 return;
               }
               screentouch = true;
