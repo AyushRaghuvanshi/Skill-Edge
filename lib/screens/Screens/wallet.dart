@@ -14,7 +14,7 @@ class Wallet extends StatefulWidget {
 }
 
 class _WalletState extends State<Wallet> {
-  int addamount = 0;
+  String addamount = "0";
   double amount = -1.0;
 
   RefreshController _refreshController =
@@ -86,7 +86,7 @@ class _WalletState extends State<Wallet> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 4.0),
                                     child: Text(
-                                      '₹${(wallet_money).round()}',
+                                      '₹${(wallet_money).floor()}',
                                       style: TextStyle(
                                           fontSize: 24,
                                           color: Color(0xFF01C5A6)),
@@ -140,7 +140,7 @@ class _WalletState extends State<Wallet> {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               keyboardType: TextInputType.number,
               onChanged: (value) {
-                addamount = int.parse(value);
+                addamount = value;
               },
               decoration: InputDecoration(
                 icon: Icon(Icons.money),
@@ -154,15 +154,16 @@ class _WalletState extends State<Wallet> {
             color: Color(0xFF01C5A6),
             splashColor: Color(0xFF01C5A6),
             onPressed: () {
-              if (addamount == 0) {
+              print(addamount);
+              if (addamount == "") {
                 ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('Add Some Ammount')));
+                    .showSnackBar(SnackBar(content: Text('Add Some Amount')));
               } else
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => CheckRazor(
-                          amount: (addamount * 100),
+                          amount: (int.parse(addamount) * 100),
                           email: 'ayushraghuvanshi03@gmail.com',
                           phone: '9305773947'),
                     ));

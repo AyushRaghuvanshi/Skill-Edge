@@ -213,7 +213,7 @@ class _SearchPageState extends State<SearchPage> {
                                                   padding:
                                                       const EdgeInsets.all(8.0),
                                                   child: Text(
-                                                    "Buisness",
+                                                    "Business",
                                                     style: TextStyle(
                                                         color: (!b2)
                                                             ? Colors.white
@@ -667,9 +667,12 @@ class _SearchPageState extends State<SearchPage> {
                               if (search_result[index] ==
                                   'Nothing Found Here') {
                                 return Expanded(
-                                    child: Center(
-                                        child:
-                                            Image.asset('assets/search.png')));
+                                    child: Column(
+                                  children: [
+                                    Image.asset('assets/search.png'),
+                                    Text('Nothing Found Here')
+                                  ],
+                                ));
                               }
                               topic = search_result[index]['topic'];
                               id = search_result[index]['id'];

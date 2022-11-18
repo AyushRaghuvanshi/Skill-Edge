@@ -154,7 +154,7 @@ class _OnBoardinginterestState extends State<OnBoardinginterest> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  "Buisness",
+                                  "Business",
                                   style: TextStyle(
                                       color: (!b2)
                                           ? Colors.white

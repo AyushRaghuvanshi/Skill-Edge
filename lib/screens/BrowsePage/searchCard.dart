@@ -3,7 +3,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/screens/BrowsePage/Search.dart';
 import 'package:skilledge/services/api_services.dart';
 
-
 class SearchPageBrowse extends StatefulWidget {
   const SearchPageBrowse({super.key});
 
@@ -50,7 +49,6 @@ class _SearchPageBrowseState extends State<SearchPageBrowse> {
     return ModalProgressHUD(
         child: _pagebuild(context), inAsyncCall: loading, blur: 0.5);
   }
-
 
   Widget _pagebuild(BuildContext context) {
     return Padding(
@@ -181,7 +179,7 @@ class _SearchPageBrowseState extends State<SearchPageBrowse> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: Text(
-                                                "Buisness",
+                                                "Business",
                                                 style: TextStyle(
                                                     color: (!b2)
                                                         ? Colors.white

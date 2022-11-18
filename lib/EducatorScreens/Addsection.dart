@@ -88,6 +88,8 @@ class _AddSectionState extends State<AddSection> {
       ),
       bottomNavigationBar: TextButton(
         onPressed: () {
+          print(file);
+          print(lessonname);
           if (file == null || lessonname.length <= 0) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Please Vaidate All Entered Fields')));

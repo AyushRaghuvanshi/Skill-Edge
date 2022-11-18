@@ -83,7 +83,7 @@ class _EditAddSectionState extends State<EditAddSection> {
                   setState(() {});
                 },
                 child: Text(
-                  'Add Course',
+                  'Add Video',
                   style: TextStyle(color: Color(0xFF01C5A6)),
                 )),
             Center(child: Text((file != null) ? file!.path : '')),
@@ -92,7 +92,17 @@ class _EditAddSectionState extends State<EditAddSection> {
       ),
       bottomNavigationBar: TextButton(
         onPressed: () {
-          
+          if (file == null || lessonname.length <= 0) {
+            if (lessonname.length <= 0) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Please Add Lesson Name')));
+              return;
+            }
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Please Add Lesson Video')));
+            return;
+          }
+
           setState(() {
             loading = true;
           });

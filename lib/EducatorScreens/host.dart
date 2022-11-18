@@ -34,7 +34,7 @@ class _HostCourseState extends State<HostCourse> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Upload and Publish you Course',
+                    'Upload and Publish your Course',
                     style: TextStyle(fontSize: 16),
                   ),
                   Padding(

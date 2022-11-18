@@ -86,73 +86,92 @@ class _CartPageState extends State<CartPage> {
                         // return Container();
                       }))),
               Container(
-                width: double.infinity,
-                margin: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    color: Color(0xFF01C5A6),
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total',
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                          Text(
-                            '₹$totalprice',
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          )
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                        onPressed: (cartitems.isEmpty)
-                            ? null
-                            : (cartitems[0] == 'no courses in cart')
-                                ? null
-                                : () {
-                                    setState(() {
-                                      loading = true;
-                                    });
-                                    if (cartitems[0] == 'no courses in cart') {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  'Add Something in cart first')));
-                                    } else {
-                                      API api = API();
-                                      api.buyallcourse().then((value) {
-                                        setState(() {
-                                          loading = false;
-                                        });
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: ((context) =>
-                                                    CourseBought())));
-                                      });
-                                    }
-                                  },
-                        child: Container(
-                            padding: EdgeInsets.only(
-                                left: 24, right: 24, top: 16, bottom: 16),
+                child: (cartitems.isEmpty)
+                    ? null
+                    : (cartitems[0] == 'no courses in cart')
+                        ? null
+                        : Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Color(0xFF01C5A6),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: Center(
-                              child: Text(
-                                'Checkout',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ))),
-                  ],
-                ),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Total',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      ),
+                                      Text(
+                                        '₹$totalprice',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                TextButton(
+                                    onPressed: (cartitems.isEmpty)
+                                        ? null
+                                        : (cartitems[0] == 'no courses in cart')
+                                            ? null
+                                            : () {
+                                                setState(() {
+                                                  loading = true;
+                                                });
+                                                if (cartitems[0] ==
+                                                    'no courses in cart') {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                          content: Text(
+                                                              'Add Something in cart first')));
+                                                } else {
+                                                  API api = API();
+                                                  api
+                                                      .buyallcourse()
+                                                      .then((value) {
+                                                    setState(() {
+                                                      loading = false;
+                                                    });
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: ((context) =>
+                                                                CourseBought())));
+                                                  });
+                                                }
+                                              },
+                                    child: Container(
+                                        padding: EdgeInsets.only(
+                                            left: 24,
+                                            right: 24,
+                                            top: 16,
+                                            bottom: 16),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.7,
+                                        child: Center(
+                                          child: Text(
+                                            'Checkout',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ))),
+                              ],
+                            ),
+                          ),
               )
             ],
           ),
