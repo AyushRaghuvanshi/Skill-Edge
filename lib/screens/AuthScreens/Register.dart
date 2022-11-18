@@ -327,7 +327,7 @@ class _RegisterState extends State<Register> {
                                         SnackBar(
                                             content: Text(
                                                 'This Email is already in use, Try Signing up.')));
-                                  } else if (value.msg == "username") {
+                                  } else if (value.msg == "Username") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(

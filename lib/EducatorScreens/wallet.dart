@@ -86,7 +86,7 @@ class _WalletEduState extends State<WalletEdu> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 4.0),
                                     child: Text(
-                                      '₹${wallet_money}',
+                                      '₹${(wallet_money).floor()}',
                                       style: TextStyle(
                                           fontSize: 24,
                                           color: Color(0xFF01C5A6)),

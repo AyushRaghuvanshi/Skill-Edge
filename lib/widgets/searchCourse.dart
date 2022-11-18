@@ -107,12 +107,12 @@ class _SearchCourseState extends State<SearchCourse> {
                                 return;
                               }
                               search.setLoading();
-                              // screentouch = true;
+                              screentouch = true;
                               API api = API();
                               api.getLessons(widget.id).then((value1) {
                                 api.getReviews(widget.id).then((value) {
                                   search.setLoading();
-                                  // screentouch = false;
+                                  screentouch = false;
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

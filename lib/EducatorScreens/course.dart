@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/container.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:skilledge/EducatorScreens/coursepreview.dart';
 // import 'package:skilledge/EducatorScreens/Addsection.dart';
 import 'package:skilledge/EducatorScreens/editnewLesson.dart';
 import 'package:skilledge/screens/Screens/CoursePreview.dart';
@@ -109,19 +110,18 @@ class _EduCoursesState extends State<EduCourses> {
                                   setState(() {
                                     loading = true;
                                   });
-
+                                  screentouch=true;
                                   API api = API();
                                   api.getLessons(widget.id).then((value1) {
-                                    print('below');
-                                    print(value1);
                                     api.getReviews(widget.id).then((value) {
                                       setState(() {
                                         loading = false;
                                       });
+                                      screentouch=false;
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => CoursePreview(
+                                            builder: (context) => CoursePreviewEdu(
                                                 id: widget.id,
                                                 topic: widget.topic,
                                                 thumbnail: widget.thumbnail,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mailto/mailto.dart';
 
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +10,7 @@ import 'package:skilledge/screens/Screens/editProfile.dart';
 
 import 'package:skilledge/screens/dashboard.dart';
 import 'package:skilledge/services/api_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePageEdu extends StatefulWidget {
   const ProfilePageEdu({super.key});
@@ -286,7 +288,29 @@ class _ProfilePageEduState extends State<ProfilePageEdu> {
                                   children: [
                                     Column(
                                       children: [
-                                        Icon(Icons.thumb_up),
+                                        IconButton(
+                                            icon: Icon(Icons.thumb_up),
+                                            onPressed: (() async {
+                                              final mailtoLink = Mailto(
+                                                to: [
+                                                  'skilledge.contactus@gmail.com'
+                                                ],
+                                                cc: [
+                                                  'ayushraghuvanshi03@gmail.com',
+                                                  'suhaillahmadd0@gmail.com',
+                                                  'shreyanshagarwal.16.2022@gmail.com'
+                                                ],
+                                                subject:
+                                                    'Contacting SkillEdge Team',
+                                                body: 'Hello, My Issue is....',
+                                              );
+                                              // Convert the Mailto instance into a string.
+                                              // Use either Dart's string interpolation
+                                              // or the toString() method.
+                                              print(mailtoLink);
+                                              await launchUrl(
+                                                  Uri.parse('$mailtoLink'));
+                                            })),
                                         Text('Contact us')
                                       ],
                                     ),
