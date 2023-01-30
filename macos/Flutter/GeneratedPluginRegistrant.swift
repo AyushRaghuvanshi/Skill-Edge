@@ -9,7 +9,7 @@ import connectivity_plus_macos
 import modal_progress_hud_nsn
 import network_info_plus_macos
 import package_info_plus_macos
-import shared_preferences_macos
+import shared_preferences_foundation
 import smart_auth
 import url_launcher_macos
 

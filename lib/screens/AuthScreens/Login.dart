@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:skilledge/models/login_model.dart';
@@ -34,7 +32,6 @@ class _LoginState extends State<Login> {
   bool passok = false;
   @override
   void initState() {
-    
     super.initState();
     login = login_model();
   }
@@ -228,8 +225,9 @@ class _LoginState extends State<Login> {
                                   child: Text(
                                 'Sign in',
                                 style: TextStyle(
-                                  color: Colors.white,
-                                    fontSize: 20, fontWeight: FontWeight.w400),
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
                               )))),
                       const Padding(
                         padding: EdgeInsets.only(top: 115.0),

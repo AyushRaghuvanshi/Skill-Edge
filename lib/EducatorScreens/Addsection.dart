@@ -28,10 +28,9 @@ class AddSection extends StatefulWidget {
 }
 
 class _AddSectionState extends State<AddSection> {
+  
   File? file;
-
   String lessonname = "";
-
   bool loading = false;
   Widget build(BuildContext context) {
     return Scaffold(
