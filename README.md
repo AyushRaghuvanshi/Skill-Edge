@@ -20,7 +20,6 @@
   <img src="https://i.ibb.co/6P76Fjn/photo-2023-02-14-21-47-25.jpg" width="150" />
   <img src="https://i.ibb.co/sgypy0q/photo-2023-02-14-21-47-26.jpg" width="150" />
   <img src="https://i.ibb.co/09LsncF/photo-2023-02-14-21-47-27.jpg" width="150" />
-  <img src="https://i.ibb.co/mBSGmgR/photo-2023-02-14-21-47-22.jpg" width="150" />
 </p>
 
 
