@@ -70,6 +70,7 @@ To get started with SKILLEDGE, follow these steps:
 1. Clone the repository to your local machine
 2. Install Flutter and set up your environment
 3. Install Django and set up your environment
+     Backend Repo - https://github.com/suhaillahmad/SkillEdge-Backend
 4. Start the app and begin exploring the features
 
 ## Contributing
